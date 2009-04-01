@@ -1,0 +1,13 @@
+*~
+target
+.metadata
+.hg
+.hgignore
+.settings
+doc
+*.para
+parameterManager.xml
+.classpath
+.project
+
+
