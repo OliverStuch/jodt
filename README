@@ -1,8 +1,9 @@
-more to come...
+Compare arbitrary objects, find the differences and show them in a
+treetable.
 
 
 TODOs
 
-* push jodt-gui
 * documentation ...
 * more tests
+* Diff-Iterator
