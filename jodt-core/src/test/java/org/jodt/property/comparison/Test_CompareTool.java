@@ -11,13 +11,13 @@ import org.jodt.property.comparison.CompositeComparison;
 import org.jodt.property.comparison.implementation.Additional;
 import org.jodt.property.comparison.implementation.CompareStrategy;
 import org.jodt.property.comparison.implementation.DiffStrategy;
-import org.jodt.property.comparison.implementation.HashCodeIdentityResolver;
 import org.jodt.property.comparison.implementation.Missing;
 import org.jodt.property.comparison.implementation.NoDiff;
-import org.jodt.property.comparison.implementation.PackageNonTerminalStrategy;
 import org.jodt.property.comparison.implementation.ReferenceDiff;
 import org.jodt.property.comparison.implementation.SubDiff;
 import org.jodt.property.comparison.implementation.ValueDiff;
+import org.jodt.property.implementation.HashCodeIdentityResolver;
+import org.jodt.property.implementation.PackageNonTerminalStrategy;
 
 import junit.framework.TestCase;
 
@@ -42,8 +42,8 @@ public abstract class Test_CompareTool extends TestCase {
 
         void assert_ReferenceDiff(Object o1, Object o2);
 
-        PropertyToolConfiguration configureCompareTool();
-
+        CompareToolConfiguration configureCompareTool();
+        
         void assert_HasOneValueDiff(Object o1, Object o2, Object value1, Object value2);
     }
 
@@ -55,7 +55,7 @@ public abstract class Test_CompareTool extends TestCase {
             this.comparisonStrategy = comparisonStrategy;
         }
 
-        public PropertyToolConfiguration configureCompareTool() {
+        public CompareToolConfiguration configureCompareTool() {
             return comparisonStrategy.configure();
         }
 
@@ -616,7 +616,7 @@ public abstract class Test_CompareTool extends TestCase {
         asserts.assert_HasOneValueDiff(o1, o2, DIFF_INTEGER_VALUE, ObjectWithPrimitives.INITIAL_INTEGER_VALUE);
         
     }
-    
+
     protected static final String NON_TERMINAL_PACKAGE = "org.jodt.*";
 
 }

@@ -2,7 +2,7 @@ package org.jodt.property.comparison;
 
 import java.io.Serializable;
 
-import org.jodt.property.comparison.IdentityResolver;
+import org.jodt.property.IdentityResolver;
 
 /**
  * @author Oliver Stuch

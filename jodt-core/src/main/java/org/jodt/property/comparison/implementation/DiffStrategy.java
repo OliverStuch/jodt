@@ -1,7 +1,7 @@
 package org.jodt.property.comparison.implementation;
 
-import org.jodt.property.PropertyToolConfiguration;
 import org.jodt.property.comparison.CompareTool;
+import org.jodt.property.comparison.CompareToolConfiguration;
 import org.jodt.property.comparison.ComparisonStrategy;
 import org.jodt.property.comparison.CompositeComparison;
 import org.jodt.property.comparison.CompositeMerge;
@@ -26,7 +26,7 @@ public class DiffStrategy implements ComparisonStrategy {
         return compareTool.addMergeObject(compositeComparison);
     }
     
-    public PropertyToolConfiguration configure() {
+    public CompareToolConfiguration configure() {
         return compareTool.configure();
     }
 

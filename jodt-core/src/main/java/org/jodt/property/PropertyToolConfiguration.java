@@ -1,14 +1,13 @@
 package org.jodt.property;
 
-import org.jodt.property.comparison.IdentityResolver;
-import org.jodt.property.comparison.NonTerminalStrategy;
 import org.jodt.util.Registry;
 
 
 /**
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 public interface PropertyToolConfiguration {
+
     // -------------------- Identities ------------------------------------ //
     Long getID(Object object);
 
@@ -21,7 +20,6 @@ public interface PropertyToolConfiguration {
     Long resolveId(Property property);
 
     // -------------------- End: Identities ------------------------------------ //
-
     // -------------------- NonTerminal ------------------------------------ //
     // -------------------- Abfragen NonTerminal ------------------------------------ //
     // TODO ... eigentlich !isNonTerminal

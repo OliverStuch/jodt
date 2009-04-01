@@ -6,6 +6,7 @@ import java.util.List;
 import org.jodt.property.comparison.CompareTool;
 import org.jodt.property.comparison.CompareToolConfiguration;
 import org.jodt.property.comparison.Test_CompareTool;
+import org.jodt.property.implementation.PackageNonTerminalStrategy;
 
 
 /**

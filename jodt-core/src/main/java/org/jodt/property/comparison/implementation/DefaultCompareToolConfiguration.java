@@ -1,9 +1,14 @@
 package org.jodt.property.comparison.implementation;
 
+import org.jodt.property.IdentityResolver;
+import org.jodt.property.Property;
 import org.jodt.property.comparison.CompareToolConfiguration;
 import org.jodt.property.comparison.IgnorePropertyStrategy;
 import org.jodt.property.comparison.IgnoreStrategy;
 import org.jodt.property.implementation.DefaultPropertyToolConfiguration;
+import org.jodt.property.implementation.DelegatingCompositeProperty;
+import org.jodt.property.implementation.ReflectiveProperty;
+import org.jodt.property.implementation.ReflectivePropertySet;
 import org.jodt.util.Registry;
 
 
@@ -14,6 +19,7 @@ import org.jodt.util.Registry;
  * 
  */
 public class DefaultCompareToolConfiguration extends DefaultPropertyToolConfiguration implements CompareToolConfiguration {
+
 
     public boolean analysePropertiesOfDifferentNonTerminalObjects(Object object) {
         if (object == null) {

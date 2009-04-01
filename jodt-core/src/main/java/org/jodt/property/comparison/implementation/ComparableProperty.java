@@ -5,8 +5,8 @@ import java.util.Iterator;
 
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.CompositePropertyList;
+import org.jodt.property.IdentityResolver;
 import org.jodt.property.Property;
-import org.jodt.property.comparison.IdentityResolver;
 import org.jodt.property.implementation.ReflectivePropertySet;
 import org.jodt.util.Registry;
 

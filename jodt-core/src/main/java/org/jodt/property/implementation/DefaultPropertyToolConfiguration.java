@@ -2,11 +2,10 @@ package org.jodt.property.implementation;
 
 import java.util.Collection;
 
+import org.jodt.property.IdentityResolver;
+import org.jodt.property.NonTerminalStrategy;
 import org.jodt.property.Property;
 import org.jodt.property.PropertyToolConfiguration;
-import org.jodt.property.comparison.IdentityResolver;
-import org.jodt.property.comparison.NonTerminalStrategy;
-import org.jodt.property.comparison.implementation.HashCodeIdentityResolver;
 import org.jodt.reflection.JavaTypeDetector;
 import org.jodt.util.Registry;
 
@@ -16,7 +15,6 @@ import org.jodt.util.Registry;
  */
 
 public class DefaultPropertyToolConfiguration implements PropertyToolConfiguration {
-
     // -------------------- Identities ------------------------------------ //
     public Long getID(Object object) {
         return idResolverRegistry.getImplementation(object.getClass()).getID(object);
@@ -62,6 +60,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     private Registry<IdentityResolver> idResolverRegistry = new Registry<IdentityResolver>();
 
     // -------------------- End: Identities ------------------------------------ //
+
 
     // -------------------- isNonTerminal ------------------------------------ //
 

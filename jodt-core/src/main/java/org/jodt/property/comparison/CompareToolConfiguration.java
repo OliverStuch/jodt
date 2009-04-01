@@ -1,11 +1,14 @@
 package org.jodt.property.comparison;
 
+import org.jodt.property.Property;
 import org.jodt.property.PropertyToolConfiguration;
+import org.jodt.util.Registry;
 
 /**
  * @author Oliver Stuch  (oliver@stuch.net) 
  */
 public interface CompareToolConfiguration extends PropertyToolConfiguration {
+    
 
     // -------------------- analysePropertiesOfDifferentNonTerminalObjects ------------------------------------ //
     /**
