@@ -6,7 +6,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>jodt-core</module>
-    <module>jodt-gui</module>
+    <!--module>jodt-gui</module!-->
   </modules>
   <repositories>
     <repository>
