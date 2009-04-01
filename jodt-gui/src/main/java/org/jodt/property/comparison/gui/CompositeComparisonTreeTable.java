@@ -1,7 +1,5 @@
 package org.jodt.property.comparison.gui;
 
-
-
 import org.apache.log4j.Logger;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.jodt.property.comparison.ComparisonStrategy;
@@ -11,6 +9,9 @@ import org.jodt.property.gui.CompositePropertyTreeTable;
 import org.jodt.util.gui.treetable.DefaultJXTreeTable;
 import org.jodt.util.gui.treetable.DefaultParentUpdater;
 
+/**
+ * @author Oliver Stuch (oliver@stuch.net)
+ */
 public class CompositeComparisonTreeTable extends DefaultJXTreeTable {
 
     private Object comparativeObject;
@@ -29,7 +30,8 @@ public class CompositeComparisonTreeTable extends DefaultJXTreeTable {
      * @param objectName
      *            Name des Objekts (momentan ohne Funktion/Bedeutung)
      */
-    public CompositeComparisonTreeTable(Object comparativeObject, String comparativeObjectName, Object referenceObject, String referenceObjectName, ComparisonStrategy comparisonStrategy) {
+    public CompositeComparisonTreeTable(Object comparativeObject, String comparativeObjectName, Object referenceObject, String referenceObjectName,
+            ComparisonStrategy comparisonStrategy) {
         this.comparisonStrategy = comparisonStrategy;
         setTreeCellRenderer(new DiffIconTreeCellRenderer(this));
         addToStringRenderer(new Diff2ToStringRenderer());

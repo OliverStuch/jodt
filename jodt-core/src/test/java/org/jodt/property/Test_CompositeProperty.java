@@ -6,7 +6,7 @@ import org.jodt.property.Property;
 /**
  * Dieser Test testet den Abstrakten Test mit den Implementiereungen der DefaultCompositePropertyFactory => ohne GUI
  * 
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 
 public class Test_CompositeProperty extends AbstractTest_CompositeProperty {

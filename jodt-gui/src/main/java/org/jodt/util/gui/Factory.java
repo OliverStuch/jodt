@@ -3,6 +3,9 @@ package org.jodt.util.gui;
 import org.apache.log4j.Logger;
 import org.jodt.util.Registry;
 
+/**
+ * @author Oliver Stuch (oliver@stuch.net)
+ */
 public class Factory<T> {
     /**
      * @return A new object of Class clazz or null, if no object could be created

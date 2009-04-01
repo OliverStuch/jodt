@@ -4,6 +4,9 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
+/**
+ * @author Oliver Stuch (oliver@stuch.net)
+ */
 public abstract class AbstractParentUpdater implements TreeModelListener {
 
     public void treeNodesChanged(TreeModelEvent e) {

@@ -1,7 +1,8 @@
 package org.jodt.property.comparison;
 
+
 /**
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 public class ObjectWithPrimitives {
     final static int INITIAL_INTEGER_VALUE = 10;

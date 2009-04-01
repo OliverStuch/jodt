@@ -2,6 +2,10 @@ package org.jodt.property.comparison.gui;
 
 import org.jodt.property.comparison.CompositeComparison;
 
+/**
+ * @author Oliver Stuch (oliver@stuch.net)
+ */
+
 public class CompositeComparison2TreeNodeAdapterHelper<T> {
 
     private CompositeComparison<T> compositeComparison;

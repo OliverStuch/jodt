@@ -9,8 +9,9 @@ import org.jodt.property.comparison.Test_CompareTool;
 import org.jodt.property.implementation.PackageNonTerminalStrategy;
 
 
+
 /**
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 
 public class Test_DefaultCompareTool extends Test_CompareTool {

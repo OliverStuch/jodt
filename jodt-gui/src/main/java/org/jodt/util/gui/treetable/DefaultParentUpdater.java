@@ -5,6 +5,9 @@ import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.treetable.TreeTableNode;
 
+/**
+ * @author Oliver Stuch (oliver@stuch.net)
+ */
 public class DefaultParentUpdater extends AbstractParentUpdater {
 
     private DefaultJXTreeTable.DefaultJXTreeTableModel dttm;

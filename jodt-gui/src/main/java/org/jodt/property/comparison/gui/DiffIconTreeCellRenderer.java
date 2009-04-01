@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.TreeCellRenderer;
 
-
 import org.jdesktop.swingx.JXTreeTable;
 import org.jodt.property.comparison.Comparison;
 import org.jodt.property.comparison.DiffType;
@@ -17,9 +16,8 @@ import org.jodt.util.ToStringRenderer;
 import org.jodt.util.gui.treetable.DefaultJXTreeTable;
 
 /**
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
-
 public class DiffIconTreeCellRenderer implements TreeCellRenderer {
     private Diff2Icon diff2icon;
     private DefaultJXTreeTable defaultJXTreeTable;

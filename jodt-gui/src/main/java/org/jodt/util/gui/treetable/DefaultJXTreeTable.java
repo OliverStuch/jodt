@@ -47,6 +47,9 @@ import org.jodt.util.Registry;
 import org.jodt.util.ToStringRenderer;
 import org.jodt.util.gui.Factory;
 
+/**
+ * @author Oliver Stuch (oliver@stuch.net)
+ */
 public class DefaultJXTreeTable extends JXTreeTable {
 
     public DefaultJXTreeTable() {

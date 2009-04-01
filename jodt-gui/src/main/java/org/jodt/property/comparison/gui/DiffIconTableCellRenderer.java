@@ -9,11 +9,9 @@ import org.jodt.property.comparison.DiffType;
 import org.jodt.util.ToStringRenderer;
 import org.jodt.util.gui.treetable.DefaultJXTreeTable;
 
-
 /**
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
-
 public class DiffIconTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
     private Diff2Icon diff2icon;
     private DefaultJXTreeTable defaultJXTreeTable;

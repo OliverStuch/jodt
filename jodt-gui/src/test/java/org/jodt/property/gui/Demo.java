@@ -19,8 +19,9 @@ import org.apache.log4j.Logger;
 import org.jodt.property.comparison.IgnorePropertyDiffs;
 import org.jodt.util.ToStringRenderer;
 
+
 /**
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 public class Demo {
 

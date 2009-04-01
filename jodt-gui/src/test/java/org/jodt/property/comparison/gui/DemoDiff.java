@@ -18,8 +18,9 @@ import org.jodt.property.gui.Demo;
 import org.jodt.property.implementation.PackageNonTerminalStrategy;
 import org.jodt.util.ToStringRenderer;
 
+
 /**
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 
 public class DemoDiff extends Demo{

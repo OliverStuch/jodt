@@ -10,8 +10,9 @@ import org.jodt.property.comparison.implementation.ValueDiff;
 import org.jodt.util.Registry;
 
 
+
 /**
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 
 public class Diff2Icon extends Registry<ImageIcon> {

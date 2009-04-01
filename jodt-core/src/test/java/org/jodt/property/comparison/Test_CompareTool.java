@@ -21,8 +21,9 @@ import org.jodt.property.implementation.PackageNonTerminalStrategy;
 
 import junit.framework.TestCase;
 
+
 /**
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 public abstract class Test_CompareTool extends TestCase {
     public abstract CompareTool createCompareTool(String packageFilter);

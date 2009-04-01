@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 import org.jodt.property.IdentityResolver;
 
+
 /**
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 
 public class ObjectWithPrimitivesWithId extends ObjectWithPrimitives implements Serializable {

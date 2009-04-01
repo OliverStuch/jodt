@@ -9,8 +9,9 @@ import org.jodt.property.Property;
 import org.jodt.util.gui.treetable.DefaultJXTreeTable;
 import org.jodt.util.gui.treetable.DefaultJXTreeTable.DefaultJXTreeTableModel;
 
+
 /**
- * @author Oliver Stuch
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 
 public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_CompositeProperty {

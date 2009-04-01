@@ -12,10 +12,12 @@ import org.jodt.property.comparison.CompositeMerge;
 import org.jodt.property.gui.MutableTreeTablePropertyNode;
 
 /**
+ * 
  * Diese Klasse erlaubt es ein CompositeMerge-Objekt zu editieren. Vom Wesen her ist es also ein CompositeProperty2TreeTableNodeAdapter, der zwei weitere Spalten (compare und reference) hat,
  * die beim Editieren LESEND benutzt werden. Es muss beachtet werden, dass der CompositeProperty2TreeTableNodeAdapter-Anteil mit einer gemappten (also auch indizierten!) CompositeProperty
  * betrieben werden muss. Das Einfügen von Collection-Elementen muss auch im compare- und reference-objekt zu neuen Einträgen führen. Hier legen ohnehin gemappte CompositeProperty vor.
  * 
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 public class CompositeMerge2TreeTableNodeAdapter<T> extends AbstractMutableTreeTableNode implements MutableTreeTablePropertyNode<T> {
 
