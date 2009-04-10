@@ -10,6 +10,7 @@ parameterManager.xml
 .classpath
 .project
 web
+test-output
 
 
 
