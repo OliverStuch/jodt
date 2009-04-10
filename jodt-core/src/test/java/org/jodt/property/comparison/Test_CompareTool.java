@@ -1,5 +1,8 @@
 package org.jodt.property.comparison;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -162,6 +165,7 @@ public abstract class Test_CompareTool extends TestCase {
     /**
      * Teste das Verhalten beim Vergleich von 2 null: Erwarte NoDiff
      */
+  @Test
     public void test_objectLevelCompareNulls() {
         CompareTool compareTool = createCompareTool(NON_TERMINAL_PACKAGE);
         // compare mode
@@ -177,6 +181,7 @@ public abstract class Test_CompareTool extends TestCase {
     /**
      * Teste das Verhalten beim Vergleich EINER null mit einem Object.: Erwarte Additional bzw. Missing
      */
+  @Test
     public void test_objectLevelCompareNullWithObject() {
         CompareTool compareTool = createCompareTool(NON_TERMINAL_PACKAGE);
         test_objectLevelCompareNullWithObject(new CompareModeAsserts(compareTool));
@@ -193,6 +198,7 @@ public abstract class Test_CompareTool extends TestCase {
         asserts.assert_Additional_Missing(nonTerminalObject);
     }
 
+  @Test
     public void test_objectLevelCompareNonNullObjects() {
         test_objectLevelCompareNonNullObjects(new CompareModeAsserts(createCompareTool(NON_TERMINAL_PACKAGE)));
         test_objectLevelCompareNonNullObjects(new DiffModeAsserts(createCompareTool(NON_TERMINAL_PACKAGE)));
@@ -241,6 +247,7 @@ public abstract class Test_CompareTool extends TestCase {
     }
 
     // compareMode
+  @Test
     public void test_propertyLevelCompareSetsOfNonTerminalObjects() {
         Set set1OfNonTerminalObjects = new HashSet();
         Set set2OfNonTerminalObjects = new HashSet();
@@ -291,6 +298,7 @@ public abstract class Test_CompareTool extends TestCase {
     }
 
     // compareMode
+  @Test
     public void test_propertyLevelCompareSetsOfTerminalObjects() {
         Set set1OfTerminalObjects = new HashSet();
         Set set2OfTerminalObjects = new HashSet();
@@ -329,6 +337,7 @@ public abstract class Test_CompareTool extends TestCase {
     }
 
     // compareMode
+  @Test
     public void test_propertyLevelCompareListsOfTerminalObjects() {
         List list1OfTerminalObjects = new ArrayList();
         List list2OfTerminalObjects = new ArrayList();
@@ -381,6 +390,7 @@ public abstract class Test_CompareTool extends TestCase {
 
     }
 
+  @Test
     public void test_objectLevelCompareTerminalWithNonterminal() {
         CompareTool compareTool = createCompareTool(NON_TERMINAL_PACKAGE);
         Object terminalObject = new String();
@@ -485,6 +495,7 @@ public abstract class Test_CompareTool extends TestCase {
         assertEquals(null, comparison.diff()); // In diesem Fall kann kein Diff auf der Ebene festgestellt werden (auch nicht NoDiff)
     }
 
+  @Test
     public void test_propertyLevelCompareObjectWithPrimitives() {
         ObjectWithPrimitives o1 = new ObjectWithPrimitivesWithId(1);
         ObjectWithPrimitives o2 = new ObjectWithPrimitivesWithId(1);
@@ -540,6 +551,7 @@ public abstract class Test_CompareTool extends TestCase {
         }
     }
 
+  @Test
     public void test_propertyLevelCompareObjectWithNonTerminalReferences() {
         ObjectWithNonTerminalReferences o1 = new ObjectWithNonTerminalReferences();
         ObjectWithNonTerminalReferences o2 = new ObjectWithNonTerminalReferences();
@@ -598,6 +610,7 @@ public abstract class Test_CompareTool extends TestCase {
         }
     }
 
+  @Test
     public void test_ignorePropertyDiffs() {
         test_ignorePropertyDiffs(new CompareModeAsserts(createCompareTool(NON_TERMINAL_PACKAGE)));
         test_ignorePropertyDiffs(new DiffModeAsserts(createCompareTool(NON_TERMINAL_PACKAGE)));
