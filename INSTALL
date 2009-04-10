@@ -1,2 +1,0 @@
-use swingx:
-mvn install:install-file -DgroupId=swingx -DartifactId=swingx -Dversion=0.9.1 -Dpackaging=jar -Dfile=jodt-gui/lib/swingx-0.9.1.jar
