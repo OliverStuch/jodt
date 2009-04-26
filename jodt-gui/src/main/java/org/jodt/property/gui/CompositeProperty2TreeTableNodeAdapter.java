@@ -36,14 +36,15 @@ public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMultipleP
     private void addRecursivlyChildren(Map<Object, PropertyNode> userObject2Node) {
         if (compositeProperty.hasProperties()) {
             for (CompositeProperty<?> compositePropertyChild : compositeProperty) {
-                PropertyNode<?> childNode = null; // userObject2Node.get(compositePropertyChild);
+                PropertyNode<?> childNode = userObject2Node.get(compositePropertyChild);
                 if (childNode == null) {
                     CompositeProperty2TreeTableNodeAdapter newChildNode = new CompositeProperty2TreeTableNodeAdapter<T>(compositePropertyChild);
                     userObject2Node.put(compositePropertyChild, newChildNode);
                     newChildNode.addRecursivlyChildren(userObject2Node);
-                    childNode = newChildNode;
+                    add(newChildNode);
+                }else {
+                    add(childNode);
                 }
-                add(childNode);
             }
         }
     }

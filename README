@@ -8,7 +8,10 @@ TODOs
 * documentation ...
 * more tests
 * Diff-Iterator
+* gui: remove elements from collections
+* gui: add elements to collections
 * Merge
+
 
 BUGS
 

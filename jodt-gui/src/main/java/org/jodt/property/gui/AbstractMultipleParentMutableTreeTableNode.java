@@ -1,6 +1,7 @@
 package org.jodt.property.gui;
 
-import javax.swing.tree.TreeNode;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jdesktop.swingx.treetable.AbstractMutableTreeTableNode;
 import org.jdesktop.swingx.treetable.MutableTreeTableNode;
@@ -10,11 +11,16 @@ public abstract class AbstractMultipleParentMutableTreeTableNode extends Abstrac
 
     @Override
     public void insert(MutableTreeTableNode child, int index) {
-        if (!allowsChildren)
+        if (!allowsChildren) {
             throw new IllegalStateException("this node cannot accept children");
+        }
         children.add(index, child);
-        if (child.getParent() != this)
+        TreeTableNode oldParent = child.getParent();
+        if (oldParent == null) {
             child.setParent(this);
+        } else {
+            additionalParents.add(oldParent);
+        }
     }
 
     @Override
@@ -36,10 +42,12 @@ public abstract class AbstractMultipleParentMutableTreeTableNode extends Abstrac
     @Override
     public void setParent(MutableTreeTableNode newParent) {
         if (newParent != null && newParent.getAllowsChildren()) {
-            if (parent != null && parent.getIndex(this) != -1)
+            if (parent != null && parent.getIndex(this) != -1) {
                 parent.remove(this);
-        } else if (newParent != null)
+            }
+        } else if (newParent != null) {
             throw new IllegalArgumentException("newParent does not allow children");
+        }
         parent = newParent;
         if (parent != null && parent.getIndex(this) == -1)
             parent.insert(this, parent.getChildCount());
@@ -49,4 +57,7 @@ public abstract class AbstractMultipleParentMutableTreeTableNode extends Abstrac
     public TreeTableNode getParent() {
         return parent;
     }
+
+    private Set<TreeTableNode> additionalParents = new HashSet();
+
 }
