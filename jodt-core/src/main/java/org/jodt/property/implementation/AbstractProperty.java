@@ -8,6 +8,6 @@ import org.jodt.property.Property;
 
 abstract public class AbstractProperty<T> implements Property<T> {
     public String toString() {
-        return "name=" + name() + " value=" + value() + " type=" + type();
+        return name() + ": " + type() + " = " +value();
     }
 }

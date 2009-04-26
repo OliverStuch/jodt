@@ -35,10 +35,6 @@ public class DefaultCompositeComparison<T> extends ArrayList<CompositeComparison
     public boolean hasDiffsOnObjectLevel() {
         return diff != null && !(diff instanceof NoDiff) && !(diff instanceof SubDiff);
     }
-    
-    public boolean hasDiffs() {
-        return hasDiffsOnObjectLevel() || hasDiffsOnPropertyLevel();
-    }
 
     public boolean hasDiffsOnPropertyLevel() {
         return childDiffCount > 0 || (diff != null && diff instanceof SubDiff);

@@ -2,33 +2,60 @@ package org.jodt.property.gui;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
-
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.jdesktop.swingx.treetable.AbstractMutableTreeTableNode;
+import org.jdesktop.swingx.treetable.MutableTreeTableNode;
+import org.jdesktop.swingx.treetable.TreeTableNode;
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.Property;
 
 /**
  * Diese Klasse adaptiert ein CompositeProperty-Objekt für die TreeTable. Es ist als Property ansprechbar.
- * @author Oliver Stuch  (oliver@stuch.net) 
+ * 
+ * @author Oliver Stuch (oliver@stuch.net)
  */
-public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMutableTreeTableNode implements MutableTreeTablePropertyNode<T> {
+public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMultipleParentMutableTreeTableNode implements MutableTreeTablePropertyNode<T> {
 
-    public CompositeProperty2TreeTableNodeAdapter(CompositeProperty<T> compositeProperty) {
+    public CompositeProperty2TreeTableNodeAdapter(CompositeProperty<T> compositeProperty, Map<Object, PropertyNode> userObject2Node) {
+        this(compositeProperty);
+        addRecursivlyChildren(userObject2Node);
+    }
+
+    /**
+     * Construct without children
+     */
+    private CompositeProperty2TreeTableNodeAdapter(CompositeProperty compositeProperty) {
         this.compositeProperty = compositeProperty;
         setUserObject(compositeProperty); // ein bischen redundant
+    }
+
+    private void addRecursivlyChildren(Map<Object, PropertyNode> userObject2Node) {
         if (compositeProperty.hasProperties()) {
             for (CompositeProperty<?> compositePropertyChild : compositeProperty) {
-                MutableTreeTablePropertyNode<?> childNode = create(compositePropertyChild);
+                PropertyNode<?> childNode = null; // userObject2Node.get(compositePropertyChild);
+                if (childNode == null) {
+                    CompositeProperty2TreeTableNodeAdapter newChildNode = new CompositeProperty2TreeTableNodeAdapter<T>(compositePropertyChild);
+                    userObject2Node.put(compositePropertyChild, newChildNode);
+                    newChildNode.addRecursivlyChildren(userObject2Node);
+                    childNode = newChildNode;
+                }
                 add(childNode);
             }
         }
     }
 
-    public <P> MutableTreeTablePropertyNode<P> create(Property<P> property) {
+    Set<TreeTableNode> additionalParents = new HashSet();
+
+    /**
+     * PropertyNode
+     */
+    public <P> MutableTreeTablePropertyNode<P> create(Property<P> property, Map<Object, PropertyNode> userObject2Node) {
         if (property instanceof CompositeProperty) {
-            return new CompositeProperty2TreeTableNodeAdapter<P>((CompositeProperty) property);
+            return new CompositeProperty2TreeTableNodeAdapter<P>((CompositeProperty) property, userObject2Node);
         } else {
             throw new IllegalArgumentException("CompositeProperty2TreeTableNodeAdapter.create must receive a CompositeProperty. Got " + property.getClass());
         }

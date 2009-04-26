@@ -631,6 +631,11 @@ public abstract class Test_CompareTool extends TestCase {
         
     }
 
+    @Test
+    public void test_recursiveObjects() {
+        
+    }
+    
     protected static final String NON_TERMINAL_PACKAGE = "org.jodt.*";
 
 }

@@ -2,6 +2,7 @@ package org.jodt.property.comparison.gui;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
+import java.util.Map;
 
 
 import org.jdesktop.swingx.treetable.AbstractMutableTreeTableNode;
@@ -10,6 +11,7 @@ import org.jodt.property.CompositeProperty;
 import org.jodt.property.Property;
 import org.jodt.property.comparison.CompositeMerge;
 import org.jodt.property.gui.MutableTreeTablePropertyNode;
+import org.jodt.property.gui.PropertyNode;
 
 /**
  * 
@@ -21,21 +23,25 @@ import org.jodt.property.gui.MutableTreeTablePropertyNode;
  */
 public class CompositeMerge2TreeTableNodeAdapter<T> extends AbstractMutableTreeTableNode implements MutableTreeTablePropertyNode<T> {
 
-    public CompositeMerge2TreeTableNodeAdapter(CompositeMerge<T> compositeMerge) {
+    public CompositeMerge2TreeTableNodeAdapter(CompositeMerge<T> compositeMerge,  Map<Object, PropertyNode> userObject2Node) {
         this.compositeMerge = compositeMerge;
         setUserObject(compositeMerge); // ein bischen redundant
         if (compositeMerge.hasChildren()) {
             for (CompositeMerge<?> compositeMergeChild : compositeMerge) {
-                MutableTreeTableNode childNode = create(compositeMergeChild);
+                PropertyNode childNode = userObject2Node.get(compositeMergeChild); 
+                    if (childNode == null) {
+                        childNode = create(compositeMergeChild, userObject2Node);
+                        userObject2Node.put(compositeMergeChild, childNode);
+                    }
                 add(childNode);
             }
         }
 
     }
 
-    public <P> MutableTreeTablePropertyNode<P> create(Property<P> property) {
+    public <P> MutableTreeTablePropertyNode<P> create(Property<P> property,  Map<Object, PropertyNode> userObject2Node) {
         if (property instanceof CompositeMerge) {
-            return new CompositeMerge2TreeTableNodeAdapter<P>((CompositeMerge) property);
+            return new CompositeMerge2TreeTableNodeAdapter<P>((CompositeMerge) property, userObject2Node);
         } else {
             throw new IllegalArgumentException("CompositeProperty2TreeTableNodeAdapter.create must receive a CompositeMerge. Got " + property.getClass());
         }

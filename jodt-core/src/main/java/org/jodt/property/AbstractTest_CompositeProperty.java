@@ -2,16 +2,16 @@ package org.jodt.property;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import org.jodt.property.CompositeProperty;
-import org.jodt.property.InternalPropertyTool;
-import org.jodt.property.implementation.DefaultPropertyTool;
-
 import junit.framework.TestCase;
+
+import org.jodt.property.implementation.DefaultPropertyTool;
 
 /**
  * @author Oliver Stuch
@@ -237,7 +237,7 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
             toBeSet.value(2);// ACTION!
 
             assertEquals(2, toBeSet.value());
-            assertEquals(2, testObject.innerPropertyCollectionTestClassFilled.myInt2);
+            assertEquals(2, testObject.innerPropertyCollectionTestClassFilled.myInt2); // accesses the same object !
         }
 
         // Primitive setzen in Sets
@@ -364,6 +364,33 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
         }
     }
 
+    private static class RecursiveObject{
+        Object hashcodeHelper = new Object();
+        RecursiveObject recursiveObject;
+        @Override
+        public int hashCode() {
+            return hashcodeHelper.hashCode();
+        }
+    }
+    
+    public void test_recursiveObjects() {
+        RecursiveObject recursiveObject1 = new RecursiveObject();
+        RecursiveObject recursiveObject2 = new RecursiveObject();
+        recursiveObject1.recursiveObject = recursiveObject2;
+        recursiveObject2.recursiveObject = recursiveObject1;
+        Map hmmm = new HashMap();
+        hmmm.put(recursiveObject1, recursiveObject2);
+        CompositeProperty rootRecursiveObject1Property = createCompositeProperty(recursiveObject1, "root");
+        CompositeProperty rootRecursiveObject1recursiveObject2Property =  rootRecursiveObject1Property.find("recursiveObject");
+        CompositeProperty rootRecursiveObject1recursiveObject2recursiveObject1Property = rootRecursiveObject1recursiveObject2Property.find("recursiveObject");
+        CompositeProperty rootRecursiveObject1recursiveObject2recursiveObject1recursiveObject2Property = rootRecursiveObject1recursiveObject2recursiveObject1Property.find("recursiveObject");
+        assertTrue("property was not found", rootRecursiveObject1recursiveObject2Property == rootRecursiveObject1recursiveObject2recursiveObject1recursiveObject2Property);
+        assertTrue("recursive Object not fount", rootRecursiveObject1Property.value() == recursiveObject1);
+        assertTrue("recursive Object not fount", rootRecursiveObject1recursiveObject2Property.value() == recursiveObject2);
+        assertTrue("recursive Object not fount", rootRecursiveObject1recursiveObject2recursiveObject1Property.value() == recursiveObject1);
+        assertTrue("recursive Object not fount", rootRecursiveObject1recursiveObject2recursiveObject1recursiveObject2Property.value() == recursiveObject2);
+    }
+    
 
 
     public List<CompositeProperty> createPropertyList(Collection<CompositeProperty> propertySet) {
