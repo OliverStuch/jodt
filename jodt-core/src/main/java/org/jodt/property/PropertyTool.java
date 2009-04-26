@@ -12,6 +12,9 @@ public interface PropertyTool {
      */
     <T> CompositeProperty<T> createCompositeProperty(T object, String name);
     <T> CompositeProperty<T> createShallowCompositeProperty(T object, String name);
+    /**
+     * Analysiere nur einen Level
+     */
      <T> CompositeProperty<T> createOneLevelRecursiveCompositeProperty(T object, String name);
 
 

@@ -1,11 +1,15 @@
 package org.jodt.property.comparison.gui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.jodt.property.comparison.ComparisonStrategy;
 import org.jodt.property.comparison.CompositeComparison;
 import org.jodt.property.comparison.implementation.Diff2ToStringRenderer;
 import org.jodt.property.gui.CompositePropertyTreeTable;
+import org.jodt.property.gui.PropertyNode;
 import org.jodt.util.gui.treetable.DefaultJXTreeTable;
 import org.jodt.util.gui.treetable.DefaultParentUpdater;
 
@@ -53,7 +57,8 @@ public class CompositeComparisonTreeTable extends DefaultJXTreeTable {
 
     protected TreeTableModel createTreeTableModel(Object comparativeObject, String comparativeObjectName, Object referenceObject, String referenceObjectName) {
         CompositeComparison compositeComparison = comparisonStrategy.createComparison(comparativeObject, comparativeObjectName, referenceObject, referenceObjectName);
-        DefaultJXTreeTable.DefaultJXTreeTableModel dttm = new DefaultJXTreeTableModel(new CompositeComparison2TreeTableNodeAdapter(compositeComparison), new String[] {
+        Map<Object, PropertyNode> userObject2Node = new HashMap();
+        DefaultJXTreeTable.DefaultJXTreeTableModel dttm = new DefaultJXTreeTableModel(new CompositeComparison2TreeTableNodeAdapter(compositeComparison), userObject2Node, new String[] {
                 "Attribut oder Index", "comparative", "reference" });
         dttm.addTreeModelListener(new DefaultParentUpdater(dttm));
         dttm.setNotEditable(notEditableRegistry);

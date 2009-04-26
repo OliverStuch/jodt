@@ -24,6 +24,11 @@ public class ReflectiveProperty<T> implements Property<T> {
         this.fieldOwner = fieldOwner;
     }
 
+//    @Override
+//    public int hashCode() {
+//        return fieldOwner.hashCode() + field.getName().hashCode();
+//    };
+    
     public String description() {
         PropertyDescription property = field.getAnnotation(PropertyDescription.class);
         return property != null ? property.description() : "no description available";
@@ -73,7 +78,7 @@ public class ReflectiveProperty<T> implements Property<T> {
     }
 
     public String toString() {
-        return field.toString();
+        return name() + ":  " + type() + " = " + value();
     }
 
     public Collection<Annotation> annotations() {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -14,11 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-
+import org.apache.commons.lang.SerializationUtils;
 import org.apache.log4j.Logger;
 import org.jodt.property.comparison.IgnorePropertyDiffs;
 import org.jodt.util.ToStringRenderer;
-
 
 /**
  * @author Oliver Stuch (oliver@stuch.net)
@@ -28,9 +28,9 @@ public class Demo {
     public static List<Amtsgericht> createLieferung() {
         System.setProperty("sun.swing.enableImprovedDragGesture", "true");
 
-        Adresse koe = new Adresse("Königsallee", "1a");
-        Adresse hell = new Adresse("Hellersbegstr", "10");
-        Adresse breit = new Adresse("Breitestr", "109");
+        Adress koe = new Adress("Königsallee", "1a", "Düsseldorf");
+        Adress hell = new Adress("Hellersbegstr", "10", "Neuss");
+        Adress breit = new Adress("Breitestr", "109", "Köln");
         Amtsgericht amtsgerichtD = new Amtsgericht(new Gerichtsnummer(1), "Amtsgericht Düsseldorf");
         Amtsgericht amtsgerichtK = new Amtsgericht(new Gerichtsnummer(3), "Amtsgericht Köln");
         amtsgerichtD.übergeordnetesGericht = amtsgerichtK;
@@ -53,7 +53,7 @@ public class Demo {
         // Adressänderung amtsgericht Düsseldorf
 
         Amtsgericht amtsgerichtDNeu = new Amtsgericht(new Gerichtsnummer(1), "Amtsgericht Düsseldorf");
-        Adresse koeNeu = new Adresse("Königsweg", "2a");
+        Adress koeNeu = new Adress("Königsweg", "2a", "Düsseldorf");
         amtsgerichtDNeu.adressen.add(koeNeu);
         amtsgerichtDNeu.mahngericht = mahngerichtN;
 
@@ -64,22 +64,41 @@ public class Demo {
         lieferung.add(amtsgerichtD);
         lieferung.add(amtsgerichtK);
         lieferung.add(amtsgerichtN);
-        
+
         return lieferung;
+    }
+
+    static public Set<Person> createSmallWorld() {
+        Set<Person> result = new HashSet();
+        Person jack = new Person("Jack", Gender.MALE, new Adress("Bourbon Street", "1", "Springfield"));
+        Person jill = new Person("Jill", Gender.FEMALE, new Adress("Springfield Road", "2", "Jtown"));
+        jill.addFriend(jack);
+        jack.addFriend(jill);
+        result.add(jill);
+        result.add(jack);
+        return result;
+    }
+
+    static public Set<Person> createSmallWorldWithVariations(Set<Person> persons) {
+        Set<Person> result = (Set<Person>) SerializationUtils.clone((Serializable) persons);
+        for (Person person : result) {
+            person.removeFriends();
+        }
+        return result;
     }
 
     public static void main(String[] args) {
         System.setProperty("sun.swing.enableImprovedDragGesture", "true");
 
         // GUI
-        final CompositePropertyTreeTable lieferungTable = new CompositePropertyTreeTable(createLieferung(), "Test");
+        final CompositePropertyTreeTable lieferungTable = new CompositePropertyTreeTable(createSmallWorld(), "Test");
+//        final CompositePropertyTreeTable lieferungTable = new CompositePropertyTreeTable(createLieferung(), "Test");
         // lieferungTable.setNotEditable(Mahngericht.class);
         // lieferungTable.setEditable(false);
-        lieferungTable.setEditable(true);
-//        lieferungTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lieferungTable.setToStringRenderer(Adresse.class, new ToStringRenderer<Adresse>() {
-            public String render2String(Adresse t) {
-                return t.strasse + " " + t.hausnummer;
+        // lieferungTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        lieferungTable.setToStringRenderer(Adress.class, new ToStringRenderer<Adress>() {
+            public String render2String(Adress t) {
+                return t.street + " " + t.number;
             }
         });
 
@@ -107,7 +126,7 @@ public class Demo {
             this.name = name;
             setOfStrings.add("some info");
             setOfStrings.add("another info");
-            setOfAdressen.add(new Adresse("Wo bin", "ich"));
+            setOfAdressen.add(new Adress("Wo bin", "ich", "hier"));
         }
 
         public String toString() {
@@ -118,28 +137,62 @@ public class Demo {
 
         public Gerichtsnummer nummer;
         public String name;
-        List<Adresse> adressen = new ArrayList<Adresse>();
+        List<Adress> adressen = new ArrayList<Adress>();
         public Set<String> setOfStrings = new HashSet();
-        Set<Adresse> setOfAdressen = new HashSet();
+        Set<Adress> setOfAdressen = new HashSet();
         @IgnorePropertyDiffs
         public Gericht übergeordnetesGericht = null;
     }
 
-    public static class Adresse implements Serializable {
-        public Adresse() {
-        }
+    enum Gender {
+        MALE, FEMALE
+    }
 
-        public Adresse(String strasse, String nummer) {
-            this.strasse = strasse;
-            this.hausnummer = nummer;
+    public static class Person implements Serializable {
+        public Person(String name, Gender gender, Adress adress) {
+            this.name = name;
+            this.gender = gender;
+            this.adresses.add(adress);
         }
 
         public String toString() {
-            return strasse + " " + hausnummer;
+            return name;
+        }
+        
+        public void removeFriends() {
+            friends.clear();
         }
 
-        public String strasse;
-        public String hausnummer;
+        public void addFriend(Person person) {
+            friends.add(person);
+        }
+
+        private String name;
+        private Gender gender;
+        private List<Adress> adresses = new ArrayList();
+        private Set<Person> friends = new HashSet();
+        private Map<Person, String> nickNames;
+        private int age;
+        private Date birth;
+    }
+
+    public static class Adress implements Serializable {
+        public Adress() {
+        }
+
+        public Adress(String strasse, String nummer, String city) {
+            this.city = city;
+            this.street = strasse;
+            this.number = nummer;
+        }
+
+        public String toString() {
+            return street + " " + number;
+        }
+
+        private String city;
+        public String street;
+        public String number;
 
     }
 

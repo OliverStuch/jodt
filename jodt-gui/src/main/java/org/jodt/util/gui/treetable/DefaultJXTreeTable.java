@@ -5,8 +5,10 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
@@ -455,12 +457,19 @@ public class DefaultJXTreeTable extends JXTreeTable {
 
     public class DefaultJXTreeTableModel extends DefaultTreeTableModel {
 
+        public Map<Object, PropertyNode> getUserObject2Node() {
+            return userObject2Node;
+        }
+
         private String[] columnNames;
         private Registry<TableCellEditor> notEditableRegistry;
+        private Map<Object, PropertyNode> userObject2Node;
 
-        public DefaultJXTreeTableModel(TreeTableNode root, String... columnNames) {
+        public DefaultJXTreeTableModel(TreeTableNode root,Map<Object, PropertyNode> userObject2Node, String... columnNames) {
             super(root);
+            this.userObject2Node = userObject2Node;
             this.columnNames = columnNames;
+            this.userObject2Node = new HashMap();
         }
 
         public void setValue(Object value, PropertyNode node) {
@@ -472,7 +481,7 @@ public class DefaultJXTreeTable extends JXTreeTable {
                 modelSupport.firePathChanged(new TreePath(getPathToRoot(node)));
             } else {
                 // replace(node, new CompositeProperty2TreeTableNodeAdapter(newProperty));
-                replace(node, node.create(newProperty));
+                replace(node, node.create(newProperty, userObject2Node));
             }
         }
 

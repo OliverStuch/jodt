@@ -59,6 +59,12 @@
       <scope>test</scope>
       <classifier>jdk15</classifier>
     </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.4</version>
+      <scope>compile</scope>
+    </dependency>
     <!--dependency>
       <groupId>org.netbeans.jemmy</groupId>
       <artifactId>jemmy</artifactId>

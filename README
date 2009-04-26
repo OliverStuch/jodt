@@ -4,7 +4,12 @@ treetable.
 
 TODOs
 
+* recursive objects
 * documentation ...
 * more tests
 * Diff-Iterator
 * Merge
+
+BUGS
+
+#1 no expand/collapse icons in sets of complex objects

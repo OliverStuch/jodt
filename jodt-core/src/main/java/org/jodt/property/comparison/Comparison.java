@@ -18,8 +18,6 @@ public interface Comparison<T>  {
     // TODO
     public boolean hasDiffsOnObjectLevel();
     
-    public boolean hasDiffs();
-    
     public String name(); 
 
 }

@@ -69,10 +69,6 @@ public class DefaultCompositeMerge<T> extends ArrayList<CompositeMerge<?>> imple
     public boolean hasDiffsOnPropertyLevel() {
         return delegateCompositeComparison.hasDiffsOnPropertyLevel();
     }
-    
-    public boolean hasDiffs() {
-        return delegateCompositeComparison.hasDiffs();
-    }
 
     // PropertyComparison
     public Property<T> getCompareProperty() {
@@ -156,6 +152,5 @@ public class DefaultCompositeMerge<T> extends ArrayList<CompositeMerge<?>> imple
     private CompositeMerge<?> parent;
     private Property<T> mergeProperty;
     private CompositePropertyList<T> mergeObjectAsIndexMappedCompositePropertyList;
-
 
 }

@@ -55,9 +55,9 @@ public class DemoComparison extends Demo {
         // lieferungTable.setEditable(false);
         lieferungTable.setEditable(true);
         lieferungTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lieferungTable.setToStringRenderer(Adresse.class, new ToStringRenderer<Adresse>() {
-            public String render2String(Adresse t) {
-                return t.strasse + " " + t.hausnummer;
+        lieferungTable.setToStringRenderer(Adress.class, new ToStringRenderer<Adress>() {
+            public String render2String(Adress t) {
+                return t.street + " " + t.number;
             }
         });
 
