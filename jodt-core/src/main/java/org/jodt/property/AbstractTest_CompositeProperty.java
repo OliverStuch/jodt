@@ -7,11 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.jodt.property.CompositeProperty;
-import org.jodt.property.InternalPropertyTool;
-import org.jodt.property.implementation.DefaultPropertyTool;
-
 import junit.framework.TestCase;
+
+import org.apache.log4j.Logger;
+import org.jodt.property.implementation.DefaultPropertyTool;
 
 /**
  * @author Oliver Stuch
@@ -323,6 +322,7 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
     }
 
     public void test_Adding() {
+        logger.error("not implemented");
 
     }
 
@@ -371,4 +371,5 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
     }
 
     protected InternalPropertyTool pcf = new DefaultPropertyTool(false);
+    private final Logger logger = Logger.getLogger(AbstractTest_CompositeProperty.class);
 }
