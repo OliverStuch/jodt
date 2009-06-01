@@ -380,8 +380,6 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
         RecursiveObject recursiveObject2 = new RecursiveObject();
         recursiveObject1.recursiveObject = recursiveObject2;
         recursiveObject2.recursiveObject = recursiveObject1;
-        Map hmmm = new HashMap();
-        hmmm.put(recursiveObject1, recursiveObject2);
         CompositeProperty rootRecursiveObject1Property = createCompositeProperty(recursiveObject1, "root");
         CompositeProperty rootRecursiveObject1recursiveObject2Property =  rootRecursiveObject1Property.find("recursiveObject");
         CompositeProperty rootRecursiveObject1recursiveObject2recursiveObject1Property = rootRecursiveObject1recursiveObject2Property.find("recursiveObject");

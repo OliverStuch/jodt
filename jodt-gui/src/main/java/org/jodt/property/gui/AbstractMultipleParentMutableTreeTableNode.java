@@ -1,11 +1,11 @@
 package org.jodt.property.gui;
 
-import javax.swing.tree.TreeNode;
-
 import org.jdesktop.swingx.treetable.AbstractMutableTreeTableNode;
 import org.jdesktop.swingx.treetable.MutableTreeTableNode;
 import org.jdesktop.swingx.treetable.TreeTableNode;
 
+// Momentan ungenutzt. Enthält die Methoden, die man verändern müsste, wenn ein Node mehrere Parents haben kann. Evtl. eine Art, wie
+// man alle Stellen findet, die upgedatet werden müssen, wenn sich ein Node ändert.
 public abstract class AbstractMultipleParentMutableTreeTableNode extends AbstractMutableTreeTableNode {
 
     @Override
@@ -49,4 +49,6 @@ public abstract class AbstractMultipleParentMutableTreeTableNode extends Abstrac
     public TreeTableNode getParent() {
         return parent;
     }
+    
+    protected boolean childrenFilled = false;
 }

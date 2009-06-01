@@ -1,0 +1,8 @@
+* Node on demand bei property
+
+TODO
+
+* Wenn ein Objekt an mehreren Stellen im Baum auftaucht: Update of all parent nodes.
+** AbstractMutableTreeTableNode??
+* Node on demand bei compare/diff
+** Erzeugen der childnodes erst, wenn sie benötigt werden: Überschreiben von getChildAt ?

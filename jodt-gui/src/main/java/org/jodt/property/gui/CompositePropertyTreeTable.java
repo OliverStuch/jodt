@@ -18,10 +18,6 @@ import org.jodt.util.gui.treetable.DefaultParentUpdater;
 // Idee: Alle Vorkommen eines Objektes in der Table anzeigen (ctrl-shift-g sozusasgen)
 public class CompositePropertyTreeTable extends DefaultJXTreeTable {
 
-    private Object object;
-    private String objectName;
-    private PropertyTool compositePropertyFactory = new DefaultPropertyTool(true);
-
     /**
      * @param object
      *            Das in einer PropertyTreeTable darzustellende Objekt
@@ -29,6 +25,7 @@ public class CompositePropertyTreeTable extends DefaultJXTreeTable {
      *            Name des Objekts (momentan ohne Funktion/Bedeutung)
      */
     public CompositePropertyTreeTable(Object object, String objectName, PropertyTool... compositePropertyFactory) {
+        addTreeWillExpandListener(new ExpandNodeOnDemandTreeWillExpandListener());
         if (compositePropertyFactory != null && compositePropertyFactory.length != 0) {
             this.compositePropertyFactory = compositePropertyFactory[0];
         }
@@ -53,6 +50,10 @@ public class CompositePropertyTreeTable extends DefaultJXTreeTable {
         dttm.setNotEditable(notEditableRegistry);
         setTreeTableModel(dttm);
     }
+
+    private Object object;
+    private String objectName;
+    private PropertyTool compositePropertyFactory = new DefaultPropertyTool(true);
 
     private static Logger logger = Logger.getLogger(CompositePropertyTreeTable.class);
 }

@@ -91,8 +91,8 @@ public class Demo {
         System.setProperty("sun.swing.enableImprovedDragGesture", "true");
 
         // GUI
-        final CompositePropertyTreeTable lieferungTable = new CompositePropertyTreeTable(createSmallWorld(), "Test");
-//        final CompositePropertyTreeTable lieferungTable = new CompositePropertyTreeTable(createLieferung(), "Test");
+//        final CompositePropertyTreeTable lieferungTable = new CompositePropertyTreeTable(createSmallWorld(), "Test");
+        final CompositePropertyTreeTable lieferungTable = new CompositePropertyTreeTable(createLieferung(), "Test");
         // lieferungTable.setNotEditable(Mahngericht.class);
         // lieferungTable.setEditable(false);
         // lieferungTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

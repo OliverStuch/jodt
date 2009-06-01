@@ -2,27 +2,26 @@ package org.jodt.property.gui;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Enumeration;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.jdesktop.swingx.treetable.AbstractMutableTreeTableNode;
-import org.jdesktop.swingx.treetable.MutableTreeTableNode;
 import org.jdesktop.swingx.treetable.TreeTableNode;
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.Property;
+import org.jodt.util.gui.treetable.AddChildrenOnDemandNode;
 
 /**
  * Diese Klasse adaptiert ein CompositeProperty-Objekt für die TreeTable. Es ist als Property ansprechbar.
  * 
  * @author Oliver Stuch (oliver@stuch.net)
  */
-public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMultipleParentMutableTreeTableNode implements MutableTreeTablePropertyNode<T> {
+public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMultipleParentMutableTreeTableNode implements MutableTreeTablePropertyNode<T>, AddChildrenOnDemandNode {
 
     public CompositeProperty2TreeTableNodeAdapter(CompositeProperty<T> compositeProperty, Map<Object, PropertyNode> userObject2Node) {
         this(compositeProperty);
-        addRecursivlyChildren(userObject2Node);
+        // addRecursivlyChildren(userObject2Node);
+        addChildren();
     }
 
     /**
@@ -33,10 +32,45 @@ public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMultipleP
         setUserObject(compositeProperty); // ein bischen redundant
     }
 
+    // Lazy
+    @Override
+    public TreeTableNode getChildAt(int i) {
+        if (!childrenFilled) {
+            addChildren();
+        }
+        return super.getChildAt(i);
+    }
+
+    // Lazy
+    @Override
+    public Enumeration children() {
+        if (!childrenFilled) {
+            addChildren();
+        }
+        return super.children();
+    }
+
+    // Lazy
+    @Override
+    public boolean isLeaf() {
+        return !compositeProperty.hasProperties();
+    }
+
+    public void addChildren() {
+        if (compositeProperty.hasProperties()) {
+            for (CompositeProperty<?> compositePropertyChild : compositeProperty) {
+                CompositeProperty2TreeTableNodeAdapter newChildNode = new CompositeProperty2TreeTableNodeAdapter<T>(compositePropertyChild);
+                add(newChildNode);
+            }
+        }
+        childrenFilled = true;
+    }
+
+// kann man wohl nicht brauchen...
     private void addRecursivlyChildren(Map<Object, PropertyNode> userObject2Node) {
         if (compositeProperty.hasProperties()) {
             for (CompositeProperty<?> compositePropertyChild : compositeProperty) {
-                PropertyNode<?> childNode = null; // userObject2Node.get(compositePropertyChild);
+                PropertyNode<?> childNode = userObject2Node.get(compositePropertyChild);
                 if (childNode == null) {
                     CompositeProperty2TreeTableNodeAdapter newChildNode = new CompositeProperty2TreeTableNodeAdapter<T>(compositePropertyChild);
                     userObject2Node.put(compositePropertyChild, newChildNode);
@@ -48,9 +82,7 @@ public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMultipleP
         }
     }
 
-    Set<TreeTableNode> additionalParents = new HashSet();
-
-    /**
+     /**
      * PropertyNode
      */
     public <P> MutableTreeTablePropertyNode<P> create(Property<P> property, Map<Object, PropertyNode> userObject2Node) {
@@ -146,5 +178,4 @@ public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMultipleP
 
     private static final int NAME_COLUMN = 0;
     private static final int VALUE_COLUMN = 1;
-
 }
