@@ -33,6 +33,8 @@ public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMultipleP
     }
 
     // Lazy
+    private boolean childrenFilled = false;
+    // Lazy
     @Override
     public TreeTableNode getChildAt(int i) {
         if (!childrenFilled) {
