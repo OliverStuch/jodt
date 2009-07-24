@@ -385,10 +385,10 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
         CompositeProperty rootRecursiveObject1recursiveObject2recursiveObject1Property = rootRecursiveObject1recursiveObject2Property.find("recursiveObject");
         CompositeProperty rootRecursiveObject1recursiveObject2recursiveObject1recursiveObject2Property = rootRecursiveObject1recursiveObject2recursiveObject1Property.find("recursiveObject");
         assertTrue("property was not found", rootRecursiveObject1recursiveObject2Property == rootRecursiveObject1recursiveObject2recursiveObject1recursiveObject2Property);
-        assertTrue("recursive Object not fount", rootRecursiveObject1Property.value() == recursiveObject1);
-        assertTrue("recursive Object not fount", rootRecursiveObject1recursiveObject2Property.value() == recursiveObject2);
-        assertTrue("recursive Object not fount", rootRecursiveObject1recursiveObject2recursiveObject1Property.value() == recursiveObject1);
-        assertTrue("recursive Object not fount", rootRecursiveObject1recursiveObject2recursiveObject1recursiveObject2Property.value() == recursiveObject2);
+        assertTrue("recursive Object not found", rootRecursiveObject1Property.value() == recursiveObject1);
+        assertTrue("recursive Object not found", rootRecursiveObject1recursiveObject2Property.value() == recursiveObject2);
+        assertTrue("recursive Object not found", rootRecursiveObject1recursiveObject2recursiveObject1Property.value() == recursiveObject1);
+        assertTrue("recursive Object not found", rootRecursiveObject1recursiveObject2recursiveObject1recursiveObject2Property.value() == recursiveObject2);
     }
     
 
