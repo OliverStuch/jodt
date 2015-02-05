@@ -1,6 +1,7 @@
 package org.jodt.property.implementation;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,7 +64,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     // -------------------- End: Identities ------------------------------------ //
     // -------------------- isNonTerminal ------------------------------------ //
     public boolean isPrimitive(Object object, Class type) {
-        if (object == null || type.isPrimitive() || Number.class.isAssignableFrom(type) || String.class.isAssignableFrom(type)) {
+        if (object == null || type.isPrimitive() || Number.class.isAssignableFrom(type) || String.class.isAssignableFrom(type)|| Date.class.isAssignableFrom(type)) {
             return true;
         }
         return false;
