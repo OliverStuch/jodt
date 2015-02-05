@@ -9,7 +9,7 @@
     <groupId>org.jodt</groupId>
     <artifactId>jodt</artifactId>
     <version>0.1</version>
-    <relativePath>../jodt</relativePath>
+    <!--    <relativePath>../jodt</relativePath>-->
   </parent>
   <build>
     <plugins>
@@ -18,7 +18,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <source>1.5</source>
-          <target>1.5</target>
+          <target>1.7</target>
         </configuration>
       </plugin>
     </plugins>

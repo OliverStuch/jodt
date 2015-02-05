@@ -15,16 +15,18 @@ import org.jodt.property.Property;
 import org.jodt.property.PropertyToolConfiguration;
 import org.jodt.reflection.ReflectionUtil;
 
-
 /**
- * @author Oliver Stuch  (oliver@stuch.net) 
+ * @author Oliver Stuch (oliver@stuch.net)
  */
-
 public class DefaultPropertyTool implements InternalPropertyTool {
 
-    public DefaultPropertyTool(boolean ignoreStaticFields) {
+    public DefaultPropertyTool(boolean ignoreStaticFields, PropertyToolConfiguration propertyToolConfiguration) {
         this.ignoreStaticFields = ignoreStaticFields;
-        this.configuration = new DefaultPropertyToolConfiguration();
+        this.configuration = propertyToolConfiguration;
+    }
+
+    public DefaultPropertyTool(boolean ignoreStaticFields) {
+        this(ignoreStaticFields, new DefaultPropertyToolConfiguration());
     }
 
     public DefaultPropertyTool() {
@@ -54,6 +56,9 @@ public class DefaultPropertyTool implements InternalPropertyTool {
     // TODO Map, Array, SortedSet
     private CompositeProperty recursiveCreateCompositeProperty(Object object, Class type, String name, PropertyProvider propertyProvider,
             CompositeProperty parent, Strategy strategy) {
+        if (configuration.isIgnored(type)) {
+            return null;
+        }
         if (this.configuration.isPrimitive(object, type)) {
             // create CompositePropery for "primitive"
             return new DefaultCompositePropertySet(propertyProvider.provide(), parent);
@@ -97,7 +102,10 @@ public class DefaultPropertyTool implements InternalPropertyTool {
 
         public void addElements(Set<CompositeProperty> propertySet, Set<Property> objectAsReflectivePropertySet, ReflectivePropertySet result) {
             for (Property property : objectAsReflectivePropertySet) {
-                propertySet.add(recursiveCreateCompositeProperty(property.value(), property.type(), property.name(), new PropertyProvider(property), result, shallowStrategy));
+                CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(property.value(), property.type(), property.name(), new PropertyProvider(property), result, shallowStrategy);
+                if (newCompositeProperty != null) {
+                    propertySet.add(newCompositeProperty);
+                }
             }
         }
 
@@ -105,14 +113,20 @@ public class DefaultPropertyTool implements InternalPropertyTool {
             for (int i = 0; i < objectAsList.size(); i++) {
                 Object elementOfList = objectAsList.get(i);
                 String name = "" + i;
-                propertyList.add(recursiveCreateCompositeProperty(elementOfList, type(elementOfList), name, new PropertyProvider(elementOfList, name), result, shallowStrategy));
+                CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(elementOfList, type(elementOfList), name, new PropertyProvider(elementOfList, name), result, shallowStrategy);
+                if (newCompositeProperty != null) {
+                    propertyList.add(newCompositeProperty);
+                }
             }
         }
 
         public void addElements(Set<CompositeProperty> propertySet, Set<?> objectAsSet, CompositeProperty result) {
             for (Object elementOfSet : objectAsSet) {
                 String name = null;
-                propertySet.add(recursiveCreateCompositeProperty(elementOfSet, type(elementOfSet), name, new PropertyProvider(elementOfSet, name), result, shallowStrategy));
+                CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(elementOfSet, type(elementOfSet), name, new PropertyProvider(elementOfSet, name), result, shallowStrategy);
+                if (newCompositeProperty != null) {
+                    propertySet.add(newCompositeProperty);
+                }
             }
         }
         private Strategy shallowStrategy = new ShallowStrategy();
@@ -123,7 +137,10 @@ public class DefaultPropertyTool implements InternalPropertyTool {
         public void addElements(Set<CompositeProperty> propertySet, Set<?> objectAsSet, CompositeProperty result) {
             for (Object elementOfSet : objectAsSet) {
                 String name = null;
-                propertySet.add(recursiveCreateCompositeProperty(elementOfSet, type(elementOfSet), name, new PropertyProvider(elementOfSet, name), result, this));
+                CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(elementOfSet, type(elementOfSet), name, new PropertyProvider(elementOfSet, name), result, this);
+                if (newCompositeProperty != null) {
+                    propertySet.add(newCompositeProperty);
+                }
             }
         }
 
@@ -131,13 +148,19 @@ public class DefaultPropertyTool implements InternalPropertyTool {
             for (int i = 0; i < objectAsList.size(); i++) {
                 Object elementOfList = objectAsList.get(i);
                 String name = "" + i;
-                propertyList.add(recursiveCreateCompositeProperty(elementOfList, type(elementOfList), name, new PropertyProvider(elementOfList, name), result, this));
+                CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(elementOfList, type(elementOfList), name, new PropertyProvider(elementOfList, name), result, this);
+                if (newCompositeProperty != null) {
+                    propertyList.add(newCompositeProperty);
+                }
             }
         }
 
         public void addElements(Set<CompositeProperty> propertySet, Set<Property> objectAsReflectivePropertySet, ReflectivePropertySet result) {
             for (Property property : objectAsReflectivePropertySet) {
-                propertySet.add(recursiveCreateCompositeProperty(property.value(), property.type(), property.name(), new PropertyProvider(property), result, this));
+                CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(property.value(), property.type(), property.name(), new PropertyProvider(property), result, this);
+                if (newCompositeProperty != null) {
+                    propertySet.add(newCompositeProperty);
+                }
             }
         }
 
@@ -164,6 +187,7 @@ public class DefaultPropertyTool implements InternalPropertyTool {
     }
 
     private static class PropertyProvider<T> {
+
         private Property<T> property;
 
         public PropertyProvider(Property<T> property) {
@@ -180,8 +204,7 @@ public class DefaultPropertyTool implements InternalPropertyTool {
     }
 
     /**
-     * @param object
-     *            must be != null
+     * @param object must be != null
      */
     private Set<Property> createReflectivePropertySet(Object object) {
         Set<Property> properties = new HashSet<Property>();
@@ -199,7 +222,6 @@ public class DefaultPropertyTool implements InternalPropertyTool {
         }
 
         // }
-
         for (Field field : declaredFields) {
             ReflectiveProperty reflectiveProperty = new ReflectiveProperty(field, object);
             properties.add(reflectiveProperty);

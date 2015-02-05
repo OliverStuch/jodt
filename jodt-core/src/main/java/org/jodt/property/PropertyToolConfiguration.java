@@ -35,4 +35,8 @@ public interface PropertyToolConfiguration {
 
     void registerNonTerminalType(Class referenceType);
     // -------------------- Ende NonTerminal ------------------------------------ //
+
+    public void registerIgnoreType(Class toBeIgnored);
+
+    public boolean isIgnored(Class type);
 }

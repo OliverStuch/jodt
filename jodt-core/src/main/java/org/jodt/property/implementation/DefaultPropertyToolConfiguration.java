@@ -9,12 +9,11 @@ import org.jodt.property.PropertyToolConfiguration;
 import org.jodt.reflection.JavaTypeDetector;
 import org.jodt.util.Registry;
 
-
 /**
- * @author Oliver Stuch  (oliver@stuch.net) 
+ * @author Oliver Stuch (oliver@stuch.net)
  */
-
 public class DefaultPropertyToolConfiguration implements PropertyToolConfiguration {
+
     // -------------------- Identities ------------------------------------ //
     public Long getID(Object object) {
         return idResolverRegistry.getImplementation(object.getClass()).getID(object);
@@ -60,10 +59,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     private Registry<IdentityResolver> idResolverRegistry = new Registry<IdentityResolver>();
 
     // -------------------- End: Identities ------------------------------------ //
-
-
     // -------------------- isNonTerminal ------------------------------------ //
-
     public boolean isPrimitive(Object object, Class type) {
         if (object == null || type.isPrimitive() || Number.class.isAssignableFrom(type) || String.class.isAssignableFrom(type)) {
             return true;
@@ -120,17 +116,28 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
         this.globalNonTerminalStrategy = nonTerminalStrategy;
     }
 
+    public void registerIgnoreType(Class toBeIgnored) {
+        ignoreTypes.register(toBeIgnored, ignoreType);
+    }
+
+    public boolean isIgnored(Class type) {
+        return ignoreTypes.getImplementation(type) != null;
+    }
+
     // public void set(NonTerminalStrategy nonTerminalStrategy) {
     // this.globalNonTerminalStrategy = nonTerminalStrategy;
     // }
-
     private static class IsNonTerminalType {
     }
 
+    private static class IsIgnoreType {
+    }
+
     private static IsNonTerminalType isNonTerminalType = new IsNonTerminalType();
+    private static IsIgnoreType ignoreType = new IsIgnoreType();
     private Registry<IsNonTerminalType> nonTerminalTypes = new Registry<IsNonTerminalType>();
+    private Registry<IsIgnoreType> ignoreTypes = new Registry<IsIgnoreType>();
     private NonTerminalStrategy globalNonTerminalStrategy;
 
     // -------------------- END isNonTerminal ------------------------------------ //
-
 }

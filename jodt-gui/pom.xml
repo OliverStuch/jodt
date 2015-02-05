@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <name>jodt-gui - gui of Java Object Diff Tool</name>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>jodt</groupId>
+  <groupId>org.jodt</groupId>
   <artifactId>jodt-gui</artifactId>
   <packaging>jar</packaging>
   <version>0.1</version>
@@ -14,7 +14,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <source>1.6</source>
-          <target>1.6</target>
+          <target>1.7</target>
         </configuration>
       </plugin>
     </plugins>
@@ -33,13 +33,13 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>swingx</groupId>
+      <groupId>org.swinglabs</groupId>
       <artifactId>swingx</artifactId>
       <version>0.9.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>jodt</groupId>
+      <groupId>org.jodt</groupId>
       <artifactId>jodt-core</artifactId>
       <version>0.1</version>
       <scope>compile</scope>
