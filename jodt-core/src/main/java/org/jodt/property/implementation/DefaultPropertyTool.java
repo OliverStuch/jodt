@@ -59,6 +59,9 @@ public class DefaultPropertyTool implements InternalPropertyTool {
         if (configuration.isIgnored(type)) {
             return null;
         }
+        if(configuration.isIgnored(name)){
+            return null;
+        }
         if (this.configuration.isPrimitive(object, type)) {
             // create CompositePropery for "primitive"
             return new DefaultCompositePropertySet(propertyProvider.provide(), parent);

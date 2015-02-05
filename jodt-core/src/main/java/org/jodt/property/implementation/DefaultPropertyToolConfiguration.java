@@ -1,6 +1,8 @@
 package org.jodt.property.implementation;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jodt.property.IdentityResolver;
 import org.jodt.property.NonTerminalStrategy;
@@ -124,6 +126,14 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
         return ignoreTypes.getImplementation(type) != null;
     }
 
+    public void registerIgnoreAttributeName(String ignoreAttributeName) {
+        ignoreAttributeNames.add(ignoreAttributeName);
+    }
+
+    public boolean isIgnored(String attributeName) {
+        return ignoreAttributeNames.contains(attributeName);
+    }
+
     // public void set(NonTerminalStrategy nonTerminalStrategy) {
     // this.globalNonTerminalStrategy = nonTerminalStrategy;
     // }
@@ -138,6 +148,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     private Registry<IsNonTerminalType> nonTerminalTypes = new Registry<IsNonTerminalType>();
     private Registry<IsIgnoreType> ignoreTypes = new Registry<IsIgnoreType>();
     private NonTerminalStrategy globalNonTerminalStrategy;
+    private Set<String> ignoreAttributeNames = new HashSet();
 
     // -------------------- END isNonTerminal ------------------------------------ //
 }

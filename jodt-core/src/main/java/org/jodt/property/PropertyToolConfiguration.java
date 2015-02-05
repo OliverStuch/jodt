@@ -2,7 +2,6 @@ package org.jodt.property;
 
 import org.jodt.util.Registry;
 
-
 /**
  * @author Oliver Stuch (oliver@stuch.net)
  */
@@ -30,7 +29,6 @@ public interface PropertyToolConfiguration {
     boolean isTerminal(Class type);
 
     // -------------------- Konfiguration NonTerminal ------------------------------------ //
-
     void globalNonTerminalStrategy(NonTerminalStrategy nonTerminalStrategy);
 
     void registerNonTerminalType(Class referenceType);
@@ -39,4 +37,8 @@ public interface PropertyToolConfiguration {
     public void registerIgnoreType(Class toBeIgnored);
 
     public boolean isIgnored(Class type);
+
+    public boolean isIgnored(String attributeName);
+
+    public void registerIgnoreAttributeName(String updateCounter);
 }
