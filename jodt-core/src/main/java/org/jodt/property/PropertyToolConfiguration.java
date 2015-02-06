@@ -21,12 +21,14 @@ public interface PropertyToolConfiguration {
     // -------------------- End: Identities ------------------------------------ //
     // -------------------- NonTerminal ------------------------------------ //
     // -------------------- Abfragen NonTerminal ------------------------------------ //
-    // TODO ... eigentlich !isNonTerminal
+
     boolean isPrimitive(Object object, Class type);
 
     boolean isTerminal(Object compareObject);
 
     boolean isTerminal(Class type);
+
+    boolean isNonTerminal(Object object);
 
     // -------------------- Konfiguration NonTerminal ------------------------------------ //
     void globalNonTerminalStrategy(NonTerminalStrategy nonTerminalStrategy);
@@ -40,5 +42,5 @@ public interface PropertyToolConfiguration {
 
     public boolean isIgnored(String attributeName);
 
-    public void registerIgnoreAttributeName(String updateCounter);
+    public void registerIgnoreAttributeName(String attributeName);
 }

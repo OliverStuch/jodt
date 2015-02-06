@@ -63,13 +63,6 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
 
     // -------------------- End: Identities ------------------------------------ //
     // -------------------- isNonTerminal ------------------------------------ //
-    public boolean isPrimitive(Object object, Class type) {
-        if (object == null || type.isPrimitive() || Number.class.isAssignableFrom(type) || String.class.isAssignableFrom(type)|| Date.class.isAssignableFrom(type)) {
-            return true;
-        }
-        return false;
-    }
-
     public void registerNonTerminalType(Class referenceType) {
         if (JavaTypeDetector.isJavaType(referenceType)) {
             if (!hasIdentityResolver(referenceType)) {
@@ -90,6 +83,15 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
         }
         return !(isNonTerminal(object) || Collection.class.isAssignableFrom(object.getClass()) || object.getClass().isArray());
 
+    }
+
+    // TODO ... eigentlich !isNonTerminal. 2015: Verstehe ich nicht!
+
+    public boolean isPrimitive(Object object, Class type) {
+        if (object == null || type.isPrimitive() || Number.class.isAssignableFrom(type) || String.class.isAssignableFrom(type) || Date.class.isAssignableFrom(type)) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isNonTerminal(Object object) {

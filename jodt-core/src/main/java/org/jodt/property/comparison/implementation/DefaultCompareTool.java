@@ -35,7 +35,7 @@ public class DefaultCompareTool implements CompareTool {
 
     public DefaultCompareTool(CompareToolConfiguration compareToolConfiguration) {
         this.compareToolConfiguration = compareToolConfiguration;
-        this.propertyTool = new DefaultPropertyTool();
+        this.propertyTool = new DefaultPropertyTool(true, compareToolConfiguration);
     }
 
     public <T> CompositeComparison<T> diff(T comparativeObject, String comparativeName, T referenceObject, String referenceName) {
