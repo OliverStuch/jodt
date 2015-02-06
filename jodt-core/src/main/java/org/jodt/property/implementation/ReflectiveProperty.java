@@ -12,16 +12,18 @@ import org.jodt.property.PropertyDescription;
 import org.jodt.reflection.PrivilegedReflectionUtil;
 
 /**
- * @author Oliver Stuch  (oliver@stuch.net) 
+ * @author Oliver Stuch (oliver@stuch.net)
  */
-
 public class ReflectiveProperty<T> implements Property<T> {
+
     private Field field;
     private Object fieldOwner;
+    private String renderedFieldName;
 
-    public ReflectiveProperty(Field field, Object fieldOwner) {
+    public ReflectiveProperty(Field field, Object fieldOwner, String renderedFieldName) {
         this.field = field;
         this.fieldOwner = fieldOwner;
+        this.renderedFieldName = renderedFieldName;
     }
 
     public String description() {
@@ -30,7 +32,8 @@ public class ReflectiveProperty<T> implements Property<T> {
     }
 
     public String name() {
-        return field.getName();
+//        return field.getName();
+        return renderedFieldName;
     }
 
     public Class type() {

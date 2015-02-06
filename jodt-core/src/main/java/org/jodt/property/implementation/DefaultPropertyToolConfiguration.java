@@ -2,7 +2,9 @@ package org.jodt.property.implementation;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.jodt.property.IdentityResolver;
@@ -86,7 +88,6 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     }
 
     // TODO ... eigentlich !isNonTerminal. 2015: Verstehe ich nicht!
-
     public boolean isPrimitive(Object object, Class type) {
         if (object == null || type.isPrimitive() || Number.class.isAssignableFrom(type) || String.class.isAssignableFrom(type) || Date.class.isAssignableFrom(type)) {
             return true;
@@ -137,6 +138,15 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
         return ignoreAttributeNames.contains(attributeName);
     }
 
+    public void registerAttributeNameMapping(String attributeName, String displayName) {
+        attributeNameToStringRenderer.put(attributeName, displayName);
+    }
+
+    public String renderAttributeName(String attributeName) {
+        String displayName = attributeNameToStringRenderer.get(attributeName);
+        return displayName != null ? displayName : attributeName;
+    }
+
     // public void set(NonTerminalStrategy nonTerminalStrategy) {
     // this.globalNonTerminalStrategy = nonTerminalStrategy;
     // }
@@ -152,6 +162,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     private Registry<IsIgnoreType> ignoreTypes = new Registry<IsIgnoreType>();
     private NonTerminalStrategy globalNonTerminalStrategy;
     private Set<String> ignoreAttributeNames = new HashSet();
+    private Map<String, String> attributeNameToStringRenderer = new HashMap();
 
     // -------------------- END isNonTerminal ------------------------------------ //
 }

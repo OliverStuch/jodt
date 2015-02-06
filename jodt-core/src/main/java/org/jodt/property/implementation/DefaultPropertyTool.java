@@ -226,7 +226,7 @@ public class DefaultPropertyTool implements InternalPropertyTool {
 
         // }
         for (Field field : declaredFields) {
-            ReflectiveProperty reflectiveProperty = new ReflectiveProperty(field, object);
+            ReflectiveProperty reflectiveProperty = new ReflectiveProperty(field, object,configuration.renderAttributeName(field.getName()));
             properties.add(reflectiveProperty);
         }
         return properties;

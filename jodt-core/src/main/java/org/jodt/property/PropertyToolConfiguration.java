@@ -21,7 +21,6 @@ public interface PropertyToolConfiguration {
     // -------------------- End: Identities ------------------------------------ //
     // -------------------- NonTerminal ------------------------------------ //
     // -------------------- Abfragen NonTerminal ------------------------------------ //
-
     boolean isPrimitive(Object object, Class type);
 
     boolean isTerminal(Object compareObject);
@@ -36,11 +35,15 @@ public interface PropertyToolConfiguration {
     void registerNonTerminalType(Class referenceType);
     // -------------------- Ende NonTerminal ------------------------------------ //
 
-    public void registerIgnoreType(Class toBeIgnored);
+    void registerIgnoreType(Class toBeIgnored);
 
-    public boolean isIgnored(Class type);
+    boolean isIgnored(Class type);
 
-    public boolean isIgnored(String attributeName);
+    boolean isIgnored(String attributeName);
 
-    public void registerIgnoreAttributeName(String attributeName);
+    void registerIgnoreAttributeName(String attributeName);
+
+    void registerAttributeNameMapping(String attributeName, String displayName);
+
+    String renderAttributeName(String attributeName);
 }

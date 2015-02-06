@@ -19,13 +19,13 @@ import org.jodt.util.Registry;
 public class DefaultCompareToolConfiguration implements CompareToolConfiguration {
 
     private PropertyToolConfiguration delegate;
-   
-     public DefaultCompareToolConfiguration(){
-        delegate=new DefaultPropertyToolConfiguration();
+
+    public DefaultCompareToolConfiguration() {
+        delegate = new DefaultPropertyToolConfiguration();
     }
-    
-    public DefaultCompareToolConfiguration(PropertyToolConfiguration propertyToolConfiguration){
-        delegate=propertyToolConfiguration;
+
+    public DefaultCompareToolConfiguration(PropertyToolConfiguration propertyToolConfiguration) {
+        delegate = propertyToolConfiguration;
     }
 
     public boolean analysePropertiesOfDifferentNonTerminalObjects(Object object) {
@@ -233,6 +233,20 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
      */
     public boolean isNonTerminal(Object object) {
         return delegate.isNonTerminal(object);
+    }
+
+    /**
+     * PropertyToolConfiguration
+     */
+    public void registerAttributeNameMapping(String attributeName, String displayName) {
+        delegate.registerAttributeNameMapping(attributeName, displayName);
+    }
+
+    /**
+     * PropertyToolConfiguration
+     */
+    public String renderAttributeName(String attributeName) {
+        return delegate.renderAttributeName(attributeName);
     }
 
     private static class IsIgnoreType {
