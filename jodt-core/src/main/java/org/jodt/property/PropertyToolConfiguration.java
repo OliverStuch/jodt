@@ -46,4 +46,6 @@ public interface PropertyToolConfiguration {
     void registerAttributeNameMapping(String attributeName, String displayName);
 
     String renderAttributeName(String attributeName);
+
+     void globalIdentityResolverFactory(IdentityResolverFactory identityResolverFactory);
 }

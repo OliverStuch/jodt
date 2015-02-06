@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jodt.property.IdentityResolver;
+import org.jodt.property.IdentityResolverFactory;
 import org.jodt.property.NonTerminalStrategy;
 import org.jodt.property.Property;
 import org.jodt.property.PropertyToolConfiguration;
@@ -54,6 +55,9 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
             return null;
         } else {
             IdentityResolver identityResolver = (IdentityResolver) idResolverRegistry.getImplementation(idHolder.getClass());
+            if (identityResolver == null && globalIdentityResolverFactory != null) {
+                identityResolver = globalIdentityResolverFactory.create(idHolder.getClass());
+            }
             if (identityResolver == null) {
                 identityResolver = new HashCodeIdentityResolver();
             }
@@ -147,6 +151,10 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
         return displayName != null ? displayName : attributeName;
     }
 
+    public void globalIdentityResolverFactory(IdentityResolverFactory identityResolverFactory) {
+        globalIdentityResolverFactory = identityResolverFactory;
+    }
+
     // public void set(NonTerminalStrategy nonTerminalStrategy) {
     // this.globalNonTerminalStrategy = nonTerminalStrategy;
     // }
@@ -163,6 +171,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     private NonTerminalStrategy globalNonTerminalStrategy;
     private Set<String> ignoreAttributeNames = new HashSet();
     private Map<String, String> attributeNameToStringRenderer = new HashMap();
+    private IdentityResolverFactory globalIdentityResolverFactory;
 
     // -------------------- END isNonTerminal ------------------------------------ //
 }

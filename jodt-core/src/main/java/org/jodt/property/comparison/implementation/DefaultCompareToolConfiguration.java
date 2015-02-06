@@ -1,6 +1,7 @@
 package org.jodt.property.comparison.implementation;
 
 import org.jodt.property.IdentityResolver;
+import org.jodt.property.IdentityResolverFactory;
 import org.jodt.property.NonTerminalStrategy;
 import org.jodt.property.Property;
 import org.jodt.property.PropertyToolConfiguration;
@@ -247,6 +248,10 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
      */
     public String renderAttributeName(String attributeName) {
         return delegate.renderAttributeName(attributeName);
+    }
+
+    public void globalIdentityResolverFactory(IdentityResolverFactory identityResolverFactory) {
+        delegate.globalIdentityResolverFactory(identityResolverFactory);
     }
 
     private static class IsIgnoreType {
