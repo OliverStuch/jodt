@@ -26,7 +26,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     }
 
     public boolean hasIdentityResolver(Class clazz) {
-        return idResolverRegistry.getImplementation(clazz) != null;
+        return findIdentityAndUpdateIdentityResolverRegistry(clazz, false) != null;
     }
 
     public void register(Class<?> clazz, IdentityResolver<?> identityResolver) {
@@ -54,15 +54,29 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
         if (idHolder == null) {
             return null;
         } else {
-            IdentityResolver identityResolver = (IdentityResolver) idResolverRegistry.getImplementation(idHolder.getClass());
-            if (identityResolver == null && globalIdentityResolverFactory != null) {
-                identityResolver = globalIdentityResolverFactory.create(idHolder.getClass());
-            }
-            if (identityResolver == null) {
-                identityResolver = new HashCodeIdentityResolver();
-            }
-            return identityResolver.getID(idHolder);
+            return findIdentityAndUpdateIdentityResolverRegistry(idHolder.getClass(), true).getID(idHolder); // solange parameter2=true, kommt nicht null
         }
+    }
+
+    /**
+     *
+     * @param object
+     * @param useHashCodeIdentityResolver
+     * @return NOT NULL, if useHashCodeIdentityResolver == true
+     */
+    private IdentityResolver findIdentityAndUpdateIdentityResolverRegistry(Class clazz, boolean useHashCodeIdentityResolver) {
+        IdentityResolver identityResolver = (IdentityResolver) idResolverRegistry.getImplementation(clazz);
+        if (identityResolver == null && globalIdentityResolverFactory != null) {
+            identityResolver = globalIdentityResolverFactory.create(clazz);
+            if (identityResolver != null) {
+                idResolverRegistry.register(clazz, identityResolver);
+            }
+        }
+        if (identityResolver == null && useHashCodeIdentityResolver) {
+            identityResolver = new HashCodeIdentityResolver();
+            idResolverRegistry.register(clazz, identityResolver);
+        }
+        return identityResolver;
     }
 
     private Registry<IdentityResolver> idResolverRegistry = new Registry<IdentityResolver>();
@@ -102,8 +116,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
                 || Long.class.isAssignableFrom(type)
                 || Float.class.isAssignableFrom(type)
                 || Double.class.isAssignableFrom(type)
-                || Void.class.isAssignableFrom(type)
-                ) {
+                || Void.class.isAssignableFrom(type)) {
             return true;
         }
         return false;
