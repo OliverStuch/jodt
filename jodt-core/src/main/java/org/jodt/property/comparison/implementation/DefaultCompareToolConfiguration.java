@@ -254,6 +254,10 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
         delegate.globalIdentityResolverFactory(identityResolverFactory);
     }
 
+    public void registerTerminalClass(Class terminalClass) {
+        delegate.registerTerminalClass(terminalClass);
+    }
+
     private static class IsIgnoreType {
     }
 

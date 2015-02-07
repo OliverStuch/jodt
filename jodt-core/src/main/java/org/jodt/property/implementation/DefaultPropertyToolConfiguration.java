@@ -1,7 +1,6 @@
 package org.jodt.property.implementation;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -93,7 +92,14 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
         nonTerminalTypes.setImplementation(referenceType, isNonTerminalType);
     }
 
+    public void registerTerminalClass(Class terminalClass) {
+        terminalTypes.register(terminalClass, isTerminalType);
+    }
+
     public boolean isTerminal(Class type) {
+        if (terminalTypes.getImplementation(type) != null) {
+            return true;
+        }
         return !(isNonTerminal(type) || Collection.class.isAssignableFrom(type) || type.isArray());
     }
 
@@ -105,34 +111,30 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
 
     }
 
+
     // TODO ... eigentlich !isNonTerminal. 2015: Verstehe ich nicht!
     public boolean isPrimitive(Object object, Class type) {
-        if (object == null || type.isPrimitive() || Number.class.isAssignableFrom(type) || String.class.isAssignableFrom(type) || Date.class.isAssignableFrom(type)
-                || Boolean.class.isAssignableFrom(type)
-                || Character.class.isAssignableFrom(type)
-                || Byte.class.isAssignableFrom(type)
-                || Short.class.isAssignableFrom(type)
-                || Integer.class.isAssignableFrom(type)
-                || Long.class.isAssignableFrom(type)
-                || Float.class.isAssignableFrom(type)
-                || Double.class.isAssignableFrom(type)
-                || Void.class.isAssignableFrom(type)) {
-            return true;
-        }
-        return false;
+        return (object == null || terminalTypes.getImplementation(type) != null || JavaTypeDetector.isJavaValueType(type));
+//        if (object == null || type.isPrimitive() || Number.class.isAssignableFrom(type) || String.class.isAssignableFrom(type) || Date.class.isAssignableFrom(type)
+//                || Boolean.class.isAssignableFrom(type)
+//                || Character.class.isAssignableFrom(type)
+//                || Byte.class.isAssignableFrom(type)
+//                || Short.class.isAssignableFrom(type)
+//                || Integer.class.isAssignableFrom(type)
+//                || Long.class.isAssignableFrom(type)
+//                || Float.class.isAssignableFrom(type)
+//                || Double.class.isAssignableFrom(type)
+//                || Void.class.isAssignableFrom(type)) {
+//            return true;
+//        }
+//        return false;
     }
 
     public boolean isNonTerminal(Object object) {
         if (object == null) {
             return false;
         }
-        if (nonTerminalTypes.getImplementation(object.getClass()) != null) {
-            return true;
-        }
-        if (globalNonTerminalStrategy != null) {
-            return globalNonTerminalStrategy.isNonTerminal(object);
-        }
-        return false;
+        return isNonTerminal(object.getClass());
     }
 
     public boolean isNonTerminal(Class type) {
@@ -184,11 +186,16 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     private static class IsNonTerminalType {
     }
 
+    private static class IsTerminalType {
+    }
+
     private static class IsIgnoreType {
     }
 
     private static IsNonTerminalType isNonTerminalType = new IsNonTerminalType();
+    private static IsTerminalType isTerminalType = new IsTerminalType();
     private static IsIgnoreType ignoreType = new IsIgnoreType();
+    private Registry<IsTerminalType> terminalTypes = new Registry<IsTerminalType>();
     private Registry<IsNonTerminalType> nonTerminalTypes = new Registry<IsNonTerminalType>();
     private Registry<IsIgnoreType> ignoreTypes = new Registry<IsIgnoreType>();
     private NonTerminalStrategy globalNonTerminalStrategy;

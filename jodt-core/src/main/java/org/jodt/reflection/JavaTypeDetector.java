@@ -1,12 +1,13 @@
 package org.jodt.reflection;
 
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
  * @author Oliver Stuch
  */
-
 public class JavaTypeDetector {
+
     public static boolean isJavaValueType(Class clazz) {
         if (clazz == null) {
             return true;
@@ -23,6 +24,10 @@ public class JavaTypeDetector {
         if (isPrimitiveArray(clazz)) {
             return true;
         }
+
+        if (Number.class.isAssignableFrom(clazz) || String.class.isAssignableFrom(clazz) || Date.class.isAssignableFrom(clazz)) {
+            return true;
+        }
         return false;
     }
 
@@ -32,7 +37,6 @@ public class JavaTypeDetector {
         }
         return true;
     }
-
 
     public static boolean isJavaType(String classname) {
         if (classname == null) {
@@ -71,36 +75,36 @@ public class JavaTypeDetector {
             return false;
         }
         switch (arrayElementClassName.charAt(0)) {
-        case 'V': // "void";
-        case 'B': // "byte";
-        case 'C':
+            case 'V': // "void";
+            case 'B': // "byte";
+            case 'C':
             // className = "char";
             // break;
-        case 'S':
+            case 'S':
             // className = "short";
             // break;
-        case 'I':
+            case 'I':
             // className = "int";
             // break;
-        case 'J':
+            case 'J':
             // className = "long";
             // break;
-        case 'F':
+            case 'F':
             // className = "float";
             // break;
-        case 'D':
+            case 'D':
             // className = "double";
             // break;
-        case 'Z':
+            case 'Z':
             // className = "boolean";
             // break;
-        case 'T':
+            case 'T':
             // className = "T";
-            // break;
-            return true;
-        default:
-            return false;
+                // break;
+                return true;
+            default:
+                return false;
         }
     }
-    private static final Pattern excludePattern = Pattern.compile( "^(\\[L)*java.*");
+    private static final Pattern excludePattern = Pattern.compile("^(\\[L)*java.*");
 }

@@ -47,5 +47,7 @@ public interface PropertyToolConfiguration {
 
     String renderAttributeName(String attributeName);
 
-     void globalIdentityResolverFactory(IdentityResolverFactory identityResolverFactory);
+    void globalIdentityResolverFactory(IdentityResolverFactory identityResolverFactory);
+
+    void registerTerminalClass(Class terminalClass);
 }
