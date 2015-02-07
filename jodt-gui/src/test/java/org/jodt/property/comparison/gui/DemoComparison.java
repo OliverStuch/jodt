@@ -47,6 +47,7 @@ public class DemoComparison extends Demo {
         List<Amtsgericht> lieferung2 = createLieferung();
         modify(lieferung1, lieferung2);
         CompareTool ct = new DefaultCompareTool();
+//        ct.configure().registerAnalysePropertiesOfDifferentNonTerminalObjects(Gericht.class);
         ct.configure().globalNonTerminalStrategy(new PackageNonTerminalStrategy("org.jodt.*"));
         ct.configure().register(Gericht.class, new GerichtIdentifier());
         // GUI

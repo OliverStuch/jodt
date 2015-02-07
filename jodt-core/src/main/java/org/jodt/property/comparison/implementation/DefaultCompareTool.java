@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.CompositePropertyList;
 import org.jodt.property.CompositePropertySet;
@@ -24,8 +23,8 @@ import org.jodt.property.implementation.DefaultCompositePropertyList;
 import org.jodt.property.implementation.DefaultPropertyTool;
 import org.jodt.property.implementation.PropertyUtil;
 
-
 public class DefaultCompareTool implements CompareTool {
+
     /**
      * uses DefaultCompareToolConfiguration
      */
@@ -119,7 +118,7 @@ public class DefaultCompareTool implements CompareTool {
                                 // Wenn ignoreObjectButAnalyseItsNonTerminalProperties für
                                 // das compareObject gilt, darf nur weiter analysiert werden, wenn compareProperty non-terminal ist
                                 if (compareToolConfiguration.ignoreAllDiffsOfNonTerminalPropertiesButReferenceChanges(comparativeObject)
-                                        || PropertyUtil.isAnnotationPresent(compareProperty,  IgnorePropertyDiffs.class)) {
+                                        || PropertyUtil.isAnnotationPresent(compareProperty, IgnorePropertyDiffs.class)) {
                                     add2analysis = false;
                                     DiffType toplevelPropertyDiff = determineToplevelDiff(comparePropertyValue, referencePropertyValue);
                                     if (toplevelPropertyDiff != null && toplevelPropertyDiff instanceof ReferenceDiff) {
@@ -136,7 +135,10 @@ public class DefaultCompareTool implements CompareTool {
                                         }
                                     } else { // CompareMode
                                         analysis.add(propertyAnalysis);
-                                        if (propertyAnalysis.hasDiffsOnObjectLevel() || propertyAnalysis.hasDiffsOnPropertyLevel()) {
+                                        if (toplevelObjectDiff instanceof ReferenceDiff) {
+                                            analysis.diff(toplevelObjectDiff);
+                                        } else 
+                                            if (propertyAnalysis.hasDiffsOnObjectLevel() || propertyAnalysis.hasDiffsOnPropertyLevel()) {
                                             analysis.diff(new SubDiff());
                                         }
                                         // DiffType propertyDiff = determineToplevelDiff(comparePropertyValue, referencePropertyValue);
@@ -178,8 +180,9 @@ public class DefaultCompareTool implements CompareTool {
     }
 
     /**
-     * Bei Listen erfolgt der Vergleich per Index. Diese Methode macht also nichts ausser dem Erzeugen des PropertyListPair aus den beiden übergebenen Listen. Diese Methode dient nur der
-     * Performanceoptimierung
+     * Bei Listen erfolgt der Vergleich per Index. Diese Methode macht also
+     * nichts ausser dem Erzeugen des PropertyListPair aus den beiden
+     * übergebenen Listen. Diese Methode dient nur der Performanceoptimierung
      */
     private <T> PropertyListPair createIdentityMappedPropertyListFromLists(CompositePropertyList<T> propertyList1, CompositePropertyList<T> propertyList2) {
 
@@ -195,7 +198,8 @@ public class DefaultCompareTool implements CompareTool {
     }
 
     /**
-     * Wandelt zum Vergleich der Sets die beiden anhand der identität in listen (-> sorted) um und "bläht" diese auf
+     * Wandelt zum Vergleich der Sets die beiden anhand der identität in listen
+     * (-> sorted) um und "bläht" diese auf
      */
     private <T> PropertyListPair createIdentityMappedPropertyListFromSets(CompositePropertySet<T> propertySet1, CompositePropertySet<T> propertySet2) {
         // Umfüllen der Sets in Listen und sortieren der Listen
@@ -221,6 +225,7 @@ public class DefaultCompareTool implements CompareTool {
     }
 
     static class PropertyListPair<T> {
+
         CompositePropertyList<T> compareProperties;
         CompositePropertyList<T> referenceProperties;
 
@@ -267,9 +272,13 @@ public class DefaultCompareTool implements CompareTool {
     }
 
     /**
-     * Bläht zwei Listen aufgrund von compareTo so auf, dass 2 Listen entstehen die "paarweise" (Paar: aus jeder Liste mit gleichem Index ein Element entnehmen) verglichen werden können.
-     * 
-     * @return 2-elementige Liste; result.get(0).get(i).compareTo(result.get(1).get(i)) == 0 XOR result.get(0).get(i) == null XOR result.get(1).get(i) == null
+     * Bläht zwei Listen aufgrund von compareTo so auf, dass 2 Listen entstehen
+     * die "paarweise" (Paar: aus jeder Liste mit gleichem Index ein Element
+     * entnehmen) verglichen werden können.
+     *
+     * @return 2-elementige Liste;
+     * result.get(0).get(i).compareTo(result.get(1).get(i)) == 0 XOR
+     * result.get(0).get(i) == null XOR result.get(1).get(i) == null
      */
     private List<MappedList> internalPrepareListsForIndexedComparison(List<?> comparables1, List<?> comparables2, Comparator comparator) {
         Map<Object, Integer> object2index1 = createObject2IndexMapping(comparables1, comparator);
@@ -335,7 +344,6 @@ public class DefaultCompareTool implements CompareTool {
         }
 
         // Restlistenverarbeitung
-
         while (object1ready || index1 != comparables1.size()) { // hat list1 (links) noch Elemente übgrig?
             if (!object1ready) {
                 object1 = comparables1.get(index1++);
@@ -370,14 +378,23 @@ public class DefaultCompareTool implements CompareTool {
     }
 
     /**
-     * stellt Differenzen zwischen zwei Objekten fest. Rückgabewert null bedeutet, dass eine kein TOP-Level-Diff vorliegt.<br>
-     * 
-     * @return wenn compareObject gegeben, aber referenceObject nicht:{@link Additional} <br>
-     *         wenn referenceObject gegeben, aber compareObject nicht:{@link Missing} <br>
-     *         wenn compareObject KEIN Terminal ist und ein IdentityResolver definiert ist und dieser für compareObject und referenceObject unterschiedliche IDs ergibt: {@link ReferenceDiff} <br>
-     *         wenn compareObject ein Terminal ist und compareObject.equals(referenceObject) == false: {@link ValueDiff} <br>
-     *         wenn compareObject ein Terminal ist und compareObject.equals(referenceObject) == true : {@link NoDiff} <br>
-     *         sonst: null (z.B. wenn compareObject ein Terminal ist und KEIN IdentityResolver registriert ist. Dann muss später per Rekursion verglichen werden)
+     * stellt Differenzen zwischen zwei Objekten fest. Rückgabewert null
+     * bedeutet, dass eine kein TOP-Level-Diff vorliegt.<br>
+     *
+     * @return wenn compareObject gegeben, aber referenceObject
+     * nicht:{@link Additional} <br>
+     * wenn referenceObject gegeben, aber compareObject nicht:{@link Missing}
+     * <br>
+     * wenn compareObject KEIN Terminal ist und ein IdentityResolver definiert
+     * ist und dieser für compareObject und referenceObject unterschiedliche IDs
+     * ergibt: {@link ReferenceDiff} <br>
+     * wenn compareObject ein Terminal ist und
+     * compareObject.equals(referenceObject) == false: {@link ValueDiff} <br>
+     * wenn compareObject ein Terminal ist und
+     * compareObject.equals(referenceObject) == true : {@link NoDiff} <br>
+     * sonst: null (z.B. wenn compareObject ein Terminal ist und KEIN
+     * IdentityResolver registriert ist. Dann muss später per Rekursion
+     * verglichen werden)
      */
     private <T> DiffType determineToplevelDiff(T compareObject, T referenceObject) {
         if (compareObject == null && referenceObject == null) {
@@ -432,7 +449,9 @@ public class DefaultCompareTool implements CompareTool {
     private CompareToolConfiguration compareToolConfiguration;
     private PropertyTool propertyTool;
     /**
-     * DiffMode: Füge dem Comparison nur die Properties hinzu, die Unterschiede aufweisen. Andernfalls werden Properties immer hinzugefügt ("Comparemode");
+     * DiffMode: Füge dem Comparison nur die Properties hinzu, die Unterschiede
+     * aufweisen. Andernfalls werden Properties immer hinzugefügt
+     * ("Comparemode");
      */
     boolean diffMode = false;
 
