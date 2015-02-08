@@ -126,8 +126,8 @@ public class DefaultCompareTool implements CompareTool {
                                     }
                                 }
                                 if (add2analysis) {
-                                    CompositeComparison<T> propertyAnalysis = recursiveAnalysis(comparePropertyValue, PropertyUtil.displayName(compareProperty), referencePropertyValue,
-                                            PropertyUtil.displayName(referenceProperty), analysis);
+                                    CompositeComparison<T> propertyAnalysis = recursiveAnalysis(comparePropertyValue, PropertyUtil.name(compareProperty), referencePropertyValue,
+                                            PropertyUtil.name(referenceProperty), analysis);
                                     if (diffMode) {
                                         if (propertyAnalysis.hasDiffsOnObjectLevel() || propertyAnalysis.hasDiffsOnPropertyLevel()) {
                                             analysis.add(propertyAnalysis);
