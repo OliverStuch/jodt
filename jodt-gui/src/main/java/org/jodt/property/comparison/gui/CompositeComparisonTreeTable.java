@@ -54,7 +54,7 @@ public class CompositeComparisonTreeTable extends DefaultJXTreeTable {
     protected TreeTableModel createTreeTableModel(Object comparativeObject, String comparativeObjectName, Object referenceObject, String referenceObjectName) {
         CompositeComparison compositeComparison = comparisonStrategy.createComparison(comparativeObject, comparativeObjectName, referenceObject, referenceObjectName);
         DefaultJXTreeTable.DefaultJXTreeTableModel dttm = new DefaultJXTreeTableModel(new CompositeComparison2TreeTableNodeAdapter(compositeComparison), new String[] {
-                "Attribut oder Index", "comparative", "reference" });
+                "Attribut oder Index", comparativeObjectName, referenceObjectName });
         dttm.addTreeModelListener(new DefaultParentUpdater(dttm));
         dttm.setNotEditable(notEditableRegistry);
 
