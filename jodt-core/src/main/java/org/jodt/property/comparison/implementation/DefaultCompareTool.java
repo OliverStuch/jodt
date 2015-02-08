@@ -131,15 +131,20 @@ public class DefaultCompareTool implements CompareTool {
                                     if (diffMode) {
                                         if (propertyAnalysis.hasDiffsOnObjectLevel() || propertyAnalysis.hasDiffsOnPropertyLevel()) {
                                             analysis.add(propertyAnalysis);
-                                            analysis.diff(new SubDiff());
+                                            if (toplevelObjectDiff instanceof ReferenceDiff) {// ReferenceDiff anzeigen, damit klar ist, dass die "tieferen" Diffs daher rühren, dass unterschiedliche Objekte verglichen werden!
+                                                analysis.diff(toplevelObjectDiff);
+                                            } else {
+                                                analysis.diff(new SubDiff());
+                                            }
                                         }
                                     } else { // CompareMode
                                         analysis.add(propertyAnalysis);
-                                        if (toplevelObjectDiff instanceof ReferenceDiff) {
-                                            analysis.diff(toplevelObjectDiff);
-                                        } else 
-                                            if (propertyAnalysis.hasDiffsOnObjectLevel() || propertyAnalysis.hasDiffsOnPropertyLevel()) {
-                                            analysis.diff(new SubDiff());
+                                        if (propertyAnalysis.hasDiffsOnObjectLevel() || propertyAnalysis.hasDiffsOnPropertyLevel()) {
+                                            if (toplevelObjectDiff instanceof ReferenceDiff) {// ReferenceDiff anzeigen, damit klar ist, dass die "tieferen" Diffs daher rühren, dass unterschiedliche Objekte verglichen werden!
+                                                analysis.diff(toplevelObjectDiff);
+                                            } else {
+                                                analysis.diff(new SubDiff());
+                                            }
                                         }
                                         // DiffType propertyDiff = determineToplevelDiff(comparePropertyValue, referencePropertyValue);
                                         // if (propertyDiff != null && !(propertyDiff instanceof NoDiff)) {
