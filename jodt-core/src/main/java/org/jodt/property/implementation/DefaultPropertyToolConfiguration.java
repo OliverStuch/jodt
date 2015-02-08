@@ -174,6 +174,9 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     }
 
     public String renderAttributeName(String attributeName) {
+        if (attributeName == null){
+            return null;
+        }
         String displayName = attributeNameToStringRenderer.get(attributeName);
         if(displayName != null){
             return displayName;
