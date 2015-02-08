@@ -27,7 +27,7 @@ public class MergeTreeTable extends CompositeComparisonTreeTable {
                 referenceObjectName);
         CompositeMerge compositeMerge = comparisonStrategy().addMergeObject(compositeComparison);
         DefaultJXTreeTable.DefaultJXTreeTableModel dttm = new DefaultJXTreeTableModel(new CompositeMerge2TreeTableNodeAdapter(compositeMerge), new String[] {
-                "Attribut oder Index", "comparative", "reference", "merge" });
+                "Attribut oder Index", comparativeObjectName, referenceObjectName, "merge" });
         dttm.addTreeModelListener(new DefaultParentUpdater(dttm));
         dttm.setNotEditable(notEditableRegistry);
 
