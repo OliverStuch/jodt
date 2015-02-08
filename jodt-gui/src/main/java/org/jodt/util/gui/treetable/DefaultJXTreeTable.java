@@ -172,7 +172,7 @@ public class DefaultJXTreeTable extends JXTreeTable {
                     Object nextObject = iterator.next();
                     ToStringRenderer toStringRenderer = null;
                     if (nextObject != null) {
-                        getToStringRenderer(nextObject.getClass());
+                        toStringRenderer = getToStringRenderer(nextObject.getClass());
                     }
 
                     if (toStringRenderer != null) {
