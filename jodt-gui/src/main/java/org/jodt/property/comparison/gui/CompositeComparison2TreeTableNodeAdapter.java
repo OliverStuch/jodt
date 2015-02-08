@@ -42,14 +42,14 @@ public class CompositeComparison2TreeTableNodeAdapter<T> extends AbstractMutable
 
     public Object getValueAt(int column) {
         switch (column) {
-        case NAME_COLUMN:
-            return compositeComparison.name();
-        case COMPARE_COLUMN:
-            return compositeComparison.getCompareObjectAsIndexMappedCompositePropertyList().value();
-        case REFERENCE_COLUMN:
-            return compositeComparison.getReferenceObjectAsIndexMappedCompositePropertyList().value();
-        default:
-            return null;
+            case NAME_COLUMN:
+                return compositeComparison.name();
+            case COMPARE_COLUMN:
+                return compositeComparison.getCompareObjectAsIndexMappedCompositePropertyList().value();
+            case REFERENCE_COLUMN:
+                return compositeComparison.getReferenceObjectAsIndexMappedCompositePropertyList().value();
+            default:
+                return null;
         }
     }
 
@@ -65,6 +65,11 @@ public class CompositeComparison2TreeTableNodeAdapter<T> extends AbstractMutable
 
     public String name() {
         return this.compositeComparison.getCompareObjectAsIndexMappedCompositePropertyList().name();
+    }
+
+    @Override
+    public String displayName() {
+        return this.compositeComparison.getCompareObjectAsIndexMappedCompositePropertyList().displayName();
     }
 
     public Class<T> type() {

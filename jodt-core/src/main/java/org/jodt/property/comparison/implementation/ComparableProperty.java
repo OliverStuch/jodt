@@ -4,10 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.jodt.property.CompositeProperty;
-import org.jodt.property.CompositePropertyList;
 import org.jodt.property.IdentityResolver;
-import org.jodt.property.Property;
-import org.jodt.property.implementation.ReflectivePropertySet;
 import org.jodt.util.Registry;
 
 
@@ -47,6 +44,10 @@ public class ComparableProperty implements CompositeProperty, Comparable<Compara
 
     public String name() {
         return delegateCompositeProperty.name();
+    }
+    
+    public String displayName() {
+        return delegateCompositeProperty.displayName();
     }
 
     public Class type() {

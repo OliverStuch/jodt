@@ -8,26 +8,28 @@ import java.util.Collection;
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.Property;
 
-
 /**
- * Repräsentiert ein Object (ohne dessen Attribute) als Property.
- * Verträgt auch null
- * @author Oliver Stuch  (oliver@stuch.net) 
+ * Repräsentiert ein Object (ohne dessen Attribute) als Property. Verträgt auch
+ * null
+ *
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 public class ObjectProperty<T> extends AbstractProperty<T> implements Property<T> {
 
     private T underlyingObject;
     private String name;
+    private String displayName;
     private String description;
 
-    public ObjectProperty(T object, String name, String description) {
-        this(object, name);
-        this.description = description();
+    public ObjectProperty(T object, String name, String displayName, String description) {
+        this(object, name,displayName);
+        this.description = description;
     }
 
-    public ObjectProperty(T object, String name) {
+    public ObjectProperty(T object, String name, String displayName) {
         this.underlyingObject = object;
         this.name = name;
+        this.displayName = displayName;
     }
 
     public String description() {
@@ -37,13 +39,17 @@ public class ObjectProperty<T> extends AbstractProperty<T> implements Property<T
     public String name() {
         return name;
     }
+    
+      public String displayName() {
+        return displayName;
+    }
 
     public Class type() {
-        return  underlyingObject != null ? underlyingObject.getClass() : null;
+        return underlyingObject != null ? underlyingObject.getClass() : null;
     }
-    
+
     public Collection<Annotation> annotations() {
-        return  underlyingObject != null ? Arrays.asList(underlyingObject.getClass().getAnnotations()) : new ArrayList();
+        return underlyingObject != null ? Arrays.asList(underlyingObject.getClass().getAnnotations()) : new ArrayList();
     }
 
     public T value() {
@@ -55,7 +61,5 @@ public class ObjectProperty<T> extends AbstractProperty<T> implements Property<T
         underlyingObject = value;
         return null;
     }
-
-
 
 }

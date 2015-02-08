@@ -126,8 +126,8 @@ public class DefaultCompareTool implements CompareTool {
                                     }
                                 }
                                 if (add2analysis) {
-                                    CompositeComparison<T> propertyAnalysis = recursiveAnalysis(comparePropertyValue, PropertyUtil.name(compareProperty), referencePropertyValue,
-                                            PropertyUtil.name(referenceProperty), analysis);
+                                    CompositeComparison<T> propertyAnalysis = recursiveAnalysis(comparePropertyValue, PropertyUtil.displayName(compareProperty), referencePropertyValue,
+                                            PropertyUtil.displayName(referenceProperty), analysis);
                                     if (diffMode) {
                                         if (propertyAnalysis.hasDiffsOnObjectLevel() || propertyAnalysis.hasDiffsOnPropertyLevel()) {
                                             analysis.add(propertyAnalysis);
@@ -193,7 +193,7 @@ public class DefaultCompareTool implements CompareTool {
 
         List<MappedList> preparedMappedLists = prepareListsForIndexedComparison(propertyList1, propertyList2, new Comparator<Property>() {
             public int compare(Property o1, Property o2) {
-                return o1.name().compareTo(o2.name());
+                return o1.name().compareTo(o2.name()); // sollte egal sein, ob name() oder displayName()
             }
         });
         PropertyListPair result = new PropertyListPair();

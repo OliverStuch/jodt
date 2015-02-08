@@ -81,7 +81,7 @@ public class ContextMenuFactory {
                 
                 if (property.value() != null && !property.type().isPrimitive()) {
 
-                    JMenuItem menuItem = new JMenuItem("set " + property.name() + " of type " + property.type().getName() + " to null");
+                    JMenuItem menuItem = new JMenuItem("set " + property.displayName()+ " of type " + property.type().getName() + " to null");
                     menuItem.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             treeTableModel.setValue(null, node);

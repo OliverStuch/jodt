@@ -13,11 +13,13 @@ import org.jodt.property.Property;
 import org.jodt.property.PropertyToolConfiguration;
 import org.jodt.reflection.JavaTypeDetector;
 import org.jodt.util.Registry;
+import org.jodt.util.ToStringRenderer;
 
 /**
  * @author Oliver Stuch (oliver@stuch.net)
  */
 public class DefaultPropertyToolConfiguration implements PropertyToolConfiguration {
+
 
     // -------------------- Identities ------------------------------------ //
     public Long getID(Object object) {
@@ -173,11 +175,23 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
 
     public String renderAttributeName(String attributeName) {
         String displayName = attributeNameToStringRenderer.get(attributeName);
-        return displayName != null ? displayName : attributeName;
+        if(displayName != null){
+            return displayName;
+        } else {
+            if (globalAttributeNameRenderer != null){
+                return globalAttributeNameRenderer.render2String(attributeName);
+            } else {
+                return attributeName;
+            }
+        }
     }
 
     public void globalIdentityResolverFactory(IdentityResolverFactory identityResolverFactory) {
         globalIdentityResolverFactory = identityResolverFactory;
+    }
+
+    public void registerGlobalAttributeNameRenderer(ToStringRenderer toStringRenderer) {
+        globalAttributeNameRenderer = toStringRenderer;
     }
 
     // public void set(NonTerminalStrategy nonTerminalStrategy) {
@@ -202,6 +216,6 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     private Set<String> ignoreAttributeNames = new HashSet();
     private Map<String, String> attributeNameToStringRenderer = new HashMap();
     private IdentityResolverFactory globalIdentityResolverFactory;
-
+    private ToStringRenderer globalAttributeNameRenderer;
     // -------------------- END isNonTerminal ------------------------------------ //
 }

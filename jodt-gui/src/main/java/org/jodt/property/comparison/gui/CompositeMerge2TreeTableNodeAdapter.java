@@ -3,7 +3,6 @@ package org.jodt.property.comparison.gui;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 
-
 import org.jdesktop.swingx.treetable.AbstractMutableTreeTableNode;
 import org.jdesktop.swingx.treetable.MutableTreeTableNode;
 import org.jodt.property.CompositeProperty;
@@ -12,11 +11,16 @@ import org.jodt.property.comparison.CompositeMerge;
 import org.jodt.property.gui.MutableTreeTablePropertyNode;
 
 /**
- * 
- * Diese Klasse erlaubt es ein CompositeMerge-Objekt zu editieren. Vom Wesen her ist es also ein CompositeProperty2TreeTableNodeAdapter, der zwei weitere Spalten (compare und reference) hat,
- * die beim Editieren LESEND benutzt werden. Es muss beachtet werden, dass der CompositeProperty2TreeTableNodeAdapter-Anteil mit einer gemappten (also auch indizierten!) CompositeProperty
- * betrieben werden muss. Das Einfügen von Collection-Elementen muss auch im compare- und reference-objekt zu neuen Einträgen führen. Hier legen ohnehin gemappte CompositeProperty vor.
- * 
+ *
+ * Diese Klasse erlaubt es ein CompositeMerge-Objekt zu editieren. Vom Wesen her
+ * ist es also ein CompositeProperty2TreeTableNodeAdapter, der zwei weitere
+ * Spalten (compare und reference) hat, die beim Editieren LESEND benutzt
+ * werden. Es muss beachtet werden, dass der
+ * CompositeProperty2TreeTableNodeAdapter-Anteil mit einer gemappten (also auch
+ * indizierten!) CompositeProperty betrieben werden muss. Das Einfügen von
+ * Collection-Elementen muss auch im compare- und reference-objekt zu neuen
+ * Einträgen führen. Hier legen ohnehin gemappte CompositeProperty vor.
+ *
  * @author Oliver Stuch (oliver@stuch.net)
  */
 public class CompositeMerge2TreeTableNodeAdapter<T> extends AbstractMutableTreeTableNode implements MutableTreeTablePropertyNode<T> {
@@ -47,26 +51,33 @@ public class CompositeMerge2TreeTableNodeAdapter<T> extends AbstractMutableTreeT
 
     public Object getValueAt(int column) {
         switch (column) {
-        case NAME_COLUMN:
-            return name();
-        case VALUE_COLUMN:
-            return value();
-        case COMPARE_COLUMN:
-            return compositeMerge.getCompareObjectAsIndexMappedCompositePropertyList().value();
-        case REFERENCE_COLUMN:
-            return compositeMerge.getReferenceObjectAsIndexMappedCompositePropertyList().value();
-        default:
-            return null;
+            case NAME_COLUMN:
+                return displayName();
+            case VALUE_COLUMN:
+                return value();
+            case COMPARE_COLUMN:
+                return compositeMerge.getCompareObjectAsIndexMappedCompositePropertyList().value();
+            case REFERENCE_COLUMN:
+                return compositeMerge.getReferenceObjectAsIndexMappedCompositePropertyList().value();
+            default:
+                return null;
         }
     }
 
+    @Override
     public String description() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String name() {
         return compositeMerge.name();
+    }
+
+    @Override
+    public String displayName() {
+        return compositeMerge.displayName();
     }
 
     public Class<T> type() {

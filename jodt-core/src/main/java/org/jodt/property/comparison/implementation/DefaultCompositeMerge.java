@@ -12,11 +12,9 @@ import org.jodt.property.comparison.CompositeComparison;
 import org.jodt.property.comparison.CompositeMerge;
 import org.jodt.property.comparison.DiffType;
 
-
 /**
  * @author Oliver Stuch
  */
-
 public class DefaultCompositeMerge<T> extends ArrayList<CompositeMerge<?>> implements CompositeMerge<T> {
 
     public DefaultCompositeMerge(CompositeComparison<T> compositeComparison) {
@@ -69,7 +67,7 @@ public class DefaultCompositeMerge<T> extends ArrayList<CompositeMerge<?>> imple
     public boolean hasDiffsOnPropertyLevel() {
         return delegateCompositeComparison.hasDiffsOnPropertyLevel();
     }
-    
+
     public boolean hasDiffs() {
         return delegateCompositeComparison.hasDiffs();
     }
@@ -124,6 +122,10 @@ public class DefaultCompositeMerge<T> extends ArrayList<CompositeMerge<?>> imple
         return mergeProperty.name();
     }
 
+    public String displayName() {
+        return mergeProperty.displayName();
+    }
+
     // Property
     public String description() {
         return mergeProperty.description();
@@ -156,6 +158,5 @@ public class DefaultCompositeMerge<T> extends ArrayList<CompositeMerge<?>> imple
     private CompositeMerge<?> parent;
     private Property<T> mergeProperty;
     private CompositePropertyList<T> mergeObjectAsIndexMappedCompositePropertyList;
-
 
 }

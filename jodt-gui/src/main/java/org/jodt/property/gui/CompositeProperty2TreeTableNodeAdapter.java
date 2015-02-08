@@ -3,15 +3,16 @@ package org.jodt.property.gui;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 
-
 import org.apache.log4j.Logger;
 import org.jdesktop.swingx.treetable.AbstractMutableTreeTableNode;
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.Property;
 
 /**
- * Diese Klasse adaptiert ein CompositeProperty-Objekt für die TreeTable. Es ist als Property ansprechbar.
- * @author Oliver Stuch  (oliver@stuch.net) 
+ * Diese Klasse adaptiert ein CompositeProperty-Objekt für die TreeTable. Es ist
+ * als Property ansprechbar.
+ *
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMutableTreeTableNode implements MutableTreeTablePropertyNode<T> {
 
@@ -42,32 +43,32 @@ public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMutableTr
     // MutableTreeTableNode
     public Object getValueAt(int column) {
         switch (column) {
-        case NAME_COLUMN:
-            return name();
-        case VALUE_COLUMN:
-            return value();
-        default:
-            return null;
+            case NAME_COLUMN:
+                return displayName();
+            case VALUE_COLUMN:
+                return value();
+            default:
+                return null;
         }
     }
 
     // MutableTreeTableNode
     public void setValueAt(Object value, int column) {
         switch (column) {
-        case VALUE_COLUMN:
-            value((T) value);
-        default:
-            return;
+            case VALUE_COLUMN:
+                value((T) value);
+            default:
+                return;
         }
     }
 
     // MutableTreeTableNode
     public boolean isEditable(int column) {
         switch (column) {
-        case VALUE_COLUMN:
-            return true;
-        default:
-            return false;
+            case VALUE_COLUMN:
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -78,6 +79,7 @@ public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMutableTr
     /**
      * {@inheritDoc Property#description()}
      */
+    @Override
     public String description() {
         return compositeProperty.description();
     }
@@ -85,8 +87,14 @@ public class CompositeProperty2TreeTableNodeAdapter<T> extends AbstractMutableTr
     /**
      * {@inheritDoc Property#name()}
      */
+    @Override
     public String name() {
         return compositeProperty.name();
+    }
+
+    @Override
+    public String displayName() {
+        return compositeProperty.displayName();
     }
 
     /**

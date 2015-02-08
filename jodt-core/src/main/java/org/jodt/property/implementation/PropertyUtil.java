@@ -6,12 +6,16 @@ import java.util.Collection;
 import org.jodt.property.Property;
 
 /**
- * @author Oliver Stuch  (oliver@stuch.net) 
+ * @author Oliver Stuch (oliver@stuch.net)
  */
-
 public class PropertyUtil {
+
     public static String name(Property property) {
         return property != null ? property.name() : null;
+    }
+
+    public static String displayName(Property property) {
+        return property != null ? property.displayName() : null;
     }
 
     public static Class type(Property property) {

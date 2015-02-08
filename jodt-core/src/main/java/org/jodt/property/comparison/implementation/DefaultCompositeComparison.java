@@ -122,7 +122,7 @@ public class DefaultCompositeComparison<T> extends ArrayList<CompositeComparison
         return this.childDiffCount;
     }
 
-    public String name() {
+    public String name() { // TODO: displayName ??
         String compareName = getCompareProperty().name();
         String referenceName = getReferenceProperty().name();
         if (compareName == null) {

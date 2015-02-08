@@ -39,4 +39,8 @@ public class NullProperty implements Property {
         return new ArrayList();
     }
 
+    public String displayName() {
+       return name();
+    }
+
 }

@@ -102,4 +102,8 @@ public class PropertyMap<T> extends DelegatingCompositeProperty<T> {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
+
+    public String displayName() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

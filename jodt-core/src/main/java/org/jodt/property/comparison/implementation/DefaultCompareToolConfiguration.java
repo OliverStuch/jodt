@@ -10,6 +10,7 @@ import org.jodt.property.comparison.IgnorePropertyStrategy;
 import org.jodt.property.comparison.IgnoreStrategy;
 import org.jodt.property.implementation.DefaultPropertyToolConfiguration;
 import org.jodt.util.Registry;
+import org.jodt.util.ToStringRenderer;
 
 /**
  * Defaults:<br>
@@ -256,6 +257,10 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
 
     public void registerTerminalClass(Class terminalClass) {
         delegate.registerTerminalClass(terminalClass);
+    }
+
+    public void registerGlobalAttributeNameRenderer(ToStringRenderer toStringRenderer) {
+        delegate.registerGlobalAttributeNameRenderer(toStringRenderer);
     }
 
     private static class IsIgnoreType {

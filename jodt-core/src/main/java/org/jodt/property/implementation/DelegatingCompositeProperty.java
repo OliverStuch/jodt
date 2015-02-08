@@ -7,11 +7,9 @@ import org.jodt.property.CompositeProperty;
 import org.jodt.property.InternalPropertyTool;
 import org.jodt.property.Property;
 
-
 /**
- * @author Oliver Stuch  (oliver@stuch.net) 
+ * @author Oliver Stuch (oliver@stuch.net)
  */
-
 abstract public class DelegatingCompositeProperty<T> implements InternalCompositeProperty<T>, CompositeProperty<T> {
 
     public DelegatingCompositeProperty(Property<T> delegate, CompositeProperty<?> parent) {
@@ -25,6 +23,10 @@ abstract public class DelegatingCompositeProperty<T> implements InternalComposit
 
     public String name() {
         return delegate.name();
+    }
+
+    public String displayName() {
+        return delegate.displayName();
     }
 
     public Class type() {

@@ -12,6 +12,8 @@ public interface Property<T> {
     Collection<Annotation> annotations();
 
     String name();
+    
+    String displayName();
 
     Class<T> type();
 

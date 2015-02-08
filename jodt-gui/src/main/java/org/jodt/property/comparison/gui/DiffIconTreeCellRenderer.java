@@ -50,7 +50,7 @@ public class DiffIconTreeCellRenderer implements TreeCellRenderer {
             diff = new NoDiff(null, null);
         }
         ToStringRenderer toStringRenderer = defaultJXTreeTable.getToStringRenderer(diff.getClass());
-        label.setText(comparisonNode.name());// compositeComparison.getCompareObjectAsIndexMappedCompositePropertyList().name());
+        label.setText(comparisonNode.displayName());// compositeComparison.getCompareObjectAsIndexMappedCompositePropertyList().name());
         label.setIcon(diff2icon.getImplementation(diff.getClass()));
         return label;
     }

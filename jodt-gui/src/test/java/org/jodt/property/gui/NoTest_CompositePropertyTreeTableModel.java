@@ -44,6 +44,7 @@ public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_Composi
             this.root = (CompositeProperty2TreeTableNodeAdapter) dttm.getRoot();
         }
 
+        @Override
         public CompositeProperty find(String name) {
             Iterator<CompositeProperty> iterator = iterator();
             while (iterator.hasNext()) {
@@ -190,6 +191,11 @@ public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_Composi
         public Collection annotations() {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public String displayName() {
+           return root.displayName();
         }
 
     }

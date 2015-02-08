@@ -18,12 +18,12 @@ public class ReflectiveProperty<T> implements Property<T> {
 
     private Field field;
     private Object fieldOwner;
-    private String renderedFieldName;
+    private String displayName;
 
-    public ReflectiveProperty(Field field, Object fieldOwner, String renderedFieldName) {
+    public ReflectiveProperty(Field field, Object fieldOwner, String displayName) {
         this.field = field;
         this.fieldOwner = fieldOwner;
-        this.renderedFieldName = renderedFieldName;
+        this.displayName = displayName;
     }
 
     public String description() {
@@ -32,8 +32,11 @@ public class ReflectiveProperty<T> implements Property<T> {
     }
 
     public String name() {
-//        return field.getName();
-        return renderedFieldName;
+        return field.getName();
+    }
+
+    public String displayName() {
+        return displayName;
     }
 
     public Class type() {

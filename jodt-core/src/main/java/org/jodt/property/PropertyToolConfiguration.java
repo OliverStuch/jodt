@@ -1,6 +1,7 @@
 package org.jodt.property;
 
 import org.jodt.util.Registry;
+import org.jodt.util.ToStringRenderer;
 
 /**
  * @author Oliver Stuch (oliver@stuch.net)
@@ -50,4 +51,6 @@ public interface PropertyToolConfiguration {
     void globalIdentityResolverFactory(IdentityResolverFactory identityResolverFactory);
 
     void registerTerminalClass(Class terminalClass);
+
+    void registerGlobalAttributeNameRenderer(ToStringRenderer toStringRenderer);
 }

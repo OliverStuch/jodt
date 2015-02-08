@@ -148,10 +148,5 @@ public class DefaultCompositePropertyList<T> extends DelegatingCompositeProperty
     }
 
     private List<CompositeProperty<?>> properties;
-
-
-
-
-
-
+ 
 }
