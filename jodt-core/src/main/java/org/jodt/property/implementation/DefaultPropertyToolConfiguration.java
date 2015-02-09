@@ -20,10 +20,14 @@ import org.jodt.util.ToStringRenderer;
  */
 public class DefaultPropertyToolConfiguration implements PropertyToolConfiguration {
 
-
     // -------------------- Identities ------------------------------------ //
     public Long getID(Object object) {
-        return idResolverRegistry.getImplementation(object.getClass()).getID(object);
+        IdentityResolver identityResolver = idResolverRegistry.getImplementation(object.getClass());
+        if (identityResolver == null) {
+            return null;
+        } else {
+            return identityResolver.getID(object);
+        }
     }
 
     public boolean hasIdentityResolver(Class clazz) {
@@ -113,7 +117,6 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
 
     }
 
-
     // TODO ... eigentlich !isNonTerminal. 2015: Verstehe ich nicht!
     public boolean isPrimitive(Object object, Class type) {
         return (object == null || terminalTypes.getImplementation(type) != null || JavaTypeDetector.isJavaValueType(type));
@@ -174,14 +177,14 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     }
 
     public String renderAttributeName(String attributeName) {
-        if (attributeName == null){
+        if (attributeName == null) {
             return null;
         }
         String displayName = attributeNameToStringRenderer.get(attributeName);
-        if(displayName != null){
+        if (displayName != null) {
             return displayName;
         } else {
-            if (globalAttributeNameRenderer != null){
+            if (globalAttributeNameRenderer != null) {
                 return globalAttributeNameRenderer.render2String(attributeName);
             } else {
                 return attributeName;

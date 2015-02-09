@@ -415,15 +415,15 @@ public class DefaultCompareTool implements CompareTool {
             return new Additional(compareObject);
         }
 
-        boolean compareIsTerminal = this.compareToolConfiguration.isTerminal(compareObject);
-        if (compareIsTerminal != this.compareToolConfiguration.isTerminal(referenceObject)) {
+        boolean compareIsTerminal = compareToolConfiguration.isTerminal(compareObject);
+        if (compareIsTerminal != compareToolConfiguration.isTerminal(referenceObject)) {
             throw new IllegalArgumentException("compareObject is terminal: " + compareIsTerminal + ", but referenceObject is terminal: "
-                    + this.compareToolConfiguration.isTerminal(compareObject) + "! Must be either both terminal or both non-terminal.");
+                    + compareToolConfiguration.isTerminal(referenceObject) + "! Must be either both terminal or both non-terminal.");
         }
         if (!compareIsTerminal) {
-            if (this.compareToolConfiguration.hasIdentityResolver(compareObject.getClass())) {
-                Long id1 = this.compareToolConfiguration.getID(compareObject);
-                Long referenceId = this.compareToolConfiguration.getID(referenceObject);
+            if (compareToolConfiguration.hasIdentityResolver(compareObject.getClass())) {
+                Long id1 = compareToolConfiguration.getID(compareObject);
+                Long referenceId = compareToolConfiguration.getID(referenceObject);
                 if (id1 == null || referenceId == null) {
                     // Wenn es sich um ein Non-Terminal handelt, für das kein Id-Resolver benutzt werden soll, liegt auch kein Ref-Dif vor
                     // Idee: Verwende HashCodeIdentifier, wenn Objekte equals überschreiben.
