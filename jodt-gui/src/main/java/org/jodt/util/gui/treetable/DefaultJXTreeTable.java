@@ -144,10 +144,10 @@ public class DefaultJXTreeTable extends JXTreeTable {
     private void setupRendererRegistry() {
         Set<Class> keys = defaultRenderersByColumnClass.keySet();
         for (Class clazz : keys) {
-            rendererRegistry.setImplementation(clazz, (TableCellRenderer) defaultRenderersByColumnClass.get(clazz));
+            setRenderer(clazz, (TableCellRenderer) defaultRenderersByColumnClass.get(clazz));
         }
-        rendererRegistry.setImplementation(Object.class, new DefaultTableRenderer(new ToStringRenderer2StringValue(toStringRendererRegistry)));
-        rendererRegistry.setImplementation(Number.class, new DefaultTableRenderer(FormatStringValue.NUMBER_TO_STRING, JLabel.LEFT));
+        setRenderer(Object.class, new DefaultTableRenderer(new ToStringRenderer2StringValue(toStringRendererRegistry)));
+        setRenderer(Number.class, new DefaultTableRenderer(FormatStringValue.NUMBER_TO_STRING, JLabel.LEFT));
         // rendererRegistry.setImplementation(Integer.class, new net.stuch.yag.util.gui.property.NumberRenderer());
 
         // setDefaultRenderer(Number.class, new DefaultTableRenderer(
