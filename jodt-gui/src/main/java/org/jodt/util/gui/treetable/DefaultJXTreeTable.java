@@ -114,12 +114,11 @@ public class DefaultJXTreeTable extends JXTreeTable {
         getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(getAccelerator("C"), "collapse-all");
         getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(getAccelerator("E"), "expand-all");
         getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(getAccelerator("X"), ACTION_EXPAND);
-        // getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(getAccelerator("S"), ACTION_SELECT_CURRENT_LEVEL);
+//         getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(getAccelerator("S"), ACTION_SELECT_CURRENT_LEVEL); // tut noch nicht
     }
 
     private KeyStroke getAccelerator(String accelerator) {
-        String findMnemonic = accelerator;
-        KeyStroke stroke = Utilities.stringToKey("D-" + findMnemonic);
+        KeyStroke stroke = Utilities.stringToKey("D-" + accelerator);
         if (stroke == null) {
             stroke = KeyStroke.getKeyStroke("control " + accelerator);
         }
