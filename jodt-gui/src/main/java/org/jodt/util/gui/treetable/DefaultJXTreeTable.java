@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.EventObject;
 import java.util.Iterator;
 import java.util.List;
@@ -94,6 +95,7 @@ public class DefaultJXTreeTable extends JXTreeTable {
     }
 
     private class Actions extends UIAction {
+
         Actions(String name) {
             super(name);
         }
@@ -148,6 +150,7 @@ public class DefaultJXTreeTable extends JXTreeTable {
         }
         setRenderer(Object.class, new DefaultTableRenderer(new ToStringRenderer2StringValue(toStringRendererRegistry)));
         setRenderer(Number.class, new DefaultTableRenderer(FormatStringValue.NUMBER_TO_STRING, JLabel.LEFT));
+        setRenderer(Date.class, new DefaultTableRenderer(new ToStringRenderer2StringValue(toStringRendererRegistry)));
         // rendererRegistry.setImplementation(Integer.class, new net.stuch.yag.util.gui.property.NumberRenderer());
 
         // setDefaultRenderer(Number.class, new DefaultTableRenderer(
@@ -181,7 +184,8 @@ public class DefaultJXTreeTable extends JXTreeTable {
                         vector.add(nextObject);
                     }
                 }
-                String displayString = "#" + collection.size() + ": " + vector;
+//                String displayString = "#" + collection.size() + ": " + vector;
+                String displayString = "Anzahl Elemente:" + collection.size();
                 TableCellRenderer stringRenderer = getDefaultRenderer(String.class);
                 return stringRenderer.getTableCellRendererComponent(table, displayString, isSelected, hasFocus, row, column);
             }
@@ -404,8 +408,9 @@ public class DefaultJXTreeTable extends JXTreeTable {
     public void selectCurrentLevel() {
         // start by getting current selection state
         TreePath[] selectedPaths = getSelectionPaths();
-        if (selectedPaths == null)
+        if (selectedPaths == null) {
             return;
+        }
         // continue by extracting paths that are under different immediate parents
         List<TreePath> uniqueParentPaths = new ArrayList<TreePath>();
         // array is ok here, there aren't usually that many paths selected.
@@ -413,7 +418,9 @@ public class DefaultJXTreeTable extends JXTreeTable {
         for (TreePath selectedPath : selectedPaths) {
             TreePath parentPath = selectedPath.getParentPath();
             if (parentPath == null) // root hasn't got a parent path
+            {
                 continue;
+            }
             Object parent = parentPath.getLastPathComponent();
             // filter out unique parents and add their TreePaths to collection
             if (!uniqueParents.contains(parent)) {
@@ -430,18 +437,25 @@ public class DefaultJXTreeTable extends JXTreeTable {
             Object parent = uniqueParentPath.getLastPathComponent();
             // using the model to get the 'childs'
             int childCount = model.getChildCount(parent);
-            for (int i = 0; i < childCount; i++)
+            for (int i = 0; i < childCount; i++) {
                 paths.add(uniqueParentPath.pathByAddingChild(model.getChild(parent, i)));
+            }
         }
         // finally select all the 'nodes' that were found.
         getTreeSelectionModel().setSelectionPaths(paths.toArray(new TreePath[paths.size()]));
     }
 
-    /** @supplierRole toStringRenderer */
+    /**
+     * @supplierRole toStringRenderer
+     */
     private Registry<ToStringRenderer> toStringRendererRegistry;
-    /** @supplierRole cellRenderer */
+    /**
+     * @supplierRole cellRenderer
+     */
     private Registry<TableCellRenderer> rendererRegistry;
-    /** @supplierRole cellEditors */
+    /**
+     * @supplierRole cellEditors
+     */
     private Registry<TableCellEditor> editorRegistry;
     private Factory<TableCellEditor> editorFactory;
     protected Registry<TableCellEditor> notEditableRegistry;
@@ -452,7 +466,6 @@ public class DefaultJXTreeTable extends JXTreeTable {
     private static final String ACTION_SELECT_CURRENT_LEVEL = "select-current-level";
 
     // inner classes
-
     public class DefaultJXTreeTableModel extends DefaultTreeTableModel {
 
         private String[] columnNames;
@@ -493,7 +506,6 @@ public class DefaultJXTreeTable extends JXTreeTable {
         // modelSupport.firePathChanged(new TreePath(getPathToRoot(node)));
         //
         // }
-
         @Override
         public String getColumnName(int column) {
             return columnNames[column];
@@ -514,7 +526,6 @@ public class DefaultJXTreeTable extends JXTreeTable {
             // if (column >= ttn.getColumnCount()) {
             // return null;
             // }
-
             return ttn.getValueAt(column);
         }
 
@@ -562,7 +573,8 @@ public class DefaultJXTreeTable extends JXTreeTable {
         }
 
         /**
-         * Diese Methode wird ...bitte festhalten... per reflection von JXTree aus geholt und aufgerufen!
+         * Diese Methode wird ...bitte festhalten... per reflection von JXTree
+         * aus geholt und aufgerufen!
          */
         public String convertValueToText(Object object) {
             ToStringRenderer toStringRenderer = (ToStringRenderer) toStringRendererRegistry.getImplementation(object.getClass());
@@ -585,7 +597,6 @@ public class DefaultJXTreeTable extends JXTreeTable {
         // throw new RuntimeException(rootNode.getClass() + " not supported");
         // }
         // }
-
         public void fireTableDataChanged() {
             modelSupport.fireStructureChanged();
         }

@@ -5,7 +5,7 @@
   <groupId>org.jodt</groupId>
   <artifactId>jodt-gui</artifactId>
   <packaging>jar</packaging>
-  <version>0.1</version>
+  <version>0.2</version>
   <url>http://maven.apache.org</url>
   <build>
     <plugins>

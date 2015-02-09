@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jodt-core</artifactId>
   <packaging>jar</packaging>
-  <version>0.1</version>
+  <version>0.2</version>
   <parent>
     <groupId>org.jodt</groupId>
     <artifactId>jodt</artifactId>
