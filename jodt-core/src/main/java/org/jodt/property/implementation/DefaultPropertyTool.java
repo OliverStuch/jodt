@@ -43,17 +43,17 @@ public class DefaultPropertyTool implements InternalPropertyTool {
 
     // PropertyTool
     public <T> CompositeProperty<T> createOneLevelRecursiveCompositeProperty(T object, String name) {
-        return recursiveCreateCompositeProperty(object, type(object), name, new PropertyProvider(object, name, displayName(name)), null, new OneLevelRecursiveStrategy());
+        return recursiveCreateCompositeProperty(object, type(object), name, new PropertyProvider(object, name, displayName(name)), null, new OneLevelRecursionStrategy());
     }
 
     // PropertyTool
     public <T> CompositeProperty<T> createCompositeProperty(T object, String name) {
-        return recursiveCreateCompositeProperty(object, type(object), name, new PropertyProvider(object, name, displayName(name)), null, new RecursiveStrategy());
+        return recursiveCreateCompositeProperty(object, type(object), name, new PropertyProvider(object, name, displayName(name)), null, new FullRecursionStrategy());
     }
 
     // InternalPropertyTool
     public <T> CompositeProperty<T> createCompositeProperty(T object, String name, CompositeProperty<?> parent) {
-        return recursiveCreateCompositeProperty(object, type(object), name, new PropertyProvider(object, name, displayName(name)), parent, new RecursiveStrategy());
+        return recursiveCreateCompositeProperty(object, type(object), name, new PropertyProvider(object, name, displayName(name)), parent, new FullRecursionStrategy());
     }
 
     // TODO Map, Array, SortedSet
@@ -64,11 +64,11 @@ public class DefaultPropertyTool implements InternalPropertyTool {
      * @param name NICHT displayName: Hier wird z.B. das Ignorieren geregelt
      * @param propertyProvider
      * @param parent
-     * @param strategy
+     * @param recursionStrategy
      * @return 
      */
     private CompositeProperty recursiveCreateCompositeProperty(Object object, Class type, String name, PropertyProvider propertyProvider,
-            CompositeProperty parent, Strategy strategy) {
+            CompositeProperty parent, RecursionStrategy recursionStrategy) {
         if (configuration.isIgnored(type)) {
             return null;
         }
@@ -82,13 +82,13 @@ public class DefaultPropertyTool implements InternalPropertyTool {
             Set objectAsSet = (Set) object;
             Set<CompositeProperty> propertySet = new HashSet();
             CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), propertySet, parent);
-            strategy.addElements(propertySet, objectAsSet, result);
+            recursionStrategy.addElements(propertySet, objectAsSet, result);
             return result;
         } else if (List.class.isAssignableFrom(type)) {
             List objectAsList = (List) object;
             List<CompositeProperty<?>> propertyList = new ArrayList();
             CompositeProperty result = new DefaultCompositePropertyList(propertyProvider.provide(), propertyList, parent);
-            strategy.addElements(propertyList, objectAsList, result);
+            recursionStrategy.addElements(propertyList, objectAsList, result);
             return result;
         } else { // kein special => reflection
             Set<Property> objectAsReflectivePropertySet = createReflectivePropertySet(object); // object as reflectivePropertySet
@@ -97,14 +97,14 @@ public class DefaultPropertyTool implements InternalPropertyTool {
             // Kann kein normales PropertySet sein, weil man keine Attribute aus einer
             // Klasse entfernen oder adden kann
             // obwohl das ein interessantes feature wäre ;-)
-            strategy.addElements(propertySet, objectAsReflectivePropertySet, result);
+            recursionStrategy.addElements(propertySet, objectAsReflectivePropertySet, result);
 
             return result;
 
         }
     }
 
-    interface Strategy {
+    interface RecursionStrategy {
 
         void addElements(Set<CompositeProperty> propertySet, Set<Property> objectAsReflectivePropertySet, ReflectivePropertySet result);
 
@@ -114,7 +114,7 @@ public class DefaultPropertyTool implements InternalPropertyTool {
 
     }
 
-    class OneLevelRecursiveStrategy implements Strategy {
+    class OneLevelRecursionStrategy implements RecursionStrategy {
 
         public void addElements(Set<CompositeProperty> propertySet, Set<Property> objectAsReflectivePropertySet, ReflectivePropertySet result) {
             for (Property property : objectAsReflectivePropertySet) {
@@ -145,10 +145,10 @@ public class DefaultPropertyTool implements InternalPropertyTool {
                 }
             }
         }
-        private Strategy shallowStrategy = new ShallowStrategy();
+        private RecursionStrategy shallowStrategy = new ShallowStrategy();
     }
 
-    class RecursiveStrategy implements Strategy {
+    class FullRecursionStrategy implements RecursionStrategy {
 
         public void addElements(Set<CompositeProperty> propertySet, Set<?> objectAsSet, CompositeProperty result) {
             for (Object elementOfSet : objectAsSet) {
@@ -182,7 +182,7 @@ public class DefaultPropertyTool implements InternalPropertyTool {
 
     }
 
-    class ShallowStrategy implements Strategy {
+    class ShallowStrategy implements RecursionStrategy {
 
         public void addElements(Set<CompositeProperty> propertySet, Set<?> objectAsSet, CompositeProperty result) {
             // do nothing
@@ -255,7 +255,7 @@ public class DefaultPropertyTool implements InternalPropertyTool {
         return propertyList;
     }
 
-    private Strategy strategy;
+    private RecursionStrategy strategy;
     private boolean ignoreStaticFields;
     private PropertyToolConfiguration configuration;
 

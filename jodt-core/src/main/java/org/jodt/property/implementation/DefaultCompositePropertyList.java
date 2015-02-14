@@ -9,22 +9,26 @@ import org.jodt.property.CompositeProperty;
 import org.jodt.property.CompositePropertyList;
 import org.jodt.property.Property;
 
-
 /**
- * Diese Klasse wird  erzeugt, wenn DefaultCompositePropertyFactory auf eine Liste von Objekten trifft.
- * @author Oliver Stuch  (oliver@stuch.net) 
+ * Diese Klasse wird erzeugt, wenn DefaultCompositePropertyFactory auf eine
+ * Liste von Objekten trifft.
+ *
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 public class DefaultCompositePropertyList<T> extends DelegatingCompositeProperty<T> implements CompositePropertyList<T> {
-/**
- * @param listAsProperty repräsentiert die Liste als Property. Wenn die Liste z.B. in einem Objekt als Attributwert vorhanden ist, ist der property.name 
- * gleich dem Attribut-Namen.
- */
+
+    /**
+     * @param listAsProperty repräsentiert die Liste als Property. Wenn die
+     * Liste z.B. in einem Objekt als Attributwert vorhanden ist, ist der
+     * property.name gleich dem Attribut-Namen.
+     * @param propertyList Der Inhalt der Liste als Liste von CompositeProperty
+     */
     public DefaultCompositePropertyList(Property<T> listAsProperty, List<CompositeProperty<?>> propertyList) {
         super(listAsProperty, null);
         this.properties = propertyList;
     }
-    
-    public DefaultCompositePropertyList(Property<T> listAsProperty, List<CompositeProperty<?>> propertyList,  CompositeProperty<?> parent) {
+
+    public DefaultCompositePropertyList(Property<T> listAsProperty, List<CompositeProperty<?>> propertyList, CompositeProperty<?> parent) {
         super(listAsProperty, parent);
         this.properties = propertyList;
     }
@@ -148,5 +152,5 @@ public class DefaultCompositePropertyList<T> extends DelegatingCompositeProperty
     }
 
     private List<CompositeProperty<?>> properties;
- 
+
 }
