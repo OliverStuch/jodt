@@ -61,8 +61,6 @@ public class ComparableProperty implements CompositeProperty, Comparable<Compara
         return delegateCompositeProperty.value(value);
     }
 
-    private CompositeProperty delegateCompositeProperty;
-
     public boolean add(Object e) {
         return delegateCompositeProperty.add(e);
     }
@@ -139,6 +137,8 @@ public class ComparableProperty implements CompositeProperty, Comparable<Compara
     public String toString() {
         return "ComparableProperty{" + "identityResolverRegistry=" + identityResolverRegistry + ", originalIndex=" + originalIndex + ", id=" + id + ", delegateCompositeProperty=" + delegateCompositeProperty + '}';
     }
+    
+    private CompositeProperty delegateCompositeProperty;
     private Registry<? extends IdentityResolver> identityResolverRegistry;
     private int originalIndex;
     private Long id;

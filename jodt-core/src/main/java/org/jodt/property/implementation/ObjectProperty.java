@@ -14,7 +14,7 @@ import org.jodt.property.Property;
  *
  * @author Oliver Stuch (oliver@stuch.net)
  */
-public class ObjectProperty<T> extends AbstractProperty<T> implements Property<T> {
+public class ObjectProperty<T>  implements Property<T> {
 
     public ObjectProperty(T object, String name, String displayName, String description) {
         this(object, name, displayName);
@@ -59,7 +59,7 @@ public class ObjectProperty<T> extends AbstractProperty<T> implements Property<T
 
     @Override
     public String toString() {
-        return "ObjectProperty{" + super.toString() + "underlyingObject=" + underlyingObject + ", name=" + name + ", displayName=" + displayName + ", description=" + description + '}';
+        return "ObjectProperty{" +"underlyingObject=" + underlyingObject + ", name=" + name + ", displayName=" + displayName + ", description=" + description + '}';
     }
 
     private T underlyingObject;

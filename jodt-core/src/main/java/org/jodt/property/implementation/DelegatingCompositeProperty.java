@@ -95,7 +95,7 @@ abstract public class DelegatingCompositeProperty<T> implements InternalComposit
 
     @Override
     public String toString() {
-        return "DelegatingCompositeProperty{" + "delegate=" + delegate + ", parent=" + parent + ", propertyFactory=" + propertyFactory + '}';
+        return "DelegatingCompositeProperty{" + "delegate=" + delegate + /*", parent=" + parent +*/ ", propertyFactory=" + propertyFactory + '}';
     }
     
     private Property<T> delegate;

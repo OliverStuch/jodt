@@ -50,7 +50,7 @@ public class PropertyUtil {
     }
 
     public static String toString(Object[] objects, String delim) {
-        StringBuilder stringBuffer = new StringBuilder("\n");
+        StringBuilder stringBuffer = new StringBuilder();
         if (objects != null) {
             for (int i = 0; i < objects.length; i++) {
                 if (objects[i] != null) {
@@ -74,7 +74,7 @@ public class PropertyUtil {
     }
 
     public static String toString(Collection collection) {
-        StringBuilder stringBuffer = new StringBuilder("\n");
+        StringBuilder stringBuffer = new StringBuilder();
         for (Object element : collection) {
             stringBuffer.append(safeToString(element)).append(" ");
         }
@@ -82,7 +82,7 @@ public class PropertyUtil {
     }
 
     public static String toString(Set set, String delim) {
-        StringBuilder stringBuffer = new StringBuilder("\n");
+        StringBuilder stringBuffer = new StringBuilder();
         for (Object element : set) {
             stringBuffer.append(safeToString(element)).append(delim);
         }
@@ -98,7 +98,7 @@ public class PropertyUtil {
     }
 
     public static String toString(List list, String delim) {
-        StringBuilder stringBuffer = new StringBuilder("\n");
+        StringBuilder stringBuffer = new StringBuilder();
         for (Object element : list) {
             stringBuffer.append(safeToString(element)).append(delim);
         }
@@ -110,7 +110,7 @@ public class PropertyUtil {
     }
 
     public static String toString(Map map, String delim) {
-        StringBuilder stringBuffer = new StringBuilder("\n");
+        StringBuilder stringBuffer = new StringBuilder();
         for (Object key : map.keySet()) {
             Object element = map.get(key);
             stringBuffer.append(safeToString(key)).append(" -> ").append(safeToString(element)).append(delim);
@@ -136,4 +136,36 @@ public class PropertyUtil {
         }
     }
 
+    public static String indent(String inputString) {
+        StringBuilder outStringBuilder = new StringBuilder();
+        String indentString = "   ";
+        int indent = 0;
+        for (int i = 0; i < inputString.length(); i++) {
+            switch (inputString.charAt(i)) {
+                case '{':
+                    outStringBuilder.append('{');
+                    outStringBuilder.append('\n');
+                    indent++;
+                    for (int j = 0; j < indent; j++) {
+                        outStringBuilder.append(indentString);
+                    }
+                    break;
+                case '}':
+                    outStringBuilder.append('}');
+                    outStringBuilder.append('\n');
+                    indent--;
+                    for (int j = 0; j < indent; j++) {
+                        outStringBuilder.append(indentString);
+                    }
+                    break;
+                case '\t':
+                    break;
+                case '\n':
+                    break;
+                default:
+                    outStringBuilder.append(inputString.charAt(i));
+            }
+        }
+        return outStringBuilder.toString().trim();
+    }
 }
