@@ -2,6 +2,9 @@ package org.jodt.property.comparison.implementation;
 
 import org.jodt.property.comparison.DiffType;
 
+/**
+ * @author Oliver Stuch
+ */
 public class Additional implements DiffType {
 
     private Object additionalObject;
@@ -12,6 +15,11 @@ public class Additional implements DiffType {
 
     public Object additionalObject() {
         return additionalObject;
+    }
+
+    @Override
+    public String toString() {
+        return "additional";
     }
 
 }

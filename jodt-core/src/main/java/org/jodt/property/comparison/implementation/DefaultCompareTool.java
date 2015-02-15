@@ -106,6 +106,10 @@ public class DefaultCompareTool implements CompareTool {
                 if (!(toplevelObjectDiff != null && toplevelObjectDiff instanceof ReferenceDiff && !compareToolConfiguration
                         .analysePropertiesOfDifferentNonTerminalObjects(comparativeObject))) { // war auch kein refdiff (value diff kann nicht sein, non terminal)
                     // wenn kein Toplevel-Unterschied gefunden wurde oder dennoch weiter analysiert werden soll
+                    // NICHT (a UND b UND NICHT c) <=> NICHT a ODER NICHT b ODER c
+                    // a: Es gibt ein toplevelObjectDiff
+                    // b: Es ist ein RefDiff
+                    // c: Es soll weiter geguckt werden
                     for (int propertyIndex = 0; propertyIndex < identityMappedPropertyListPair.getNumProperties(); propertyIndex++) {
                         boolean add2analysis = true;
                         Property<?> compareProperty = mappedPropertyListCompare.get(propertyIndex);
@@ -238,6 +242,12 @@ public class DefaultCompareTool implements CompareTool {
             assert (compareProperties.size() == referenceProperties.size());
             return compareProperties.size();
         }
+
+        @Override
+        public String toString() {
+            return "PropertyListPair{" + "compareProperties=" + compareProperties + ", referenceProperties=" + referenceProperties + '}';
+        }
+        
     }
 
     private static class ComparableComparator implements Comparator {
@@ -422,14 +432,14 @@ public class DefaultCompareTool implements CompareTool {
         }
         if (!compareIsTerminal) {
             if (compareToolConfiguration.hasIdentityResolver(compareObject.getClass())) {
-                Long id1 = compareToolConfiguration.getID(compareObject);
+                Long compareId = compareToolConfiguration.getID(compareObject);
                 Long referenceId = compareToolConfiguration.getID(referenceObject);
-                if (id1 == null || referenceId == null) {
-                    // Wenn es sich um ein Non-Terminal handelt, für das kein Id-Resolver benutzt werden soll, liegt auch kein Ref-Dif vor
+                if (compareId == null || referenceId == null) {
+                    // Wenn es sich um ein Non-Terminal handelt, für das ein Id-Resolver benutzt werden soll, der aber keine ID liefert, liegt auch kein Ref-Dif vor
                     // Idee: Verwende HashCodeIdentifier, wenn Objekte equals überschreiben.
-                    return null; // kein Unterschied feststellbar und auch nicht NoDiff feststellbar
+                    return null; // kein Unterschied feststellbar und auch nicht NoDiff feststellbar TODO 2015: Vielleicht doch ein RefDiff, wenn nur eine id null ist ?
                 }
-                if (id1.equals(referenceId)) {
+                if (compareId.equals(referenceId)) {
                     return new NoDiff(compareObject, referenceObject);
                 } else {
                     ReferenceDiff referenceChangedDiff = new ReferenceDiff(compareObject, referenceObject);
@@ -440,7 +450,7 @@ public class DefaultCompareTool implements CompareTool {
                 // Idee: Verwende HashCodeIdentifier, wenn Objekte equals überschreiben.
                 return null; // kein Unterschied feststellbar und auch nicht NoDiff feststellbar
             }
-        } else if (!compareObject.equals(referenceObject)) {
+        } else if (!compareObject.equals(referenceObject)) { // Wenn compare+reference is terminal
             return new ValueDiff(compareObject, referenceObject);
         } else {
             return new NoDiff(compareObject, referenceObject);

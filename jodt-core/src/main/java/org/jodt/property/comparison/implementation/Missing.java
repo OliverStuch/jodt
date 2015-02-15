@@ -5,7 +5,6 @@ import org.jodt.property.comparison.DiffType;
 /**
  * @author Oliver Stuch
  */
-
 public class Missing implements DiffType {
 
     private Object missingObject;
@@ -17,4 +16,10 @@ public class Missing implements DiffType {
     public Object missingObject() {
         return missingObject;
     }
+
+    @Override
+    public String toString() {
+        return "missing";
+    }
+
 }

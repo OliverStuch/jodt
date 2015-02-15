@@ -4,8 +4,8 @@ import org.jodt.property.comparison.DiffType;
 
 public class AbstractDiff implements DiffType{
 
-    public AbstractDiff(String string) {
-        this.string = string;
+    public AbstractDiff(String description) {
+        this.description = description;
     }
 
     public Object compareObject() {
@@ -25,10 +25,10 @@ public class AbstractDiff implements DiffType{
     }
 
     public String toString() {
-        return this.string;
+        return this.description;
     }
 
     private Object compareObject;
     private Object referenceObject;
-    private String string;
+    private String description;
 }

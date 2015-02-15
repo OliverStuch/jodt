@@ -138,11 +138,17 @@ public class DefaultCompositeComparison<T> extends ArrayList<CompositeComparison
         }
     }
 
+//    public String toString() {
+//        return name() + " TYPE: " + diff() + ", CHILDREN: " + size() + ", COMPARE: " + this.identityMappedPropertyListPair.compareProperties.toString()
+//                + ", REFERENCE: " + this.identityMappedPropertyListPair.referenceProperties.toString();
+//    }
+
+    @Override
     public String toString() {
-        return name() + " TYPE: " + diff() + ", CHILDREN: " + size() + ", COMPARE: " + this.identityMappedPropertyListPair.compareProperties.toString()
-                + ", REFERENCE: " + this.identityMappedPropertyListPair.referenceProperties.toString();
+        return "DefaultCompositeComparison{" + " name= " + name()+ ", diff=" + diff + ", childDiffCount=" + childDiffCount  + /*" identityMappedPropertyListPair=" + identityMappedPropertyListPair +*/ '}';
     }
 
+    
     private PropertyListPair<T> identityMappedPropertyListPair;
     private CompositeComparison<?> parent;
     private DiffType diff;
