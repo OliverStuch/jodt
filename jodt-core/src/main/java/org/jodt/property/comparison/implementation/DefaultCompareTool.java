@@ -3,9 +3,9 @@ package org.jodt.property.comparison.implementation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.CompositePropertyList;
@@ -375,7 +375,7 @@ public class DefaultCompareTool implements CompareTool {
     }
 
     private Map<Object, Integer> createObject2IndexMapping(List objects, Comparator comparator) {
-        Map<Object, Integer> result = new TreeMap(comparator);
+        Map<Object, Integer> result = new HashMap(); // WARUM TREEMAP???? Schadet, wenn die Liste gleiche (im Sinne des IdentityResolvers) enthält.... TreeMap(comparator);
         for (int i = 0; i < objects.size(); i++) {
             result.put(objects.get(i), new Integer(i));
         }
