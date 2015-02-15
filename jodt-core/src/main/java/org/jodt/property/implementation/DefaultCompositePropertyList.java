@@ -151,6 +151,10 @@ public class DefaultCompositePropertyList<T> extends DelegatingCompositeProperty
         return properties.toArray(a);
     }
 
-    private List<CompositeProperty<?>> properties;
+    @Override
+    public String toString() {
+        return "DefaultCompositePropertyList{" + super.toString() + "properties=" + PropertyUtil.toString(properties, ", ") + '}';
+    }
 
+    private List<CompositeProperty<?>> properties;
 }

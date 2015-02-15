@@ -63,10 +63,6 @@ abstract public class DelegatingCompositeProperty<T> implements InternalComposit
         }
     }
 
-    public String toString() {
-        return delegate.toString();
-    }
-
     public boolean hasProperties() {
         return (properties() != null && properties().size() != 0);
     }
@@ -97,6 +93,11 @@ abstract public class DelegatingCompositeProperty<T> implements InternalComposit
         return this.parent;
     }
 
+    @Override
+    public String toString() {
+        return "DelegatingCompositeProperty{" + "delegate=" + delegate + ", parent=" + parent + ", propertyFactory=" + propertyFactory + '}';
+    }
+    
     private Property<T> delegate;
     CompositeProperty parent;
     InternalPropertyTool propertyFactory = new DefaultPropertyTool();

@@ -106,4 +106,11 @@ public class PropertyMap<T> extends DelegatingCompositeProperty<T> {
     public String displayName() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public String toString() {
+        return "PropertyMap{" + super.toString()+ '}';
+    }
+    
+    
 }

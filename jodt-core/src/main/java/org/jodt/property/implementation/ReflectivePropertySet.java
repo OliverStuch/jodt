@@ -69,4 +69,10 @@ public class ReflectivePropertySet<T> extends DefaultCompositePropertySet<T> {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "ReflectivePropertySet{" + super.toString() +'}';
+    }
+    
 }

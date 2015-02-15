@@ -50,10 +50,7 @@ public class DefaultCompositePropertySet<T> extends DelegatingCompositeProperty<
         this.subProperties = (Set<CompositeProperty<?>>) properties;
     }
 
-
-
     // Set-Delegates
-
     public boolean add(CompositeProperty property) {
         Set underlyingSet = (Set) value();
         underlyingSet.add(property.value());
@@ -109,6 +106,11 @@ public class DefaultCompositePropertySet<T> extends DelegatingCompositeProperty<
 
     public <P> P[] toArray(P[] a) {
         return subProperties.toArray(a);
+    }
+
+    @Override
+    public String toString() {
+        return "DefaultCompositePropertySet{" + super.toString() + "subProperties=" + PropertyUtil.toString(subProperties,", ") + '}';
     }
 
     private Set<CompositeProperty<?>> subProperties;

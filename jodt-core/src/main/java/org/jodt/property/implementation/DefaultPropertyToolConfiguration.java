@@ -10,6 +10,7 @@ import org.jodt.property.IdentityResolver;
 import org.jodt.property.IdentityResolverFactory;
 import org.jodt.property.NonTerminalStrategy;
 import org.jodt.property.Property;
+import org.jodt.property.PropertyActor;
 import org.jodt.property.PropertyToolConfiguration;
 import org.jodt.reflection.JavaTypeDetector;
 import org.jodt.util.Registry;
@@ -198,6 +199,22 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
 
     public void registerGlobalAttributeNameRenderer(ToStringRenderer toStringRenderer) {
         globalAttributeNameRenderer = toStringRenderer;
+    }
+
+    public void registerGlobalPropertyActor(String attributeName, PropertyActor actor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void registerGlobalPropertyActor(Class attributeClass, PropertyActor actor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public PropertyActor getPropertyActor(String attributeName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public PropertyActor getPropertyActor(Class attributeClass) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     // public void set(NonTerminalStrategy nonTerminalStrategy) {

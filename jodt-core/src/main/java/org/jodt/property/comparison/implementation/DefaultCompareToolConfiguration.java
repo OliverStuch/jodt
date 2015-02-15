@@ -4,6 +4,7 @@ import org.jodt.property.IdentityResolver;
 import org.jodt.property.IdentityResolverFactory;
 import org.jodt.property.NonTerminalStrategy;
 import org.jodt.property.Property;
+import org.jodt.property.PropertyActor;
 import org.jodt.property.PropertyToolConfiguration;
 import org.jodt.property.comparison.CompareToolConfiguration;
 import org.jodt.property.comparison.IgnorePropertyStrategy;
@@ -261,6 +262,22 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
 
     public void registerGlobalAttributeNameRenderer(ToStringRenderer toStringRenderer) {
         delegate.registerGlobalAttributeNameRenderer(toStringRenderer);
+    }
+
+    public void registerGlobalPropertyActor(String attributeName, PropertyActor actor) {
+        delegate.registerGlobalPropertyActor(attributeName, actor);
+    }
+
+    public void registerGlobalPropertyActor(Class attributeClass, PropertyActor actor) {
+        delegate.registerGlobalPropertyActor(attributeClass, actor);
+    }
+
+    public PropertyActor getPropertyActor(String attributeName) {
+        return delegate.getPropertyActor(attributeName);
+    }
+
+    public PropertyActor getPropertyActor(Class attributeClass) {
+        return delegate.getPropertyActor(attributeClass);
     }
 
     private static class IsIgnoreType {

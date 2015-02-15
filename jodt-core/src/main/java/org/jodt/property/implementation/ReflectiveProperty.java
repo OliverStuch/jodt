@@ -78,13 +78,14 @@ public class ReflectiveProperty<T> implements Property<T> {
         return null;
     }
 
-    public String toString() {
-        return field.toString();
-    }
-
     public Collection<Annotation> annotations() {
         Collection<Annotation> result = Arrays.asList(field.getDeclaredAnnotations());
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ReflectiveProperty{" + "field=" + field + ", fieldOwner=" + fieldOwner + ", displayName=" + displayName + '}';
     }
 
 }

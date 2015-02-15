@@ -43,4 +43,11 @@ public class NullProperty implements Property {
        return name();
     }
 
+    @Override
+    public String toString() {
+        return "NullProperty{" + '}';
+    }
+    
+    
+
 }

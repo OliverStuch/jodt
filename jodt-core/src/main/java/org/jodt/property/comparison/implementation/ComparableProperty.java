@@ -7,12 +7,7 @@ import org.jodt.property.CompositeProperty;
 import org.jodt.property.IdentityResolver;
 import org.jodt.util.Registry;
 
-
 public class ComparableProperty implements CompositeProperty, Comparable<ComparableProperty> {
-
-    private Registry<? extends IdentityResolver> identityResolverRegistry;
-    private int originalIndex;
-    private Long id;
 
     public ComparableProperty(CompositeProperty property, int originalIndex, Long id) {
         this.delegateCompositeProperty = property;
@@ -45,7 +40,7 @@ public class ComparableProperty implements CompositeProperty, Comparable<Compara
     public String name() {
         return delegateCompositeProperty.name();
     }
-    
+
     public String displayName() {
         return delegateCompositeProperty.displayName();
     }
@@ -64,10 +59,6 @@ public class ComparableProperty implements CompositeProperty, Comparable<Compara
 
     public CompositeProperty value(Object value) {
         return delegateCompositeProperty.value(value);
-    }
-
-    public String toString() {
-        return "id=" + id + " property=" + this.delegateCompositeProperty.toString();
     }
 
     private CompositeProperty delegateCompositeProperty;
@@ -143,5 +134,13 @@ public class ComparableProperty implements CompositeProperty, Comparable<Compara
     public Object[] toArray(Object[] a) {
         return delegateCompositeProperty.toArray(a);
     }
+
+    @Override
+    public String toString() {
+        return "ComparableProperty{" + "identityResolverRegistry=" + identityResolverRegistry + ", originalIndex=" + originalIndex + ", id=" + id + ", delegateCompositeProperty=" + delegateCompositeProperty + '}';
+    }
+    private Registry<? extends IdentityResolver> identityResolverRegistry;
+    private int originalIndex;
+    private Long id;
 
 }

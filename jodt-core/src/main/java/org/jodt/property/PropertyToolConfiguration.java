@@ -53,4 +53,12 @@ public interface PropertyToolConfiguration {
     void registerTerminalClass(Class terminalClass);
 
     void registerGlobalAttributeNameRenderer(ToStringRenderer toStringRenderer);
+
+    void registerGlobalPropertyActor(String attributeName, PropertyActor actor);
+
+    void registerGlobalPropertyActor(Class attributeClass, PropertyActor actor);
+
+    PropertyActor getPropertyActor(String attributeName);
+
+    PropertyActor getPropertyActor(Class attributeClass);
 }
