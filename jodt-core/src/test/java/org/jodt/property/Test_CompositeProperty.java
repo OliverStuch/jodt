@@ -1,8 +1,5 @@
 package org.jodt.property;
 
-import org.jodt.property.CompositeProperty;
-import org.jodt.property.Property;
-
 /**
  * Dieser Test testet den Abstrakten Test mit den Implementiereungen der DefaultCompositePropertyFactory => ohne GUI
  * 

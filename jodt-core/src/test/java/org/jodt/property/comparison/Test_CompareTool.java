@@ -1,16 +1,11 @@
 package org.jodt.property.comparison;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jodt.property.PropertyToolConfiguration;
-import org.jodt.property.comparison.CompareTool;
-import org.jodt.property.comparison.CompositeComparison;
 import org.jodt.property.comparison.implementation.Additional;
 import org.jodt.property.comparison.implementation.CompareStrategy;
 import org.jodt.property.comparison.implementation.DiffStrategy;
