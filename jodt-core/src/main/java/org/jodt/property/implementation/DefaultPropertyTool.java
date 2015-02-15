@@ -12,6 +12,7 @@ import java.util.Set;
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.InternalPropertyTool;
 import org.jodt.property.Property;
+import org.jodt.property.PropertyActor;
 import org.jodt.property.PropertyToolConfiguration;
 import org.jodt.reflection.ReflectionUtil;
 
@@ -33,9 +34,10 @@ public class DefaultPropertyTool implements InternalPropertyTool {
         this(true);
     }
 
-    private String displayName(String name){
+    private String displayName(String name) {
         return configuration.renderAttributeName(name);
     }
+
     // PropertyTool
     public <T> CompositeProperty<T> createShallowCompositeProperty(T object, String name) {
         return recursiveCreateCompositeProperty(object, type(object), name, new PropertyProvider(object, name, displayName(name)), null, new ShallowStrategy());
@@ -58,26 +60,28 @@ public class DefaultPropertyTool implements InternalPropertyTool {
 
     // TODO Map, Array, SortedSet
     /**
-     * 
+     *
      * @param object
      * @param type
      * @param name NICHT displayName: Hier wird z.B. das Ignorieren geregelt
      * @param propertyProvider
      * @param parent
      * @param recursionStrategy
-     * @return 
+     * @return
      */
     private CompositeProperty recursiveCreateCompositeProperty(Object object, Class type, String name, PropertyProvider propertyProvider,
             CompositeProperty parent, RecursionStrategy recursionStrategy) {
         if (configuration.isIgnored(type)) {
             return null;
         }
-        if(configuration.isIgnored(name)){
+        if (configuration.isIgnored(name)) {
             return null;
         }
         if (this.configuration.isPrimitive(object, type)) {
             // create CompositePropery for "primitive"
-            return new DefaultCompositePropertySet(propertyProvider.provide(), parent);
+            CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), parent);
+            applyPropertyActor(result);
+            return result;
         } else if (Set.class.isAssignableFrom(type)) {
             Set objectAsSet = (Set) object;
             Set<CompositeProperty> propertySet = new HashSet();
@@ -98,10 +102,22 @@ public class DefaultPropertyTool implements InternalPropertyTool {
             // Klasse entfernen oder adden kann
             // obwohl das ein interessantes feature wäre ;-)
             recursionStrategy.addElements(propertySet, objectAsReflectivePropertySet, result);
-
+            applyPropertyActor(result);
             return result;
 
         }
+    }
+
+    private boolean applyPropertyActor(CompositeProperty compositeProperty) {
+        PropertyActor classPropertyActor = configuration.getPropertyActor(compositeProperty.type());
+        if (classPropertyActor != null) {
+            return classPropertyActor.actOn(compositeProperty);
+        }
+        PropertyActor attributeNamePropertyActor = configuration.getPropertyActor(compositeProperty.name());
+        if (attributeNamePropertyActor != null) {
+            return attributeNamePropertyActor.actOn(compositeProperty);
+        }
+        return false;
     }
 
     interface RecursionStrategy {
@@ -239,7 +255,7 @@ public class DefaultPropertyTool implements InternalPropertyTool {
 
         // }
         for (Field field : declaredFields) {
-            ReflectiveProperty reflectiveProperty = new ReflectiveProperty(field, object,configuration.renderAttributeName(field.getName()));
+            ReflectiveProperty reflectiveProperty = new ReflectiveProperty(field, object, configuration.renderAttributeName(field.getName()));
             properties.add(reflectiveProperty);
         }
         return properties;
@@ -255,7 +271,11 @@ public class DefaultPropertyTool implements InternalPropertyTool {
         return propertyList;
     }
 
-    private RecursionStrategy strategy;
+    public PropertyToolConfiguration configure() {
+        return configuration;
+    }
+
+//    private RecursionStrategy strategy;
     private boolean ignoreStaticFields;
     private PropertyToolConfiguration configuration;
 

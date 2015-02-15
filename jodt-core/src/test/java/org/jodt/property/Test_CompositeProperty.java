@@ -31,4 +31,8 @@ public class Test_CompositeProperty extends AbstractTest_CompositeProperty {
         throw new UnsupportedOperationException();
     }
 
+    public PropertyToolConfiguration configure() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

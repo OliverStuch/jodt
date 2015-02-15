@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.jodt.property.AbstractTest_CompositeProperty;
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.Property;
+import org.jodt.property.PropertyToolConfiguration;
 import org.jodt.util.gui.treetable.DefaultJXTreeTable;
 import org.jodt.util.gui.treetable.DefaultJXTreeTable.DefaultJXTreeTableModel;
 
@@ -30,6 +31,11 @@ public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_Composi
 //        compositePropertyTreeTable.getTreeTableNode(parent);
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public PropertyToolConfiguration configure() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private static class CompositePropertyTreeTable2CompositePropertyAdapter implements CompositeProperty {

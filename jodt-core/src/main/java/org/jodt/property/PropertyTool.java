@@ -23,5 +23,7 @@ public interface PropertyTool {
      * @return maybe null!
      */
     <T> CompositeProperty<T> createOneLevelRecursiveCompositeProperty(T object, String name);
+    
+    PropertyToolConfiguration configure();
 
 }

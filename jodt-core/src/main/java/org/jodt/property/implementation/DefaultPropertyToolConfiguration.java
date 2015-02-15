@@ -202,19 +202,19 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     }
 
     public void registerGlobalPropertyActor(String attributeName, PropertyActor actor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        globalAttributeNamePropertyActor.put(attributeName, actor);
     }
 
     public void registerGlobalPropertyActor(Class attributeClass, PropertyActor actor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        globalClassPropertyActor.register(attributeClass, actor);
     }
 
     public PropertyActor getPropertyActor(String attributeName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return globalAttributeNamePropertyActor.get(attributeName);
     }
 
     public PropertyActor getPropertyActor(Class attributeClass) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return globalClassPropertyActor.getImplementation(attributeClass);
     }
 
     // public void set(NonTerminalStrategy nonTerminalStrategy) {
@@ -240,5 +240,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     private Map<String, String> attributeNameToStringRenderer = new HashMap();
     private IdentityResolverFactory globalIdentityResolverFactory;
     private ToStringRenderer globalAttributeNameRenderer;
+    private Registry<PropertyActor> globalClassPropertyActor = new Registry<PropertyActor>();
+    private Map<String, PropertyActor> globalAttributeNamePropertyActor = new HashMap();
     // -------------------- END isNonTerminal ------------------------------------ //
 }

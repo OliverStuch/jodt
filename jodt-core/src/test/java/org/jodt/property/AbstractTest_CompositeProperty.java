@@ -15,11 +15,37 @@ import org.jodt.property.implementation.DefaultPropertyTool;
 /**
  * @author Oliver Stuch
  */
-
 abstract public class AbstractTest_CompositeProperty extends TestCase implements InternalPropertyTool {
 
-    public void test_creatingSpecialProperties() {
+    public void test_PropertyActorClass() {
+        CompositePropertyTestClass testObject = new CompositePropertyTestClass();
+        pcf.configure().registerGlobalPropertyActor(String.class, new PropertyActor() {
+            public boolean actOn(Property property) {
+                property.value("test_PropertyActor");
+                return true;
+            }
+        });
+        CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "test_PropertyActor");
+        CompositeProperty myStringAsCP = testObjectAsCompositeProperty.find("myString");
+        assertNotNull(myStringAsCP);
+        assertEquals("test_PropertyActor", myStringAsCP.value());
+    }
 
+    public void test_PropertyActorName() {
+        CompositePropertyTestClass testObject = new CompositePropertyTestClass();
+        pcf.configure().registerGlobalPropertyActor("myString", new PropertyActor() {
+            public boolean actOn(Property property) {
+                property.value("test_PropertyActor");
+                return true;
+            }
+        });
+        CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "test_PropertyActor");
+        CompositeProperty myStringAsCP = testObjectAsCompositeProperty.find("myString");
+        assertNotNull(myStringAsCP);
+        assertEquals("test_PropertyActor", myStringAsCP.value());
+    }
+
+    public void test_creatingSpecialProperties() {
         {
             CompositeProperty propertyCollection = createCompositeProperty(null, "root"); // NULL
             assertNotNull(propertyCollection);
@@ -143,6 +169,7 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
     }
 
     private class Found {
+
         private boolean float11_found;
         private boolean floatNeg11_found;
         private boolean setFound;
@@ -184,11 +211,12 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
      * Diese Klasse zeigt, was geht und was nicht.
      */
     public static class CompositePropertyTestClass {
-        private InnerCompositePropertyTestClass innerPropertyCollectionTestClass;
-        private InnerCompositePropertyTestClass innerPropertyCollectionTestClassFilled = new InnerCompositePropertyTestClass();
+
         private int myInt;
         private Set mySet;
         private String myString = "myStringValue";
+        private InnerCompositePropertyTestClass innerPropertyCollectionTestClass;
+        private InnerCompositePropertyTestClass innerPropertyCollectionTestClassFilled = new InnerCompositePropertyTestClass();
 
         public CompositePropertyTestClass() {
             mySet = new HashSet();
@@ -200,6 +228,7 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
     }
 
     public static class InnerCompositePropertyTestClass {
+
         private int myInt2 = 1;
         private List myList;
 
@@ -212,7 +241,6 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
     public void test_Setting() {
 
         // Primitive setzen
-
         {
             CompositePropertyTestClass testObject = new CompositePropertyTestClass();
             CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "root");
@@ -291,7 +319,6 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
         }
 
         // Complexe adden zu Set und darin Attribute setzen
-
         {
 
             CompositePropertyTestClass testObject = new CompositePropertyTestClass();
@@ -363,8 +390,6 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
             assertTrue(setPropertyFound.contains(newElement));
         }
     }
-
-
 
     public List<CompositeProperty> createPropertyList(Collection<CompositeProperty> propertySet) {
         return pcf.createPropertyList(propertySet);
