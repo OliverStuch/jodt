@@ -145,7 +145,7 @@ public class DefaultCompositeComparison<T> extends ArrayList<CompositeComparison
 
     @Override
     public String toString() {
-        return "DefaultCompositeComparison{" + " name= " + name()+ ", diff=" + diff + ", childDiffCount=" + childDiffCount  + /*" identityMappedPropertyListPair=" + identityMappedPropertyListPair +*/ '}';
+        return "DefaultCompositeComparison{" + " name= " + name()+ ", diff=" + diff + ", childDiffCount=" + childDiffCount  +" identityMappedPropertyListPair=" + identityMappedPropertyListPair + '}';
     }
 
     

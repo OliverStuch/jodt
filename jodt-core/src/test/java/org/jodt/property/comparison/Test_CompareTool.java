@@ -18,12 +18,13 @@ import org.jodt.property.implementation.HashCodeIdentityResolver;
 import org.jodt.property.implementation.PackageNonTerminalStrategy;
 
 import junit.framework.TestCase;
-
+import org.jodt.property.IdentityResolver;
 
 /**
  * @author Oliver Stuch (oliver@stuch.net)
  */
 public abstract class Test_CompareTool extends TestCase {
+
     public abstract CompareTool createCompareTool(String packageFilter);
 
     public Test_CompareTool(String text) {
@@ -31,6 +32,7 @@ public abstract class Test_CompareTool extends TestCase {
     }
 
     private interface Asserts {
+
         CompositeComparison<?> assert_NoDiffNoPropertyDiff(Object o1, Object o2, int numToplevelChildren);
 
         void assert_DiffNotDeterminable(Object o1, Object o2);
@@ -42,7 +44,7 @@ public abstract class Test_CompareTool extends TestCase {
         void assert_ReferenceDiff(Object o1, Object o2);
 
         CompareToolConfiguration configureCompareTool();
-        
+
         void assert_HasOneValueDiff(Object o1, Object o2, Object value1, Object value2);
     }
 
@@ -146,12 +148,14 @@ public abstract class Test_CompareTool extends TestCase {
     }
 
     private class CompareModeAsserts extends AbstractAsserts implements Asserts {
+
         public CompareModeAsserts(CompareTool compareTool) {
             super(new CompareStrategy(compareTool));
         }
     }
 
     private class DiffModeAsserts extends AbstractAsserts implements Asserts {
+
         public DiffModeAsserts(CompareTool compareTool) {
             super(new DiffStrategy(compareTool));
         }
@@ -160,7 +164,7 @@ public abstract class Test_CompareTool extends TestCase {
     /**
      * Teste das Verhalten beim Vergleich von 2 null: Erwarte NoDiff
      */
-  @Test
+    @Test
     public void test_objectLevelCompareNulls() {
         CompareTool compareTool = createCompareTool(NON_TERMINAL_PACKAGE);
         // compare mode
@@ -174,9 +178,10 @@ public abstract class Test_CompareTool extends TestCase {
     }
 
     /**
-     * Teste das Verhalten beim Vergleich EINER null mit einem Object.: Erwarte Additional bzw. Missing
+     * Teste das Verhalten beim Vergleich EINER null mit einem Object.: Erwarte
+     * Additional bzw. Missing
      */
-  @Test
+    @Test
     public void test_objectLevelCompareNullWithObject() {
         CompareTool compareTool = createCompareTool(NON_TERMINAL_PACKAGE);
         test_objectLevelCompareNullWithObject(new CompareModeAsserts(compareTool));
@@ -184,7 +189,8 @@ public abstract class Test_CompareTool extends TestCase {
     }
 
     /**
-     * Teste das Verhalten beim Vergleich EINER null mit einem Object.: Erwarte Additional bzw. Missing
+     * Teste das Verhalten beim Vergleich EINER null mit einem Object.: Erwarte
+     * Additional bzw. Missing
      */
     private void test_objectLevelCompareNullWithObject(Asserts asserts) {
         Object terminalObject = new String();
@@ -193,14 +199,15 @@ public abstract class Test_CompareTool extends TestCase {
         asserts.assert_Additional_Missing(nonTerminalObject);
     }
 
-  @Test
+    @Test
     public void test_objectLevelCompareNonNullObjects() {
         test_objectLevelCompareNonNullObjects(new CompareModeAsserts(createCompareTool(NON_TERMINAL_PACKAGE)));
         test_objectLevelCompareNonNullObjects(new DiffModeAsserts(createCompareTool(NON_TERMINAL_PACKAGE)));
     }
 
     /**
-     * Teste das Verhalten beim Vergleich zweier nicht-Null Objekte: Erwarte ReferenceDiff bzw. ValueDiff
+     * Teste das Verhalten beim Vergleich zweier nicht-Null Objekte: Erwarte
+     * ReferenceDiff bzw. ValueDiff
      */
     private void test_objectLevelCompareNonNullObjects(Asserts asserts) {
 
@@ -241,8 +248,9 @@ public abstract class Test_CompareTool extends TestCase {
         }
     }
 
+    @Test
+
     // compareMode
-  @Test
     public void test_propertyLevelCompareSetsOfNonTerminalObjects() {
         Set set1OfNonTerminalObjects = new HashSet();
         Set set2OfNonTerminalObjects = new HashSet();
@@ -251,11 +259,18 @@ public abstract class Test_CompareTool extends TestCase {
         ObjectWithPrimitivesWithId nonTerminalObject2 = new ObjectWithPrimitivesWithId(1);
         set1OfNonTerminalObjects.add(nonTerminalObject1);
         set2OfNonTerminalObjects.add(nonTerminalObject2);
+        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
         {
             CompositeComparison<?> comparison = compareTool.compare(set1OfNonTerminalObjects, " ", set2OfNonTerminalObjects, " ");
             assert_NullDiffNoPropertyDiff(comparison, set1OfNonTerminalObjects, set2OfNonTerminalObjects);
             assertEquals(1, comparison.childCount());
         }
+        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new IdentityResolver<ObjectWithPrimitivesWithId>(){
+            public Long getID(ObjectWithPrimitivesWithId t) {
+                return 0l;
+            }
+        });
+// Vergleich OHNE IdResolver => soll den Unterschied im "normalen" Attribut "id" finden
         nonTerminalObject2.id = new Long(2);
         {
             CompositeComparison comparison = compareTool.compare(set1OfNonTerminalObjects, "set1", set2OfNonTerminalObjects, "set2");
@@ -282,6 +297,67 @@ public abstract class Test_CompareTool extends TestCase {
         {
             CompositeComparison comparison = compareTool.compare(set1OfNonTerminalObjects, "set1", set2OfNonTerminalObjects, "set2");
             assertNotNull(comparison);
+            assertEquals(2, comparison.childCount());
+            assertEquals(2, comparison.childDiffCount());
+            CompositeComparison<?> innerComparison = (CompositeComparison) comparison.get(0);
+            assertNotNull(innerComparison);
+            assertTrue ((innerComparison.diff() instanceof Missing )||( innerComparison.diff() instanceof Additional));
+            innerComparison = (CompositeComparison) comparison.get(1);
+            assertNotNull(innerComparison);
+            assertTrue ((innerComparison.diff() instanceof Missing )||( innerComparison.diff() instanceof Additional));
+
+        }
+    }
+
+    
+    
+    
+      public void test_propertyLevelCompareListsOfNonTerminalObjects() {
+        List list1OfNonTerminalObjects = new ArrayList();
+        List list2OfNonTerminalObjects = new ArrayList();
+        CompareTool compareTool = createCompareTool(NON_TERMINAL_PACKAGE);
+        ObjectWithPrimitivesWithId nonTerminalObject1 = new ObjectWithPrimitivesWithId(1);
+        ObjectWithPrimitivesWithId nonTerminalObject2 = new ObjectWithPrimitivesWithId(1);
+        list1OfNonTerminalObjects.add(nonTerminalObject1);
+        list2OfNonTerminalObjects.add(nonTerminalObject2);
+        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
+        {
+            CompositeComparison<?> comparison = compareTool.compare(list1OfNonTerminalObjects, " ", list2OfNonTerminalObjects, " ");
+            assert_NullDiffNoPropertyDiff(comparison, list1OfNonTerminalObjects, list2OfNonTerminalObjects);
+            assertEquals(1, comparison.childCount());
+        }
+        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new IdentityResolver<ObjectWithPrimitivesWithId>(){
+            public Long getID(ObjectWithPrimitivesWithId t) {
+                return 0l;
+            }
+        });
+// Vergleich OHNE IdResolver => soll den Unterschied im "normalen" Attribut "id" finden
+        nonTerminalObject2.id = new Long(2);
+        {
+            CompositeComparison comparison = compareTool.compare(list1OfNonTerminalObjects, "set1", list2OfNonTerminalObjects, "set2");
+            assertNotNull(comparison);
+            assertEquals(1, comparison.childCount());
+            assertEquals(1, comparison.childDiffCount());
+            assertEquals(SubDiff.class, comparison.diff().getClass());
+            CompositeComparison<?> innerComparison = (CompositeComparison) comparison.get(0);
+            assertNotNull(innerComparison);
+            assertEquals(5, innerComparison.childCount());
+            assertEquals(1, innerComparison.childDiffCount());
+            for (CompositeComparison<?> compositeComparison : innerComparison) {
+
+                if (compositeComparison.childDiffCount() != 0) {
+                    ValueDiff diff = (ValueDiff) compositeComparison.diff();
+                    assertEquals(1, diff.compareObject());
+                    assertEquals(2, diff.referenceObject());
+                }
+
+            }
+
+        }
+        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
+        {
+            CompositeComparison comparison = compareTool.compare(list1OfNonTerminalObjects, "set1", list2OfNonTerminalObjects, "set2");
+            assertNotNull(comparison);
             assertEquals(1, comparison.childCount());
             assertEquals(1, comparison.childDiffCount());
             CompositeComparison<?> innerComparison = (CompositeComparison) comparison.get(0);
@@ -292,8 +368,9 @@ public abstract class Test_CompareTool extends TestCase {
         }
     }
 
+      
     // compareMode
-  @Test
+    @Test
     public void test_propertyLevelCompareSetsOfTerminalObjects() {
         Set set1OfTerminalObjects = new HashSet();
         Set set2OfTerminalObjects = new HashSet();
@@ -332,7 +409,7 @@ public abstract class Test_CompareTool extends TestCase {
     }
 
     // compareMode
-  @Test
+    @Test
     public void test_propertyLevelCompareListsOfTerminalObjects() {
         List list1OfTerminalObjects = new ArrayList();
         List list2OfTerminalObjects = new ArrayList();
@@ -385,7 +462,7 @@ public abstract class Test_CompareTool extends TestCase {
 
     }
 
-  @Test
+    @Test
     public void test_objectLevelCompareTerminalWithNonterminal() {
         CompareTool compareTool = createCompareTool(NON_TERMINAL_PACKAGE);
         Object terminalObject = new String();
@@ -404,7 +481,6 @@ public abstract class Test_CompareTool extends TestCase {
     }
 
     // propertyuntersuchung trotz diff
-
     private void assert_Additional_Missing(CompareTool compareTool, Object object) {
         {
             CompositeComparison<?> comparison = compareTool.compare(object, " ", null, "null value");
@@ -490,7 +566,7 @@ public abstract class Test_CompareTool extends TestCase {
         assertEquals(null, comparison.diff()); // In diesem Fall kann kein Diff auf der Ebene festgestellt werden (auch nicht NoDiff)
     }
 
-  @Test
+    @Test
     public void test_propertyLevelCompareObjectWithPrimitives() {
         ObjectWithPrimitives o1 = new ObjectWithPrimitivesWithId(1);
         ObjectWithPrimitives o2 = new ObjectWithPrimitivesWithId(1);
@@ -546,7 +622,7 @@ public abstract class Test_CompareTool extends TestCase {
         }
     }
 
-  @Test
+    @Test
     public void test_propertyLevelCompareObjectWithNonTerminalReferences() {
         ObjectWithNonTerminalReferences o1 = new ObjectWithNonTerminalReferences();
         ObjectWithNonTerminalReferences o2 = new ObjectWithNonTerminalReferences();
@@ -605,7 +681,7 @@ public abstract class Test_CompareTool extends TestCase {
         }
     }
 
-  @Test
+    @Test
     public void test_ignorePropertyDiffs() {
         test_ignorePropertyDiffs(new CompareModeAsserts(createCompareTool(NON_TERMINAL_PACKAGE)));
         test_ignorePropertyDiffs(new DiffModeAsserts(createCompareTool(NON_TERMINAL_PACKAGE)));
@@ -619,11 +695,11 @@ public abstract class Test_CompareTool extends TestCase {
         o1.objectWithPrimitives1.integer = new Integer(DIFF_INTEGER_VALUE);
 
         asserts.assert_HasOneValueDiff(o1, o2, DIFF_INTEGER_VALUE, ObjectWithPrimitives.INITIAL_INTEGER_VALUE);
-        
+
         o1.objectWithPrimitivesIgnorePropertyDiffs.integer = new Integer(DIFF_INTEGER_VALUE); // zweites Diff hinzufügen, die aber ignoriert werden soll
-        
+
         asserts.assert_HasOneValueDiff(o1, o2, DIFF_INTEGER_VALUE, ObjectWithPrimitives.INITIAL_INTEGER_VALUE);
-        
+
     }
 
     protected static final String NON_TERMINAL_PACKAGE = "org.jodt.*";

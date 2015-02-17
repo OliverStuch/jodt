@@ -49,7 +49,9 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
         Object idHolder = property.value();
 
         if (property instanceof ReflectivePropertySet || property instanceof ReflectiveProperty) {
-            idHolder = property.name();
+            if (property.name()!= null){
+                idHolder=property.name();
+            }
         } else if (DelegatingCompositeProperty.class.isAssignableFrom(property.getClass())) {
             DelegatingCompositeProperty delegatingCompositeProperty = (DelegatingCompositeProperty) property;
             if (delegatingCompositeProperty.parent() instanceof ReflectivePropertySet<?>) {
