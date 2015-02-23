@@ -2,6 +2,7 @@ package org.jodt.property.implementation;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.InternalPropertyTool;
@@ -63,26 +64,33 @@ abstract public class DelegatingCompositeProperty<T> implements InternalComposit
         }
     }
 
+    @Override
     public boolean hasProperties() {
-        return (properties() != null && properties().size() != 0);
+        return (properties() != null && !properties().isEmpty());
     }
 
-    public CompositeProperty find(String name) {
+    @Override
+    public Collection<CompositeProperty> findByName(String name) {
+        Collection<CompositeProperty> result = new HashSet();
         for (CompositeProperty compositeProperty : properties()) {
             if (name.equals(compositeProperty.name())) {
-                return compositeProperty;
+                result.add(compositeProperty);
             }
+            result.addAll(compositeProperty.findByName(name));
         }
-        return null; // nothing found
+        return result;
     }
 
-    public CompositeProperty find(Object value) {
+    @Override
+    public Collection<CompositeProperty> findByValue(Object value) {
+        Collection<CompositeProperty> result = new HashSet();
         for (CompositeProperty compositeProperty : properties()) {
             if (value.equals(compositeProperty.value())) {
-                return compositeProperty;
+                result.add(compositeProperty);
             }
+            result.addAll(compositeProperty.findByValue(value));
         }
-        return null; // nothing found
+        return result;
     }
 
     public void parent(CompositeProperty parent) {
@@ -94,11 +102,16 @@ abstract public class DelegatingCompositeProperty<T> implements InternalComposit
     }
 
     @Override
-    public String toString() {
-        return "DelegatingCompositeProperty{" + "delegate=" + delegate + /*", parent=" + parent +*/ ", propertyFactory=" + propertyFactory + '}';
+    public String path() {
+        return (parent != null ? parent.path() + CompositeProperty.PATH_SEPARATOR  : "") + delegate.name();
     }
-    
-    private Property<T> delegate;
-    CompositeProperty parent;
-    InternalPropertyTool propertyFactory = new DefaultPropertyTool();
+
+    @Override
+    public String toString() {
+        return "DeleCP{" + "deleProp=" + delegate + '}';
+    }
+
+    private final Property<T> delegate;
+    protected CompositeProperty parent;
+    InternalPropertyTool propertyFactory = new DefaultPropertyTool(); // TODO: Warum unkonfiguriertes DefaultPropertyTool ??
 }

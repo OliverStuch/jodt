@@ -110,7 +110,7 @@ public class DefaultCompositePropertySet<T> extends DelegatingCompositeProperty<
 
     @Override
     public String toString() {
-        return "DefaultCompositePropertySet{" + super.toString() + "subProperties=" + PropertyUtil.toString(subProperties,", ") + '}';
+        return "DCPS{" + super.toString() + "subProperties=" + PropertyUtil.toString(subProperties,", ") + '}';
     }
 
     private Set<CompositeProperty<?>> subProperties;

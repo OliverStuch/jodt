@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import junit.framework.Assert;
 
 import junit.framework.TestCase;
 
@@ -17,6 +18,49 @@ import org.jodt.property.implementation.DefaultPropertyTool;
  */
 abstract public class AbstractTest_CompositeProperty extends TestCase implements InternalPropertyTool {
 
+    public void test_Path() {
+        CompositePropertyTestClass testObject = new CompositePropertyTestClass();
+        CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "test_Path");
+        String pathTestObject = testObjectAsCompositeProperty.path();
+        Assert.assertNotNull(pathTestObject);
+        Collection<CompositeProperty> myStringAsCPs = testObjectAsCompositeProperty.findByName("myString");
+        Assert.assertEquals(1, myStringAsCPs.size());
+        for (CompositeProperty myStringAsCP : myStringAsCPs) {
+            String myStringPath = myStringAsCP.path();
+            Assert.assertNotNull(myStringPath);
+            Assert.assertEquals("test_Path.myString", myStringPath);
+        }
+        Collection<CompositeProperty> innerPropertyCollectionTestClassAsCPs = testObjectAsCompositeProperty.findByName("innerPropertyCollectionTestClass");
+        Assert.assertEquals(1, innerPropertyCollectionTestClassAsCPs.size());
+        for (CompositeProperty innerPropertyCollectionTestClassAsCP : innerPropertyCollectionTestClassAsCPs) {
+            Assert.assertNotNull(innerPropertyCollectionTestClassAsCP);
+            Assert.assertNull(innerPropertyCollectionTestClassAsCP.value());
+        }
+        Collection<CompositeProperty> innerPropertyCollectionTestClassFilledAsCPs = testObjectAsCompositeProperty.findByName("innerPropertyCollectionTestClassFilled");
+        Assert.assertEquals(1, innerPropertyCollectionTestClassFilledAsCPs.size());
+        for (CompositeProperty innerPropertyCollectionTestClassFilledAsCP : innerPropertyCollectionTestClassFilledAsCPs) {
+            Assert.assertNotNull(innerPropertyCollectionTestClassFilledAsCP);
+        }
+        {
+            Collection<CompositeProperty> myInt2AsCPs = testObjectAsCompositeProperty.findByName("myInt2");
+            Assert.assertEquals(2, myInt2AsCPs.size());
+            for (CompositeProperty myInt2AsCP : myInt2AsCPs) {
+                Assert.assertEquals(1, myInt2AsCP.value());
+                System.out.println(myInt2AsCP.path());
+            }
+        }
+        testObject.addInnerCompositePropertyTestClass();
+        testObjectAsCompositeProperty = createCompositeProperty(testObject, "test_Path");
+        {
+            Collection<CompositeProperty> myInt2AsCPs = testObjectAsCompositeProperty.findByName("myInt2");
+            Assert.assertEquals(3, myInt2AsCPs.size());
+            for (CompositeProperty myInt2AsCP : myInt2AsCPs) {
+                Assert.assertEquals(1, myInt2AsCP.value());
+                System.out.println(myInt2AsCP.path());
+            }
+        }
+    }
+
     public void test_PropertyActorClass() {
         CompositePropertyTestClass testObject = new CompositePropertyTestClass();
         pcf.configure().registerGlobalPropertyActor(String.class, new PropertyActor() {
@@ -26,9 +70,12 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
             }
         });
         CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "test_PropertyActor");
-        CompositeProperty myStringAsCP = testObjectAsCompositeProperty.find("myString");
-        assertNotNull(myStringAsCP);
-        assertEquals("test_PropertyActor", myStringAsCP.value());
+        Collection<CompositeProperty> myStringAsCPs = testObjectAsCompositeProperty.findByName("myString");
+        Assert.assertEquals(1, myStringAsCPs.size());
+        for (CompositeProperty myStringAsCP : myStringAsCPs) {
+            assertNotNull(myStringAsCP);
+            assertEquals("test_PropertyActor", myStringAsCP.value());
+        }
     }
 
     public void test_PropertyActorName() {
@@ -40,9 +87,12 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
             }
         });
         CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "test_PropertyActor");
-        CompositeProperty myStringAsCP = testObjectAsCompositeProperty.find("myString");
-        assertNotNull(myStringAsCP);
-        assertEquals("test_PropertyActor", myStringAsCP.value());
+        Collection<CompositeProperty> myStringAsCPs = testObjectAsCompositeProperty.findByName("myString");
+        Assert.assertEquals(1, myStringAsCPs.size());
+        for (CompositeProperty myStringAsCP : myStringAsCPs) {
+            assertNotNull(myStringAsCP);
+            assertEquals("test_PropertyActor", myStringAsCP.value());
+        }
     }
 
     public void test_creatingSpecialProperties() {
@@ -207,37 +257,6 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
 
     }
 
-    /**
-     * Diese Klasse zeigt, was geht und was nicht.
-     */
-    public static class CompositePropertyTestClass {
-
-        private int myInt;
-        private Set mySet;
-        private String myString = "myStringValue";
-        private InnerCompositePropertyTestClass innerPropertyCollectionTestClass;
-        private InnerCompositePropertyTestClass innerPropertyCollectionTestClassFilled = new InnerCompositePropertyTestClass();
-
-        public CompositePropertyTestClass() {
-            mySet = new HashSet();
-            mySet.add(new Float(1.1));
-            mySet.add(new Float(-1.1));
-            mySet.add(new InnerCompositePropertyTestClass());
-        }
-
-    }
-
-    public static class InnerCompositePropertyTestClass {
-
-        private int myInt2 = 1;
-        private List myList;
-
-        public InnerCompositePropertyTestClass() {
-            myList = new ArrayList();
-            myList.add(1);
-        }
-    }
-
     public void test_Setting() {
 
         // Primitive setzen
@@ -245,10 +264,13 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
             CompositePropertyTestClass testObject = new CompositePropertyTestClass();
             CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "root");
 
-            CompositeProperty toBeSet = testObjectAsCompositeProperty.find("myString");
-            toBeSet.value("newStringValue");
-            assertEquals("newStringValue", toBeSet.value());
-            assertEquals("newStringValue", testObject.myString);
+            Collection<CompositeProperty> toBeSets = testObjectAsCompositeProperty.findByName("myString");
+            Assert.assertEquals(1, toBeSets.size());
+            for (CompositeProperty toBeSet : toBeSets) {
+                toBeSet.value("newStringValue");
+                assertEquals("newStringValue", toBeSet.value());
+                assertEquals("newStringValue", testObject.myString);
+            }
         }
         // Primitive setzen in "tieferen" Objekten
 
@@ -256,8 +278,13 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
             CompositePropertyTestClass testObject = new CompositePropertyTestClass();
             CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "root");
 
-            CompositeProperty innerPropertyCollectionTestClassFilled = testObjectAsCompositeProperty.find("innerPropertyCollectionTestClassFilled");
-            CompositeProperty toBeSet = innerPropertyCollectionTestClassFilled.find("myInt2");
+            Collection<CompositeProperty> innerPropertyCollectionTestClassFilleds = testObjectAsCompositeProperty.findByName("innerPropertyCollectionTestClassFilled");
+            Assert.assertEquals(1, innerPropertyCollectionTestClassFilleds.size());
+            CompositeProperty innerPropertyCollectionTestClassFilled = innerPropertyCollectionTestClassFilleds.iterator().next();
+            Collection<CompositeProperty> toBeSets = innerPropertyCollectionTestClassFilled.findByName("myInt2");
+            Assert.assertEquals(1, toBeSets.size());
+            CompositeProperty toBeSet = toBeSets.iterator().next();
+
             assertEquals(1, toBeSet.value());
             assertEquals(1, testObject.innerPropertyCollectionTestClassFilled.myInt2);
 
@@ -274,20 +301,28 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
 
             Object oldValue = new Float(1.1);
             Object newValue = new Float(2.2);
-            CompositeProperty containingSetCompositeProperty = testObjectAsCompositeProperty.find("mySet");
+            Collection<CompositeProperty> containingSetCompositePropertys = testObjectAsCompositeProperty.findByName("mySet");
+            Assert.assertEquals(1, containingSetCompositePropertys.size());
+            CompositeProperty containingSetCompositeProperty = containingSetCompositePropertys.iterator().next();
+
             Set containingSet = (Set) containingSetCompositeProperty.value();
             assertFalse(containingSet.contains(newValue));
             assertTrue(containingSet.contains(oldValue));
-            CompositeProperty toBeSet = containingSetCompositeProperty.find(oldValue);
+            Collection<CompositeProperty> toBeSets = containingSetCompositeProperty.findByValue(oldValue);
+            Assert.assertEquals(1, toBeSets.size());
+            CompositeProperty toBeSet = toBeSets.iterator().next();
             assertNotNull(toBeSet);
-            CompositeProperty hasBeenSet = containingSetCompositeProperty.find(newValue);
-            assertNull(hasBeenSet);
+            Collection<CompositeProperty> hasBeenSets = containingSetCompositeProperty.findByValue(newValue);
+            Assert.assertEquals(0, hasBeenSets.size());
+//            assertNull(hasBeenSet);
             assertEquals(oldValue, toBeSet.value());
 
             toBeSet.value(newValue); // ACTION!
 
             assertEquals(newValue, toBeSet.value());
-            hasBeenSet = containingSetCompositeProperty.find(newValue);
+            hasBeenSets = containingSetCompositeProperty.findByValue(newValue);
+            Assert.assertEquals(1, hasBeenSets.size());
+            CompositeProperty hasBeenSet = hasBeenSets.iterator().next();
             assertNotNull(hasBeenSet);
             containingSet = (Set) containingSetCompositeProperty.value();
             assertTrue(containingSet.contains(newValue));
@@ -300,14 +335,18 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
             CompositePropertyTestClass testObject = new CompositePropertyTestClass();
             CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "root");
 
-            CompositeProperty toBeSet = testObjectAsCompositeProperty.find("innerPropertyCollectionTestClass"); // ist null !!!
+            Collection<CompositeProperty> toBeSets = testObjectAsCompositeProperty.findByName("innerPropertyCollectionTestClass"); // ist null !!!
+            Assert.assertEquals(1, toBeSets.size());
+            CompositeProperty toBeSet = toBeSets.iterator().next();
             assertNull(toBeSet.value());
             InnerCompositePropertyTestClass innerPropertyCollectionTestClassFilled = new InnerCompositePropertyTestClass();
 
             toBeSet.value(innerPropertyCollectionTestClassFilled);// ACTION!
 
             assertEquals(innerPropertyCollectionTestClassFilled, toBeSet.value());
-            CompositeProperty toBeSetMyInt = toBeSet.find("myInt2");
+            Collection<CompositeProperty> toBeSetMyInts = toBeSet.findByName("myInt2");
+            Assert.assertEquals(1, toBeSetMyInts.size());
+            CompositeProperty toBeSetMyInt = toBeSetMyInts.iterator().next();
             assertEquals(1, toBeSetMyInt.value());
             Object newInteger = new Integer(2);
 
@@ -324,7 +363,9 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
             CompositePropertyTestClass testObject = new CompositePropertyTestClass();
             CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "root");
 
-            CompositeProperty setProperty = testObjectAsCompositeProperty.find("mySet");
+            Collection<CompositeProperty> setPropertys = testObjectAsCompositeProperty.findByName("mySet");
+            Assert.assertEquals(1, setPropertys.size());
+            CompositeProperty setProperty = setPropertys.iterator().next();
             Set set = (Set) setProperty.value();
             assertNotNull(setProperty);
             InnerCompositePropertyTestClass innerPropertyCollectionTestClassFilled = new InnerCompositePropertyTestClass();
@@ -334,7 +375,9 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
             assertTrue(set.contains(innerPropertyCollectionTestClassFilled));
             assertEquals(4, setProperty.size());
 
-            CompositeProperty toBeSetMyInt = innerPropertyCollectionTestClassFilledAsProperty.find("myInt2");
+            Collection<CompositeProperty> toBeSetMyInts = innerPropertyCollectionTestClassFilledAsProperty.findByName("myInt2");
+            Assert.assertEquals(1, toBeSetMyInts.size());
+            CompositeProperty toBeSetMyInt = toBeSetMyInts.iterator().next();
             assertEquals(1, toBeSetMyInt.value());
             assertEquals(1, innerPropertyCollectionTestClassFilled.myInt2);
             Object newInteger = new Integer(2);
@@ -365,26 +408,37 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
         {
             InnerCompositePropertyTestClass newInnerPropertyCollectionTestClass = new InnerCompositePropertyTestClass();
             newInnerPropertyCollectionTestClass.myInt2 = 2;
-            assertNull(testObjectAsCompositeProperty.find(newInnerPropertyCollectionTestClass));
+            assertTrue(testObjectAsCompositeProperty.findByValue(newInnerPropertyCollectionTestClass).isEmpty());
             CompositeProperty replacement = createCompositeProperty(newInnerPropertyCollectionTestClass, "innerPropertyCollectionTestClass");
-            CompositeProperty toBeReplaced = testObjectAsCompositeProperty.find("innerPropertyCollectionTestClass");
+            Collection<CompositeProperty> toBeReplaceds = testObjectAsCompositeProperty.findByName("innerPropertyCollectionTestClass");
+            Assert.assertEquals(1, toBeReplaceds.size());
+            CompositeProperty toBeReplaced = toBeReplaceds.iterator().next();
+
             assertNull(testObject.innerPropertyCollectionTestClass);
             testObjectAsCompositeProperty.replace(toBeReplaced, replacement);
-            CompositeProperty replacementFound = testObjectAsCompositeProperty.find(newInnerPropertyCollectionTestClass);
-            assertEquals(replacement.find("myInt2").value(), replacementFound.find("myInt2").value());
+            Collection<CompositeProperty> replacementFounds = testObjectAsCompositeProperty.findByValue(newInnerPropertyCollectionTestClass);
+            Assert.assertEquals(1, replacementFounds.size());
+            CompositeProperty replacementFound = replacementFounds.iterator().next();
+            CompositeProperty replacementMyInt2 = (CompositeProperty) replacement.findByName("myInt2").iterator().next();
+            CompositeProperty replacementFoundMyInt2 = (CompositeProperty) replacementFound.findByName("myInt2").iterator().next();
+            assertEquals(replacementMyInt2.value(), replacementFoundMyInt2.value());
             // assertEquals(replacement, replacementFound); KEINE Anforderung!
             assertNotNull(testObject.innerPropertyCollectionTestClass);
             assertEquals(2, testObject.innerPropertyCollectionTestClass.myInt2);
         }
         {
-            CompositeProperty setProperty = testObjectAsCompositeProperty.find("mySet");
+            Collection<CompositeProperty> setPropertys = testObjectAsCompositeProperty.findByName("mySet");
+            Assert.assertEquals(1, setPropertys.size());
+            CompositeProperty setProperty = setPropertys.iterator().next();
             assertNotNull(setProperty);
-            CompositeProperty toBeReplaced = setProperty.find(new Float(-1.1));
+            Collection<CompositeProperty> toBeReplaceds = setProperty.findByValue(new Float(-1.1));
+            CompositeProperty toBeReplaced = toBeReplaceds.iterator().next();
             assertNotNull(toBeReplaced);
             Object newElement = new Float(2.2);
             setProperty.replace(toBeReplaced, createCompositeProperty(newElement, null));
-            assertNull(setProperty.find(new Float(-1.1)));
-            CompositeProperty replacement = setProperty.find(newElement);
+            assertTrue(setProperty.findByValue(new Float(-1.1)).isEmpty());
+            Collection<CompositeProperty> replacements = setProperty.findByValue(newElement);
+            CompositeProperty replacement = replacements.iterator().next();
             assertNotNull(replacement);
             Set setPropertyFound = (Set) setProperty.value();
             assertTrue(setPropertyFound.contains(newElement));
@@ -393,6 +447,41 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
 
     public List<CompositeProperty> createPropertyList(Collection<CompositeProperty> propertySet) {
         return pcf.createPropertyList(propertySet);
+    }
+
+    //
+    // Diese Klasse zeigt, was geht und was nicht.
+    //
+    public static class CompositePropertyTestClass {
+
+        private int myInt;
+        private Set mySet;
+        private String myString = "myStringValue";
+        private InnerCompositePropertyTestClass innerPropertyCollectionTestClass;
+        private InnerCompositePropertyTestClass innerPropertyCollectionTestClassFilled = new InnerCompositePropertyTestClass();
+
+        public CompositePropertyTestClass() {
+            mySet = new HashSet();
+            mySet.add(new Float(1.1));
+            mySet.add(new Float(-1.1));
+            mySet.add(new InnerCompositePropertyTestClass());
+        }
+
+        public void addInnerCompositePropertyTestClass() {
+            mySet.add(new InnerCompositePropertyTestClass());
+        }
+
+    }
+
+    public static class InnerCompositePropertyTestClass {
+
+        private int myInt2 = 1;
+        private List myList;
+
+        public InnerCompositePropertyTestClass() {
+            myList = new ArrayList();
+            myList.add(1);
+        }
     }
 
     protected InternalPropertyTool pcf = new DefaultPropertyTool(false);

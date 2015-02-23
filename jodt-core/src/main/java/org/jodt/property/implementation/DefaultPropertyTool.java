@@ -168,7 +168,7 @@ public class DefaultPropertyTool implements InternalPropertyTool {
 
         public void addElements(Set<CompositeProperty> propertySet, Set<?> objectAsSet, CompositeProperty result) {
             for (Object elementOfSet : objectAsSet) {
-                String name = null;
+                String name = null; // TODO: Hier vielleicht IdResolver? Könnte Auswirkungen auf 
                 CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(elementOfSet, type(elementOfSet), name, new PropertyProvider(elementOfSet, name, displayName(name)), result, this);
                 if (newCompositeProperty != null) {
                     propertySet.add(newCompositeProperty);

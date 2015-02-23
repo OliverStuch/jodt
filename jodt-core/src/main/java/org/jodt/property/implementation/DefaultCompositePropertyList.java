@@ -153,8 +153,8 @@ public class DefaultCompositePropertyList<T> extends DelegatingCompositeProperty
 
     @Override
     public String toString() {
-        return "DefaultCompositePropertyList{" + super.toString() + "properties=" + PropertyUtil.toString(properties, ", ") + '}';
+        return "DCPL{" + super.toString() + "properties=" + PropertyUtil.toString(properties, ", ") + '}';
     }
-
+   
     private List<CompositeProperty<?>> properties;
 }

@@ -33,6 +33,14 @@ public class ComparableProperty implements CompositeProperty, Comparable<Compara
         }
     }
 
+    public CompositeProperty parent() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    public String path() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String description() {
         return delegateCompositeProperty.description();
     }
@@ -81,12 +89,12 @@ public class ComparableProperty implements CompositeProperty, Comparable<Compara
         return delegateCompositeProperty.containsAll(c);
     }
 
-    public CompositeProperty find(Object value) {
-        return delegateCompositeProperty.find(value);
+    public Collection<CompositeProperty> findByValue(Object value) {
+        return delegateCompositeProperty.findByValue(value);
     }
 
-    public CompositeProperty find(String name) {
-        return delegateCompositeProperty.find(name);
+    public Collection<CompositeProperty> findByName(String name) {
+        return delegateCompositeProperty.findByName(name);
     }
 
     public boolean hasProperties() {
@@ -137,7 +145,7 @@ public class ComparableProperty implements CompositeProperty, Comparable<Compara
     public String toString() {
         return "ComparableProperty{" + "identityResolverRegistry=" + identityResolverRegistry + ", originalIndex=" + originalIndex + ", id=" + id + ", delegateCompositeProperty=" + delegateCompositeProperty + '}';
     }
-    
+
     private CompositeProperty delegateCompositeProperty;
     private Registry<? extends IdentityResolver> identityResolverRegistry;
     private int originalIndex;

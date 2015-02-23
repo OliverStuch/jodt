@@ -6,6 +6,7 @@ import java.util.Collection;
  * @author Oliver Stuch (oliver@stuch.net)
  */
 public interface CompositeProperty<T> extends Property<T>, Collection<CompositeProperty<?>> {
+    public final static String PATH_SEPARATOR=".";
 
     /**
      * @return true, if this object has properties (e.g. is not a leaf in the
@@ -34,13 +35,17 @@ public interface CompositeProperty<T> extends Property<T>, Collection<CompositeP
      * uneindeutig : ein zufälliges) or null if no property with that name
      * available TODO: Was ist mit displayName?
      */
-    CompositeProperty find(String name);
+    Collection<CompositeProperty> findByName(String name);
 
     /**
      * @return a property with value.equals(property.value())==true (in case of
      * uneindeutig : ein zufälliges) or null if no property with that value
      * available
      */
-    CompositeProperty find(Object value);
+    Collection<CompositeProperty> findByValue(Object value);
+    
+    CompositeProperty parent();
+    
+    String path();
 
 }
