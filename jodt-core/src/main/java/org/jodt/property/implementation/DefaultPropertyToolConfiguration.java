@@ -123,19 +123,6 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     // TODO ... eigentlich !isNonTerminal. 2015: Verstehe ich nicht!
     public boolean isPrimitive(Object object, Class type) {
         return (object == null  || JavaTypeDetector.isJavaValueType(type));
-//        if (object == null || type.isPrimitive() || Number.class.isAssignableFrom(type) || String.class.isAssignableFrom(type) || Date.class.isAssignableFrom(type)
-//                || Boolean.class.isAssignableFrom(type)
-//                || Character.class.isAssignableFrom(type)
-//                || Byte.class.isAssignableFrom(type)
-//                || Short.class.isAssignableFrom(type)
-//                || Integer.class.isAssignableFrom(type)
-//                || Long.class.isAssignableFrom(type)
-//                || Float.class.isAssignableFrom(type)
-//                || Double.class.isAssignableFrom(type)
-//                || Void.class.isAssignableFrom(type)) {
-//            return true;
-//        }
-//        return false;
     }
 
     public boolean isNonTerminal(Object object) {

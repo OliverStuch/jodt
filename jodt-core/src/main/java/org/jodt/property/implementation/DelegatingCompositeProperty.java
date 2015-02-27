@@ -113,5 +113,5 @@ abstract public class DelegatingCompositeProperty<T> implements InternalComposit
 
     private final Property<T> delegate;
     protected CompositeProperty parent;
-    InternalPropertyTool propertyFactory = new DefaultPropertyTool(); // TODO: Warum unkonfiguriertes DefaultPropertyTool ??
+    InternalPropertyTool propertyFactory = new DefaultPropertyTool(); // TODO: Wird benötigt zum Erzeugen von neuen Properties. Warum unkonfiguriertes DefaultPropertyTool ??
 }
