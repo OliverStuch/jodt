@@ -5,7 +5,7 @@
     <groupId>org.jodt</groupId>
     <artifactId>jodt-gui</artifactId>
     <packaging>jar</packaging>
-    <version>0.3</version>
+    <version>0.4</version>
     <url>http://maven.apache.org</url>
     <build>
         <plugins>
@@ -41,12 +41,12 @@
         <dependency>
             <groupId>org.jodt</groupId>
             <artifactId>jodt-core</artifactId>
-            <version>0.2</version>
+            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>org.jodt</groupId>
             <artifactId>jodt-core</artifactId>
-            <version>0.2</version>
+            <version>0.4</version>
              <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>

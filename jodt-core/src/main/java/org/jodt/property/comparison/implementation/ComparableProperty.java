@@ -9,7 +9,7 @@ import org.jodt.util.Registry;
 
 public class ComparableProperty implements CompositeProperty, Comparable<ComparableProperty> {
 
-    public ComparableProperty(CompositeProperty property, int originalIndex, Long id) {
+    public ComparableProperty(CompositeProperty property, int originalIndex, Comparable id) {
         this.delegateCompositeProperty = property;
         this.id = id;
         this.originalIndex = originalIndex;
@@ -20,17 +20,11 @@ public class ComparableProperty implements CompositeProperty, Comparable<Compara
     }
 
     public int compareTo(ComparableProperty other) {
-        Long otherID = other.id;
+        Comparable otherID = other.id;
         if (this.id == null || otherID == null) {
             return 0;
         }
-        if (id < otherID) {
-            return -1;
-        } else if (id > otherID) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return id.compareTo(otherID);
     }
 
     public CompositeProperty parent() {
@@ -149,6 +143,6 @@ public class ComparableProperty implements CompositeProperty, Comparable<Compara
     private CompositeProperty delegateCompositeProperty;
     private Registry<? extends IdentityResolver> identityResolverRegistry;
     private int originalIndex;
-    private Long id;
+    private Comparable id;
 
 }

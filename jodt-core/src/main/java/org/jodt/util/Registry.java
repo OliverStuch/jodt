@@ -3,6 +3,7 @@ package org.jodt.util;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import org.jodt.property.implementation.PropertyUtil;
 
 /**
  * @author Oliver Stuch  (oliver@stuch.net) 
@@ -73,7 +74,7 @@ public class Registry<T> implements Serializable {
     }
 
     public String toString() {
-        return implementationByClass.toString();
+        return PropertyUtil.toString(implementationByClass);
     }
 
     private Map<Class<?>, T> implementationByClass = new HashMap<Class<?>, T>();

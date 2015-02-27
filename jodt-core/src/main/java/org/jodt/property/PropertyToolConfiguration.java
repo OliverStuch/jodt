@@ -9,7 +9,7 @@ import org.jodt.util.ToStringRenderer;
 public interface PropertyToolConfiguration {
 
     // -------------------- Identities ------------------------------------ //
-    Long getID(Object object);
+    Comparable getID(Object object);
 
     boolean hasIdentityResolver(Class clazz);
 
@@ -17,16 +17,14 @@ public interface PropertyToolConfiguration {
 
     Registry<? extends IdentityResolver> getIdentityResolverRegistry();
 
-    Long resolveId(Property property);
+    Comparable resolveId(Property property);
 
     // -------------------- End: Identities ------------------------------------ //
     // -------------------- NonTerminal ------------------------------------ //
     // -------------------- Abfragen NonTerminal ------------------------------------ //
     boolean isPrimitive(Object object, Class type);
 
-    boolean isTerminal(Object compareObject);
-
-    boolean isTerminal(Class type);
+    boolean isTerminal(Object object);
 
     boolean isNonTerminal(Object object);
 

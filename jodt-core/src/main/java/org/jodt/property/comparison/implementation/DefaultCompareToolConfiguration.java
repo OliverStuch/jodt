@@ -136,7 +136,7 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
     /**
      * PropertyToolConfiguration
      */
-    public Long getID(Object object) {
+    public Comparable getID(Object object) {
         return delegate.getID(object);
     }
 
@@ -164,7 +164,7 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
     /**
      * PropertyToolConfiguration
      */
-    public Long resolveId(Property property) {
+    public Comparable resolveId(Property property) {
         return delegate.resolveId(property);
     }
 
@@ -180,13 +180,6 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
      */
     public boolean isTerminal(Object compareObject) {
         return delegate.isTerminal(compareObject);
-    }
-
-    /**
-     * PropertyToolConfiguration
-     */
-    public boolean isTerminal(Class type) {
-        return delegate.isTerminal(type);
     }
 
     /**

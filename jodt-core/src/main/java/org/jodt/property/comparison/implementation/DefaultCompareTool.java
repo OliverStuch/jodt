@@ -432,8 +432,8 @@ public class DefaultCompareTool implements CompareTool {
         }
         if (!compareIsTerminal) {
             if (compareToolConfiguration.hasIdentityResolver(compareObject.getClass())) {
-                Long compareId = compareToolConfiguration.getID(compareObject);
-                Long referenceId = compareToolConfiguration.getID(referenceObject);
+                Comparable compareId = compareToolConfiguration.getID(compareObject);
+                Comparable referenceId = compareToolConfiguration.getID(referenceObject);
                 if (compareId == null || referenceId == null) {
                     // Wenn es sich um ein Non-Terminal handelt, für das ein Id-Resolver benutzt werden soll, der aber keine ID liefert, liegt auch kein Ref-Dif vor
                     // Idee: Verwende HashCodeIdentifier, wenn Objekte equals überschreiben.

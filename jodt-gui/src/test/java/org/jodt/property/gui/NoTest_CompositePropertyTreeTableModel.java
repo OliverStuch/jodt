@@ -10,15 +10,13 @@ import org.jodt.property.PropertyToolConfiguration;
 import org.jodt.util.gui.treetable.DefaultJXTreeTable;
 import org.jodt.util.gui.treetable.DefaultJXTreeTable.DefaultJXTreeTableModel;
 
-
 /**
  * @author Oliver Stuch (oliver@stuch.net)
  */
-
 public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_CompositeProperty {
+
     private CompositePropertyTreeTable compositePropertyTreeTable;
-    
-    
+
     /**
      * erzeuge neues Testobjekt innerhalb eines CompositePropertyTreeTable
      */
@@ -51,7 +49,7 @@ public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_Composi
         }
 
         @Override
-        public CompositeProperty find(String name) {
+        public CompositeProperty findByName(String name) {
             Iterator<CompositeProperty> iterator = iterator();
             while (iterator.hasNext()) {
                 CompositeProperty compositeProperty = (CompositeProperty) iterator.next();
@@ -62,42 +60,51 @@ public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_Composi
             return null;
         }
 
-        public CompositeProperty find(Object value) {
+        @Override
+        public CompositeProperty findByValue(Object value) {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public boolean hasProperties() {
             return !root.isLeaf();
         }
 
+        @Override
         public void replace(CompositeProperty oldProperty, CompositeProperty newProperty) {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public CompositeProperty replace(CompositeProperty oldProperty, Object newValue) {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public String description() {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public String name() {
             return root.name();
         }
 
+        @Override
         public Class type() {
             return root.type();
         }
 
+        @Override
         public Object value() {
             return root.value();
         }
 
+        @Override
         public CompositeProperty value(Object value) {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException();
@@ -108,7 +115,7 @@ public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_Composi
             throw new UnsupportedOperationException();
         }
 
-
+        @Override
         public void clear() {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException();
@@ -118,7 +125,6 @@ public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_Composi
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException();
         }
-
 
         public boolean isEmpty() {
             // TODO Auto-generated method stub
@@ -148,7 +154,6 @@ public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_Composi
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException();
         }
-
 
         public int size() {
             return root.getChildCount();
@@ -201,10 +206,20 @@ public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_Composi
 
         @Override
         public String displayName() {
-           return root.displayName();
+            return root.displayName();
         }
 
-    }
+        @Override
+        public CompositeProperty parent() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public String path() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        }
 
 
     public <T> Property<T> createProperty(T object, String name) {
@@ -212,17 +227,14 @@ public class NoTest_CompositePropertyTreeTableModel extends AbstractTest_Composi
         throw new UnsupportedOperationException();
     }
 
-
-
     public <T> CompositeProperty<T> createShallowCompositeProperty(T object, String name) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
-
 
     public <T> CompositeProperty<T> createOneLevelRecursiveCompositeProperty(T object, String name) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
- }
+}

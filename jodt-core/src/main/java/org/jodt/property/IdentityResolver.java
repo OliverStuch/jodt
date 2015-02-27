@@ -5,6 +5,6 @@ package org.jodt.property;
  */
 
 public interface IdentityResolver<T> {
-    Long getID(T t);
+    Comparable getID(T t);
 
 }
