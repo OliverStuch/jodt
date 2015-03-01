@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.Set;
 
 import org.jodt.property.CompositeProperty;
-import org.jodt.property.InternalPropertyTool;
 import org.jodt.property.Property;
 import org.jodt.property.PropertyActor;
+import org.jodt.property.PropertyTool;
 import org.jodt.property.PropertyToolConfiguration;
 import org.jodt.reflection.ReflectionUtil;
 
 /**
  * @author Oliver Stuch (oliver@stuch.net)
  */
-public class DefaultPropertyTool implements InternalPropertyTool {
+public class DefaultPropertyTool implements PropertyTool {
 
     public DefaultPropertyTool(boolean ignoreStaticFields, PropertyToolConfiguration propertyToolConfiguration) {
         this.ignoreStaticFields = ignoreStaticFields;
@@ -77,29 +77,29 @@ public class DefaultPropertyTool implements InternalPropertyTool {
             return null;
         } else if (configuration.isPrimitive(object, type)) {
             // create CompositePropery for "primitive"
-            CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), parent);
+            CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), parent, this);
             applyPropertyActor(result);
             return result;
         } else if (Set.class.isAssignableFrom(type)) {
             Set objectAsSet = (Set) object;
             Set<CompositeProperty> propertySet = new HashSet();
-            CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), propertySet, parent);
+            CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), propertySet, parent, this);
             recursionStrategy.addElements(propertySet, objectAsSet, result);
             return result;
         } else if (List.class.isAssignableFrom(type)) {
             List objectAsList = (List) object;
             List<CompositeProperty<?>> propertyList = new ArrayList();
-            CompositeProperty result = new DefaultCompositePropertyList(propertyProvider.provide(), propertyList, parent);
+            CompositeProperty result = new DefaultCompositePropertyList(propertyProvider.provide(), propertyList, parent, this);
             recursionStrategy.addElements(propertyList, objectAsList, result);
             return result;
         } else if (configuration.isTerminal(object)) {
-            CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), parent);
+            CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), parent, this);
             applyPropertyActor(result);
             return result;
         } else { // kein special => reflection
             Set<Property> objectAsReflectivePropertySet = createReflectivePropertySet(object); // object as reflectivePropertySet
             Set<CompositeProperty> propertySet = new HashSet();
-            ReflectivePropertySet result = new ReflectivePropertySet(propertyProvider.provide(), propertySet, parent);
+            ReflectivePropertySet result = new ReflectivePropertySet(propertyProvider.provide(), propertySet, parent, this);
             // Kann kein normales PropertySet sein, weil man keine Attribute aus einer
             // Klasse entfernen oder adden kann
             // obwohl das ein interessantes feature wäre ;-)

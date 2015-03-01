@@ -10,6 +10,7 @@ import java.util.Map;
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.CompositePropertyList;
 import org.jodt.property.CompositePropertySet;
+import org.jodt.property.Equalator;
 import org.jodt.property.Property;
 import org.jodt.property.PropertyTool;
 import org.jodt.property.comparison.CompareTool;
@@ -201,8 +202,8 @@ public class DefaultCompareTool implements CompareTool {
             }
         });
         PropertyListPair result = new PropertyListPair();
-        result.compareProperties = new DefaultCompositePropertyList(propertyList1, preparedMappedLists.get(0));
-        result.referenceProperties = new DefaultCompositePropertyList(propertyList2, preparedMappedLists.get(1));
+        result.compareProperties = new DefaultCompositePropertyList(propertyList1, preparedMappedLists.get(0), propertyTool);
+        result.referenceProperties = new DefaultCompositePropertyList(propertyList2, preparedMappedLists.get(1), propertyTool);
         return result;
     }
 
@@ -228,8 +229,8 @@ public class DefaultCompareTool implements CompareTool {
 
         List<MappedList> preparedMappedLists = prepareListsForIndexedComparison(comparablePropertyList1, comparablePropertyList2);
         PropertyListPair result = new PropertyListPair();
-        result.compareProperties = new DefaultCompositePropertyList(propertySet1, preparedMappedLists.get(0));
-        result.referenceProperties = new DefaultCompositePropertyList(propertySet2, preparedMappedLists.get(1));
+        result.compareProperties = new DefaultCompositePropertyList(propertySet1, preparedMappedLists.get(0), propertyTool);
+        result.referenceProperties = new DefaultCompositePropertyList(propertySet2, preparedMappedLists.get(1), propertyTool);
         return result;
     }
 
@@ -450,13 +451,23 @@ public class DefaultCompareTool implements CompareTool {
                 // Idee: Verwende HashCodeIdentifier, wenn Objekte equals überschreiben.
                 return null; // kein Unterschied feststellbar und auch nicht NoDiff feststellbar
             }
-        } else if (!compareObject.equals(referenceObject)) { // Wenn compare+reference is terminal
+        } else if (haveValueDiff(compareObject, referenceObject)) { // Wenn compare+reference is terminal
             return new ValueDiff(compareObject, referenceObject);
         } else {
             return new NoDiff(compareObject, referenceObject);
         }
     }
 
+    private boolean haveValueDiff(Object compareObject, Object referenceObject){
+        Equalator equalator = compareToolConfiguration.getNonTerminalTypeEqualator(compareObject.getClass());
+        if (equalator != null){
+            return !equalator.areEqual(compareObject, referenceObject);
+        } else {
+            return !compareObject.equals(referenceObject);
+        }
+    }
+    
+    
     public CompareToolConfiguration configure() {
         return compareToolConfiguration;
     }

@@ -8,10 +8,13 @@ import java.util.Set;
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.CompositePropertySet;
 import org.jodt.property.Property;
+import org.jodt.property.PropertyTool;
 
 /**
- * Diese Klasse wird  erzeugt, wenn DefaultCompositePropertyFactory auf ein Set von Objekten trifft
- * @author Oliver Stuch  (oliver@stuch.net) 
+ * Diese Klasse wird erzeugt, wenn DefaultCompositePropertyFactory auf ein Set
+ * von Objekten trifft
+ *
+ * @author Oliver Stuch (oliver@stuch.net)
  */
 public class DefaultCompositePropertySet<T> extends DelegatingCompositeProperty<T> implements CompositePropertySet<T> {
 
@@ -19,14 +22,13 @@ public class DefaultCompositePropertySet<T> extends DelegatingCompositeProperty<
 //        this(new ObjectProperty(object, name), parent);
 //        this.properties = properties;
 //    }
-
-    public DefaultCompositePropertySet(Property property, CompositeProperty parent) {
-        super(property, parent);
+    public DefaultCompositePropertySet(Property property, CompositeProperty parent, PropertyTool propertyTool) {
+        super(property, parent, propertyTool);
         this.subProperties = new HashSet();
     }
 
-    public DefaultCompositePropertySet(Property property, Set<CompositeProperty<?>> subProperties, CompositeProperty parent) {
-        this(property, parent);
+    public DefaultCompositePropertySet(Property property, Set<CompositeProperty<?>> subProperties, CompositeProperty parent, PropertyTool propertyTool) {
+        this(property, parent, propertyTool);
         this.subProperties = subProperties;
     }
 
@@ -34,13 +36,12 @@ public class DefaultCompositePropertySet<T> extends DelegatingCompositeProperty<
         remove(oldProperty);
         add(newProperty);
     }
-    
+
     public CompositeProperty replace(CompositeProperty oldProperty, Object newObject) {
         CompositeProperty newProperty = createProperty(oldProperty, newObject);
         replace(oldProperty, newProperty);
         return newProperty;
     }
-    
 
     public Collection<CompositeProperty<?>> properties() {
         return subProperties;
@@ -110,7 +111,7 @@ public class DefaultCompositePropertySet<T> extends DelegatingCompositeProperty<
 
     @Override
     public String toString() {
-        return "DCPS{" + super.toString() + "subProperties=" + PropertyUtil.toString(subProperties,", ") + '}';
+        return "DCPS{" + super.toString() + "subProperties=" + PropertyUtil.toString(subProperties, ", ") + '}';
     }
 
     private Set<CompositeProperty<?>> subProperties;

@@ -5,16 +5,17 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.jodt.property.CompositeProperty;
-import org.jodt.property.InternalPropertyTool;
 import org.jodt.property.Property;
+import org.jodt.property.PropertyTool;
 
 /**
  * @author Oliver Stuch (oliver@stuch.net)
  */
 abstract public class DelegatingCompositeProperty<T> implements InternalCompositeProperty<T>, CompositeProperty<T> {
 
-    public DelegatingCompositeProperty(Property<T> delegate, CompositeProperty<?> parent) {
+    public DelegatingCompositeProperty(Property<T> delegate, CompositeProperty<?> parent, PropertyTool propertyTool) {
         this.delegate = delegate;
+        this.propertyFactory = propertyTool;
         parent(parent);
     }
 
@@ -103,7 +104,7 @@ abstract public class DelegatingCompositeProperty<T> implements InternalComposit
 
     @Override
     public String path() {
-        return (parent != null ? parent.path() + CompositeProperty.PATH_SEPARATOR  : "") + delegate.name();
+        return (parent != null ? parent.path() + CompositeProperty.PATH_SEPARATOR : "") + delegate.name();
     }
 
     @Override
@@ -113,5 +114,5 @@ abstract public class DelegatingCompositeProperty<T> implements InternalComposit
 
     private final Property<T> delegate;
     protected CompositeProperty parent;
-    InternalPropertyTool propertyFactory = new DefaultPropertyTool(); // TODO: Wird benötigt zum Erzeugen von neuen Properties. Warum unkonfiguriertes DefaultPropertyTool ??
+    protected PropertyTool propertyFactory;
 }

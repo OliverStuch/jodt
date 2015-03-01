@@ -16,7 +16,10 @@ import javax.swing.JScrollPane;
 
 
 import org.apache.log4j.Logger;
+import org.jodt.property.PropertyTool;
 import org.jodt.property.comparison.IgnorePropertyDiffs;
+import org.jodt.property.implementation.DefaultPropertyTool;
+import org.jodt.property.implementation.PackageNonTerminalStrategy;
 import org.jodt.util.ToStringRenderer;
 
 
@@ -71,8 +74,9 @@ public class Demo {
     public static void main(String[] args) {
         System.setProperty("sun.swing.enableImprovedDragGesture", "true");
 
-        // GUI
-        final CompositePropertyTreeTable lieferungTable = new CompositePropertyTreeTable(createLieferung(), "Test");
+        PropertyTool propertyTool = new DefaultPropertyTool();
+        propertyTool.configure().globalNonTerminalStrategy(new PackageNonTerminalStrategy("org.jodt.property.*"));
+        final CompositePropertyTreeTable lieferungTable = new CompositePropertyTreeTable(createLieferung(), "Test", propertyTool);
         // lieferungTable.setNotEditable(Mahngericht.class);
         // lieferungTable.setEditable(false);
         lieferungTable.setEditable(true);

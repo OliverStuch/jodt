@@ -31,9 +31,11 @@ public interface PropertyToolConfiguration {
     // -------------------- Konfiguration NonTerminal ------------------------------------ //
     void globalNonTerminalStrategy(NonTerminalStrategy nonTerminalStrategy);
 
-    void registerNonTerminalType(Class referenceType);
-    // -------------------- Ende NonTerminal ------------------------------------ //
+    void registerNonTerminalType(Class nonTerminalType);
 
+    void registerTerminalType(Class terminalType);
+
+    // -------------------- Ende NonTerminal ------------------------------------ //
     void registerIgnoreType(Class toBeIgnored);
 
     boolean isIgnored(Class type);
@@ -47,8 +49,6 @@ public interface PropertyToolConfiguration {
     String renderAttributeName(String attributeName);
 
     void globalIdentityResolverFactory(IdentityResolverFactory identityResolverFactory);
-
-    void registerTerminalClass(Class terminalClass);
 
     void registerGlobalAttributeNameRenderer(ToStringRenderer toStringRenderer);
 

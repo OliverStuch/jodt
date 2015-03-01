@@ -16,7 +16,7 @@ import org.jodt.property.implementation.DefaultPropertyTool;
 /**
  * @author Oliver Stuch
  */
-abstract public class AbstractTest_CompositeProperty extends TestCase implements InternalPropertyTool {
+abstract public class AbstractTest_CompositeProperty extends TestCase implements PropertyTool {
 
     public void test_Path() {
         CompositePropertyTestClass testObject = new CompositePropertyTestClass();
@@ -142,6 +142,8 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
 
     public void test_creating() {
         CompositePropertyTestClass testObject = new CompositePropertyTestClass();
+        pcf.configure().registerNonTerminalType(CompositePropertyTestClass.class);
+        pcf.configure().registerNonTerminalType(InnerCompositePropertyTestClass.class);
         CompositeProperty rootCompositeProperty = createCompositeProperty(testObject, "root");
         assertEquals(testObject, rootCompositeProperty.value());
         assertEquals(testObject, rootCompositeProperty.value());
@@ -411,6 +413,8 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
     public void test_Replacing() {
 
         CompositePropertyTestClass testObject = new CompositePropertyTestClass();
+        pcf.configure().registerNonTerminalType(CompositePropertyTestClass.class);
+        pcf.configure().registerNonTerminalType(InnerCompositePropertyTestClass.class);
         CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "root");
 
         {
@@ -492,6 +496,6 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
         }
     }
 
-    protected InternalPropertyTool pcf = new DefaultPropertyTool(false);
+    protected PropertyTool pcf = new DefaultPropertyTool(false);
     private final Logger logger = Logger.getLogger(AbstractTest_CompositeProperty.class);
 }

@@ -111,7 +111,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     }
 
     @Override
-    public void registerTerminalClass(Class terminalClass) {
+    public void registerTerminalType(Class terminalClass) {
         terminalTypes.register(terminalClass, isTerminalType);
     }
 

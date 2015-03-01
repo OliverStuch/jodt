@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.Property;
+import org.jodt.property.PropertyTool;
 
 
 /**
@@ -13,8 +14,8 @@ import org.jodt.property.Property;
 
 public class PropertyMap<T> extends DelegatingCompositeProperty<T> {
 
-    public PropertyMap(Property delegate, CompositeProperty parent) {
-        super(delegate, parent);
+    public PropertyMap(Property delegate, CompositeProperty parent, PropertyTool propertyTool) {
+        super(delegate, parent, propertyTool);
         // TODO Auto-generated constructor stub
     }
 

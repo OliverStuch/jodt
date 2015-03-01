@@ -1,5 +1,6 @@
 package org.jodt.property.comparison.implementation;
 
+import org.jodt.property.Equalator;
 import org.jodt.property.IdentityResolver;
 import org.jodt.property.IdentityResolverFactory;
 import org.jodt.property.NonTerminalStrategy;
@@ -249,8 +250,8 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
         delegate.globalIdentityResolverFactory(identityResolverFactory);
     }
 
-    public void registerTerminalClass(Class terminalClass) {
-        delegate.registerTerminalClass(terminalClass);
+    public void registerTerminalType(Class terminalClass) {
+        delegate.registerTerminalType(terminalClass);
     }
 
     public void registerGlobalAttributeNameRenderer(ToStringRenderer toStringRenderer) {
@@ -273,11 +274,20 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
         return delegate.getPropertyActor(attributeClass);
     }
 
+    public Equalator getNonTerminalTypeEqualator(Class type) {
+        return nonTerminalTypeEqualator.getImplementation(type);
+    }
+
+    public void registerNonTerminalTypeEqualator(Class type, Equalator equalator) {
+        nonTerminalTypeEqualator.register(type, equalator);
+    }
+
     private static class IsIgnoreType {
     }
 
     private static IsIgnoreType isIgnoreType = new IsIgnoreType();
     private Registry<IsIgnoreType> ignoreObjectButAnalyseItsNonTerminalProperties = new Registry<IsIgnoreType>();
     private IgnoreStrategy globalIgnoreStrategy;
+    private Registry<Equalator> nonTerminalTypeEqualator = new Registry<Equalator>();
     // -------------------------------------------------------- //
 }

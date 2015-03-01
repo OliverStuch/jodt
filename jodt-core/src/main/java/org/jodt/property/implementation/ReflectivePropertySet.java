@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.Property;
+import org.jodt.property.PropertyTool;
 
 
 /**
@@ -13,8 +14,8 @@ import org.jodt.property.Property;
  */
 public class ReflectivePropertySet<T> extends DefaultCompositePropertySet<T> {
 
-    public ReflectivePropertySet(Property property, Set<CompositeProperty<?>> propertySet, CompositeProperty parent) {
-        super(property, propertySet, parent);
+    public ReflectivePropertySet(Property property, Set<CompositeProperty<?>> propertySet, CompositeProperty parent, PropertyTool properyTool) {
+        super(property, propertySet, parent, properyTool);
     }
 
     @Override

@@ -8,6 +8,7 @@ import java.util.ListIterator;
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.CompositePropertyList;
 import org.jodt.property.Property;
+import org.jodt.property.PropertyTool;
 
 /**
  * Diese Klasse wird erzeugt, wenn DefaultCompositePropertyFactory auf eine
@@ -23,13 +24,13 @@ public class DefaultCompositePropertyList<T> extends DelegatingCompositeProperty
      * property.name gleich dem Attribut-Namen.
      * @param propertyList Der Inhalt der Liste als Liste von CompositeProperty
      */
-    public DefaultCompositePropertyList(Property<T> listAsProperty, List<CompositeProperty<?>> propertyList) {
-        super(listAsProperty, null);
+    public DefaultCompositePropertyList(Property<T> listAsProperty, List<CompositeProperty<?>> propertyList, PropertyTool propertyTool) {
+        super(listAsProperty, null, propertyTool);
         this.properties = propertyList;
     }
 
-    public DefaultCompositePropertyList(Property<T> listAsProperty, List<CompositeProperty<?>> propertyList, CompositeProperty<?> parent) {
-        super(listAsProperty, parent);
+    public DefaultCompositePropertyList(Property<T> listAsProperty, List<CompositeProperty<?>> propertyList, CompositeProperty<?> parent, PropertyTool propertyTool) {
+        super(listAsProperty, parent, propertyTool);
         this.properties = propertyList;
     }
 
@@ -155,6 +156,6 @@ public class DefaultCompositePropertyList<T> extends DelegatingCompositeProperty
     public String toString() {
         return "DCPL{" + super.toString() + "properties=" + PropertyUtil.toString(properties, ", ") + '}';
     }
-   
+
     private List<CompositeProperty<?>> properties;
 }

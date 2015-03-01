@@ -1,5 +1,6 @@
 package org.jodt.property.comparison;
 
+import org.jodt.property.Equalator;
 import org.jodt.property.PropertyToolConfiguration;
 
 /**
@@ -62,5 +63,8 @@ public interface CompareToolConfiguration extends PropertyToolConfiguration {
     void removeIgnorePropertyStrategy();
 
     // -------------------- End: ignorePropertyStrategy ------------------------------------ //
+
+    public Equalator getNonTerminalTypeEqualator(Class type);
+    public void registerNonTerminalTypeEqualator(Class type, Equalator equalator);
 
 }
