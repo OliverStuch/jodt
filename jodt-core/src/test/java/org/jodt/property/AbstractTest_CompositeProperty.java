@@ -20,6 +20,8 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
 
     public void test_Path() {
         CompositePropertyTestClass testObject = new CompositePropertyTestClass();
+        pcf.configure().registerNonTerminalType(CompositePropertyTestClass.class);
+        pcf.configure().registerNonTerminalType(InnerCompositePropertyTestClass.class);
         CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "test_Path");
         String pathTestObject = testObjectAsCompositeProperty.path();
         Assert.assertNotNull(pathTestObject);
@@ -63,6 +65,8 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
 
     public void test_PropertyActorClass() {
         CompositePropertyTestClass testObject = new CompositePropertyTestClass();
+        pcf.configure().registerNonTerminalType(CompositePropertyTestClass.class);
+        pcf.configure().registerNonTerminalType(InnerCompositePropertyTestClass.class);
         pcf.configure().registerGlobalPropertyActor(String.class, new PropertyActor() {
             public boolean actOn(Property property) {
                 property.value("test_PropertyActor");
@@ -80,6 +84,8 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
 
     public void test_PropertyActorName() {
         CompositePropertyTestClass testObject = new CompositePropertyTestClass();
+        pcf.configure().registerNonTerminalType(CompositePropertyTestClass.class);
+        pcf.configure().registerNonTerminalType(InnerCompositePropertyTestClass.class);
         pcf.configure().registerGlobalPropertyActor("myString", new PropertyActor() {
             public boolean actOn(Property property) {
                 property.value("test_PropertyActor");
@@ -261,6 +267,8 @@ abstract public class AbstractTest_CompositeProperty extends TestCase implements
 
         // Primitive setzen
         {
+            pcf.configure().registerNonTerminalType(CompositePropertyTestClass.class);
+            pcf.configure().registerNonTerminalType(InnerCompositePropertyTestClass.class);
             CompositePropertyTestClass testObject = new CompositePropertyTestClass();
             CompositeProperty testObjectAsCompositeProperty = createCompositeProperty(testObject, "root");
 

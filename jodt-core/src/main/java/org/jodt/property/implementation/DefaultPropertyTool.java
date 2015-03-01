@@ -92,10 +92,10 @@ public class DefaultPropertyTool implements InternalPropertyTool {
             CompositeProperty result = new DefaultCompositePropertyList(propertyProvider.provide(), propertyList, parent);
             recursionStrategy.addElements(propertyList, objectAsList, result);
             return result;
-//        } else if (configuration.isTerminal(object)) {
-//            CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), parent);
-//            applyPropertyActor(result);
-//            return result;
+        } else if (configuration.isTerminal(object)) {
+            CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), parent);
+            applyPropertyActor(result);
+            return result;
         } else { // kein special => reflection
             Set<Property> objectAsReflectivePropertySet = createReflectivePropertySet(object); // object as reflectivePropertySet
             Set<CompositeProperty> propertySet = new HashSet();
