@@ -440,7 +440,7 @@ public class DefaultCompareTool implements CompareTool {
                     // Idee: Verwende HashCodeIdentifier, wenn Objekte equals überschreiben.
                     return null; // kein Unterschied feststellbar und auch nicht NoDiff feststellbar TODO 2015: Vielleicht doch ein RefDiff, wenn nur eine id null ist ?
                 }
-                if (compareId.equals(referenceId)) {
+                if (0 == compareId.compareTo(referenceId)) {
                     return new NoDiff(compareObject, referenceObject);
                 } else {
                     ReferenceDiff referenceChangedDiff = new ReferenceDiff(compareObject, referenceObject);
