@@ -5,8 +5,10 @@ import java.awt.Container;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -14,14 +16,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-
 import org.apache.log4j.Logger;
 import org.jodt.property.PropertyTool;
 import org.jodt.property.comparison.IgnorePropertyDiffs;
 import org.jodt.property.implementation.DefaultPropertyTool;
 import org.jodt.property.implementation.PackageNonTerminalStrategy;
 import org.jodt.util.ToStringRenderer;
-
 
 /**
  * @author Oliver Stuch (oliver@stuch.net)
@@ -37,10 +37,14 @@ public class Demo {
         Amtsgericht amtsgerichtD = new Amtsgericht(new Gerichtsnummer(1), "Amtsgericht Düsseldorf");
         Amtsgericht amtsgerichtK = new Amtsgericht(new Gerichtsnummer(3), "Amtsgericht Köln");
         amtsgerichtD.übergeordnetesGericht = amtsgerichtK;
+        amtsgerichtD.string2string.put("firstKey", "firstValue");
+
 
         Amtsgericht amtsgerichtN = new Amtsgericht(new Gerichtsnummer(10), "Amtsgericht Neuss");
         Mahngericht mahngerichtD = new Mahngericht(new Gerichtsnummer(2), "Mahngericht Düsseldorf");
         Mahngericht mahngerichtN = new Mahngericht(new Gerichtsnummer(12), "Mahngericht Neuss");
+        amtsgerichtD.string2mahngericht.put("meinMahngericht", mahngerichtN);
+        
         amtsgerichtN.übergeordnetesGericht = amtsgerichtD;
 
         mahngerichtD.adressen.add(koe);
@@ -67,7 +71,7 @@ public class Demo {
         lieferung.add(amtsgerichtD);
         lieferung.add(amtsgerichtK);
         lieferung.add(amtsgerichtN);
-        
+
         return lieferung;
     }
 
@@ -130,6 +134,7 @@ public class Demo {
     }
 
     public static class Adresse implements Serializable {
+
         public Adresse() {
         }
 
@@ -148,6 +153,7 @@ public class Demo {
     }
 
     private static class Version {
+
         private Date date = new Date();
     }
 
@@ -162,6 +168,8 @@ public class Demo {
         }
 
         Mahngericht mahngericht;
+        Map<String, String> string2string = new HashMap();
+        Map<String, Mahngericht> string2mahngericht = new HashMap();
     }
 
     public static class Mahngericht extends Gericht {

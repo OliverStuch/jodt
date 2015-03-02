@@ -18,10 +18,6 @@ import org.jodt.property.PropertyTool;
  */
 public class DefaultCompositePropertySet<T> extends DelegatingCompositeProperty<T> implements CompositePropertySet<T> {
 
-//    public PropertySet(Object object, Set<CompositeProperty> properties, String name, CompositeProperty parent) {
-//        this(new ObjectProperty(object, name), parent);
-//        this.properties = properties;
-//    }
     public DefaultCompositePropertySet(Property property, CompositeProperty parent, PropertyTool propertyTool) {
         super(property, parent, propertyTool);
         this.subProperties = new HashSet();
