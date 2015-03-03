@@ -47,12 +47,12 @@
         <dependency>
             <groupId>org.jodt</groupId>
             <artifactId>jodt-core</artifactId>
-            <version>0.4</version>
+            <version>0.5</version>
         </dependency>
         <dependency>
             <groupId>org.jodt</groupId>
             <artifactId>jodt-core</artifactId>
-            <version>0.4</version>
+            <version>0.5</version>
              <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
