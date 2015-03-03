@@ -25,7 +25,7 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 import org.jdesktop.swingx.JXTreeTable;
-import org.jdesktop.swingx.UIAction;
+import org.jdesktop.swingx.plaf.UIAction;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.decorator.ShadingColorHighlighter;
@@ -148,7 +148,7 @@ public class DefaultJXTreeTable extends JXTreeTable {
             setRenderer(clazz, (TableCellRenderer) defaultRenderersByColumnClass.get(clazz));
         }
         setRenderer(Object.class, new DefaultTableRenderer(new ToStringRenderer2StringValue(toStringRendererRegistry)));
-        setRenderer(Number.class, new DefaultTableRenderer(FormatStringValue.NUMBER_TO_STRING, JLabel.LEFT));
+        setRenderer(Number.class, new DefaultTableRenderer(new FormatStringValue(), JLabel.LEFT));
         setRenderer(Date.class, new DefaultTableRenderer(new ToStringRenderer2StringValue(toStringRendererRegistry)));
         // rendererRegistry.setImplementation(Integer.class, new net.stuch.yag.util.gui.property.NumberRenderer());
 
@@ -596,9 +596,11 @@ public class DefaultJXTreeTable extends JXTreeTable {
         // throw new RuntimeException(rootNode.getClass() + " not supported");
         // }
         // }
-        public void fireTableDataChanged() {
-            modelSupport.fireStructureChanged();
-        }
+        
+        // 0.9.1
+//        public void fireTableDataChanged() { 
+//            modelSupport.fireStructureChanged();
+//        }
 
         public void firePathChanged(TreePath parentPath) {
             modelSupport.firePathChanged(parentPath);

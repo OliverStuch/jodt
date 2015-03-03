@@ -44,6 +44,7 @@ public class Demo {
         Mahngericht mahngerichtD = new Mahngericht(new Gerichtsnummer(2), "Mahngericht Düsseldorf");
         Mahngericht mahngerichtN = new Mahngericht(new Gerichtsnummer(12), "Mahngericht Neuss");
         amtsgerichtD.string2mahngericht.put("meinMahngericht", mahngerichtN);
+        amtsgerichtD.mahngericht2string.put(mahngerichtN,"deinMahngericht");
         
         amtsgerichtN.übergeordnetesGericht = amtsgerichtD;
 
@@ -170,6 +171,8 @@ public class Demo {
         Mahngericht mahngericht;
         Map<String, String> string2string = new HashMap();
         Map<String, Mahngericht> string2mahngericht = new HashMap();
+        Map<Mahngericht,String> mahngericht2string = new HashMap();
+        float myFloat = 1.2f;
     }
 
     public static class Mahngericht extends Gericht {
