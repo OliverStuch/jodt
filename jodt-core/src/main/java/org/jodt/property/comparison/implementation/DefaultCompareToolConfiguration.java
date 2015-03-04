@@ -274,6 +274,10 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
         return delegate.getPropertyActor(attributeClass);
     }
 
+    public Comparable resolveId(Object object) {
+        return delegate.resolveId(object);
+    }
+
     public Equalator getNonTerminalTypeEqualator(Class type) {
         return nonTerminalTypeEqualator.getImplementation(type);
     }

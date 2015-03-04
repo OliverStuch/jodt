@@ -13,6 +13,8 @@ public interface PropertyToolConfiguration {
 
     boolean hasIdentityResolver(Class clazz);
 
+    Comparable resolveId(Object object);
+
     void register(Class<?> clazz, IdentityResolver<?> identityResolver);
 
     Registry<? extends IdentityResolver> getIdentityResolverRegistry();

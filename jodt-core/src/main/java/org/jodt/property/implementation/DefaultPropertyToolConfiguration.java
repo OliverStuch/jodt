@@ -21,7 +21,13 @@ import org.jodt.util.ToStringRenderer;
  */
 public class DefaultPropertyToolConfiguration implements PropertyToolConfiguration {
 
+    public DefaultPropertyToolConfiguration() {
+        registerNonTerminalType(Reference.class);
+        register(Reference.class, new Reference.ReferenceIdResolver(this));
+    }
+
     // -------------------- Identities ------------------------------------ //
+
     @Override
     public Comparable getID(Object object) {
         IdentityResolver identityResolver = idResolverRegistry.getImplementation(object.getClass());
@@ -40,7 +46,6 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     @Override
     public void register(Class<?> clazz, IdentityResolver<?> identityResolver) {
         idResolverRegistry.setImplementation(clazz, identityResolver);
-
         registerNonTerminalType(clazz);
     }
 
@@ -69,6 +74,11 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
         } else {
             return findIdentityAndUpdateIdentityResolverRegistry(idHolder.getClass(), true).getID(idHolder); // solange parameter2=true, kommt nicht null
         }
+    }
+
+    @Override
+    public Comparable resolveId(Object object) {
+        return findIdentityAndUpdateIdentityResolverRegistry(object.getClass(), true).getID(object); // solange parameter2=true, kommt nicht null
     }
 
     /**
@@ -138,7 +148,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
         if (terminalTypes.getImplementation(type) != null) {
             return false;
         }
-        if (Collection.class.isAssignableFrom(type) || type.isArray()) {
+        if (Collection.class.isAssignableFrom(type) || type.isArray() || Map.class.isAssignableFrom(type)) {
             return true;
         }
         if (globalNonTerminalStrategy != null) {

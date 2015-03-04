@@ -9,21 +9,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 import org.jodt.property.NoProperty;
-
 
 /**
  * @author Oliver Stuch
  */
-
-public class ReflectionUtil  extends JavaTypeDetector {
+public class ReflectionUtil extends JavaTypeDetector {
 
     public static interface SizedIterator extends Iterator {
+
         int size();
     }
 
     private static class ArrayIterator implements SizedIterator {
+
         private Object[] elements;
         private int index;
 
@@ -50,6 +49,7 @@ public class ReflectionUtil  extends JavaTypeDetector {
     }
 
     private static class PrimitveArrayIterator implements SizedIterator {
+
         private Object array;
         private int length;
         private int index;
@@ -79,6 +79,7 @@ public class ReflectionUtil  extends JavaTypeDetector {
     }
 
     private static class NullIterator implements SizedIterator {
+
         public boolean hasNext() {
             return false;
         }
@@ -97,6 +98,7 @@ public class ReflectionUtil  extends JavaTypeDetector {
     }
 
     public static class OneElementIterator implements SizedIterator {
+
         private Object element;
         private boolean nextCalled;
 
@@ -240,6 +242,7 @@ public class ReflectionUtil  extends JavaTypeDetector {
     }
 
     public interface Predicate {
+
         boolean evaluate(Object object);
     }
 
@@ -251,6 +254,11 @@ public class ReflectionUtil  extends JavaTypeDetector {
                 result.add(field);
             }
         }
+//        result.sort(new Comparator<Field>() {
+//            public int compare(Field o1, Field o2) {
+//                return o1.getName().compareTo(o2.getName());
+//            }
+//        });
         return result;
     }
 
@@ -265,11 +273,17 @@ public class ReflectionUtil  extends JavaTypeDetector {
                 }
             }
         }
+//        result.sort(new Comparator<Field>() {
+//            public int compare(Field o1, Field o2) {
+//                return o1.getName().compareTo(o2.getName());
+//            }
+//        });
         return result;
     }
 
     /**
-     * Get all fields (this class + superclasses) with the given annotation present
+     * Get all fields (this class + superclasses) with the given annotation
+     * present
      */
     public static List<Field> getAllAnnotatedFields(Class delinquentClass, Class annotation) {
         List<Field> fields = getAllFields(delinquentClass);
@@ -283,7 +297,8 @@ public class ReflectionUtil  extends JavaTypeDetector {
     }
 
     /**
-     * Get all fields (this class + superclasses) with the given annotation present
+     * Get all fields (this class + superclasses) with the given annotation
+     * present
      */
     public static List<Field> getDeclaredAnnotatedFields(Class delinquentClass, Class annotation) {
         List<Field> fields = getDeclaredFields(delinquentClass);
@@ -389,6 +404,4 @@ public class ReflectionUtil  extends JavaTypeDetector {
     //
     // return object1.toString().equals(objectVisitor2.toString());
     // }
-
-    
- }
+}

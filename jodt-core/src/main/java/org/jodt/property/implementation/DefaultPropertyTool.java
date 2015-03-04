@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.Property;
@@ -83,7 +84,7 @@ public class DefaultPropertyTool implements PropertyTool {
             return result;
         } else if (Set.class.isAssignableFrom(type)) {
             Set objectAsSet = (Set) object;
-            Set<CompositeProperty> propertySet = new HashSet();
+            Set<CompositeProperty> propertySet = new TreeSet(new PropertyNameComparator());
             CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), propertySet, parent, this);
             recursionStrategy.addElements(propertySet, objectAsSet, result);
             return result;
@@ -175,9 +176,9 @@ public class DefaultPropertyTool implements PropertyTool {
 
         public void addElements(Set<CompositeProperty> propertySet, Map objectAsMap, CompositeProperty result) {
             for (Object keyObject : objectAsMap.keySet()) {
-                String name = keyObject.toString();
-                Object valueObject = objectAsMap.get(keyObject);
-                CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(valueObject, type(valueObject), name, new ObjectPropertyProvider(valueObject, name, displayName(name)), result, shallowStrategy);
+                Reference reference = new Reference(keyObject, objectAsMap.get(keyObject));
+                String name = "->";
+                CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(reference, type(reference), name, new ObjectPropertyProvider(reference, name, displayName(name)), result, shallowStrategy);
                 if (newCompositeProperty != null) {
                     propertySet.add(newCompositeProperty);
                 }
@@ -185,6 +186,7 @@ public class DefaultPropertyTool implements PropertyTool {
         }
         private RecursionStrategy shallowStrategy = new ShallowStrategy();
     }
+
 
     class FullRecursionStrategy implements RecursionStrategy {
 
@@ -200,9 +202,9 @@ public class DefaultPropertyTool implements PropertyTool {
 
         public void addElements(Set<CompositeProperty> propertySet, Map objectAsMap, CompositeProperty result) {
             for (Object keyObject : objectAsMap.keySet()) {
-                String name = keyObject.toString();
-                Object valueObject = objectAsMap.get(keyObject);
-                CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(valueObject, type(valueObject), name, new ObjectPropertyProvider(valueObject, name, displayName(name)), result, this);
+                Reference reference = new Reference(keyObject, objectAsMap.get(keyObject));
+                String name = "->";
+                CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(reference, type(reference), name, new ObjectPropertyProvider(reference, name, displayName(name)), result, this);
                 if (newCompositeProperty != null) {
                     propertySet.add(newCompositeProperty);
                 }
@@ -276,7 +278,7 @@ public class DefaultPropertyTool implements PropertyTool {
      * @param object must be != null
      */
     private Set<Property> createReflectivePropertySet(Object object) {
-        Set<Property> properties = new HashSet<Property>();
+        Set<Property> properties = new TreeSet<Property>(new PropertyNameComparator());
         Class<?> clazz;
         List<Field> declaredFields;
         // if (object == null) {

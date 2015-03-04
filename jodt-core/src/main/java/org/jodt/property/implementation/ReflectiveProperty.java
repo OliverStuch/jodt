@@ -14,7 +14,7 @@ import org.jodt.reflection.PrivilegedReflectionUtil;
 /**
  * @author Oliver Stuch (oliver@stuch.net)
  */
-public class ReflectiveProperty<T> implements Property<T> {
+public class ReflectiveProperty<T> implements Property<T>{
 
     private Field field;
     private Object fieldOwner;

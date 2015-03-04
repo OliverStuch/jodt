@@ -12,7 +12,6 @@ import javax.swing.ListSelectionModel;
 
 import org.jodt.property.IdentityResolver;
 import org.jodt.property.comparison.CompareTool;
-import org.jodt.property.comparison.gui.CompositeComparisonTreeTable;
 import org.jodt.property.comparison.implementation.CompareStrategy;
 import org.jodt.property.comparison.implementation.DefaultCompareTool;
 import org.jodt.property.gui.Demo;
@@ -38,6 +37,7 @@ public class DemoComparison extends Demo {
         l1.get(1).setOfStrings.add("neuer String");
         l2.get(1).setOfStrings.add("alter String");
         l2.get(2).übergeordnetesGericht=(Gericht) l2.get(1);
+        l2.get(0).string2string.clear();
     }
 
     public static void main(String[] args) {
