@@ -12,7 +12,7 @@ import javax.swing.ListSelectionModel;
 
 
 import org.jodt.property.comparison.CompareTool;
-import org.jodt.property.comparison.gui.DemoComparison.GerichtIdentifier;
+import org.jodt.property.comparison.gui.DemoComparison.PersonIdentifier;
 import org.jodt.property.comparison.implementation.CompareStrategy;
 import org.jodt.property.comparison.implementation.DefaultCompareTool;
 import org.jodt.property.gui.Demo;
@@ -30,20 +30,20 @@ public class DemoMerge extends Demo{
 
         // GUI
         CompareTool ct = new DefaultCompareTool();
-        List<Amtsgericht> lieferung1 = createLieferung();
-        List<Amtsgericht> lieferung2 = createLieferung();
+        List<Woman> lieferung1 = createLieferung();
+        List<Woman> lieferung2 = createLieferung();
         DemoComparison.modify(lieferung1, lieferung2);
 
         ct.configure().globalNonTerminalStrategy(new PackageNonTerminalStrategy("org.jdt.*"));
-        ct.configure().register(Gericht.class, new GerichtIdentifier());
+        ct.configure().registerIdResolver(Person.class, new PersonIdentifier());
         final MergeTreeTable lieferungTable = new MergeTreeTable(lieferung1, "Test", lieferung2, "Test2", new CompareStrategy(ct));
         // lieferungTable.setNotEditable(Mahngericht.class);
         // lieferungTable.setEditable(false);
         lieferungTable.setEditable(true);
         lieferungTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lieferungTable.setToStringRenderer(Adresse.class, new ToStringRenderer<Adresse>() {
-            public String render2String(Adresse t) {
-                return t.strasse + " " + t.hausnummer;
+        lieferungTable.setToStringRenderer(Adress.class, new ToStringRenderer<Adress>() {
+            public String render2String(Adress t) {
+                return t.streetname + " " + t.hausnummer;
             }
         });
 

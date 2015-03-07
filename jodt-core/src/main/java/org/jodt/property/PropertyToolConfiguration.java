@@ -15,7 +15,7 @@ public interface PropertyToolConfiguration {
 
     Comparable resolveId(Object object);
 
-    void register(Class<?> clazz, IdentityResolver<?> identityResolver);
+    void registerIdResolver(Class<?> clazz, IdentityResolver<?> identityResolver);
 
     Registry<? extends IdentityResolver> getIdentityResolverRegistry();
 

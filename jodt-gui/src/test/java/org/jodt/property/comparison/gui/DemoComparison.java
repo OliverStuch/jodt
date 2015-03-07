@@ -24,41 +24,49 @@ import org.jodt.util.ToStringRenderer;
  */
 
 public class DemoComparison extends Demo {
-    public static class GerichtIdentifier implements IdentityResolver<Gericht> {
+    public static class PersonIdentifier implements IdentityResolver<Person> {
 
-        public Long getID(Gericht t) {
-            return t.nummer.nummer;
+        public Long getID(Person t) {
+            return t.idnumber.nummer;
         }
 
     }
 
-    public static void modify(List<Amtsgericht> l1, List<Amtsgericht> l2) {
-        l1.get(0).name = "neuer Name";
-        l1.get(1).setOfStrings.add("neuer String");
-        l2.get(1).setOfStrings.add("alter String");
-        l2.get(2).übergeordnetesGericht=(Gericht) l2.get(1);
-        l2.get(0).string2string.clear();
+    public static void modify(List<Person> l1, List<Person> l2) {
+        Woman mary2 = (Woman) l2.get(0);
+        Man fred2 = (Man)l2.get(1);
+        mary2.husband = fred2;
+        fred2.listOfAdresses.add(mary2.listOfAdresses.get(0));
+        fred2.petName.put("darling", mary2);
+        mary2.mother.petName.remove("littleChild");
+        Man john2 = (Man)l2.get(2);
+        mary2.mother.husband=john2;
+        john2.wife=mary2.mother;
+        john2.age=33;
+        Man mariesFather = mary2.father;
+        mariesFather.wife=null;
+                
     }
 
     public static void main(String[] args) {
         System.setProperty("sun.swing.enableImprovedDragGesture", "true");
 
-        List<Amtsgericht> lieferung1 = createLieferung();
-        List<Amtsgericht> lieferung2 = createLieferung();
+        List<Person> lieferung1 = createLieferung();
+        List<Person> lieferung2 = createLieferung();
         modify(lieferung1, lieferung2);
         CompareTool ct = new DefaultCompareTool();
-//        ct.configure().registerAnalysePropertiesOfDifferentNonTerminalObjects(Gericht.class);
+        ct.configure().registerAnalysePropertiesOfDifferentNonTerminalObjects(Person.class);
         ct.configure().globalNonTerminalStrategy(new PackageNonTerminalStrategy("org.jodt.*"));
-        ct.configure().register(Gericht.class, new GerichtIdentifier());
+        ct.configure().registerIdResolver(Person.class, new PersonIdentifier());
         // GUI
         final CompositeComparisonTreeTable lieferungTable = new CompositeComparisonTreeTable(lieferung1, "Test", lieferung2, "Test2", new CompareStrategy(ct));
         // lieferungTable.setNotEditable(Mahngericht.class);
         // lieferungTable.setEditable(false);
         lieferungTable.setEditable(true);
         lieferungTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lieferungTable.setToStringRenderer(Adresse.class, new ToStringRenderer<Adresse>() {
-            public String render2String(Adresse t) {
-                return t.strasse + " " + t.hausnummer;
+        lieferungTable.setToStringRenderer(Adress.class, new ToStringRenderer<Adress>() {
+            public String render2String(Adress t) {
+                return t.streetname + " " + t.hausnummer;
             }
         });
 

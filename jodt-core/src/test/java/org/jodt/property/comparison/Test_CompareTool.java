@@ -224,7 +224,7 @@ public abstract class Test_CompareTool extends TestCase {
             Object nonTerminalObject2 = new ObjectWithPrimitives(); // non terminal durch PackageNonTerminalStrategy("net.stuch.*")
             asserts.assert_DiffNotDeterminable(nonTerminalObject1, nonTerminalObject2);// vielleicht ein bischen bitter, aber an dieser Stelle kann man leider keinen Diff bestimmen.
             // erst wenn ein IdResolver registriert ist, können diffs bestimmt werden:
-            asserts.configureCompareTool().register(ObjectWithPrimitives.class, new HashCodeIdentityResolver());
+            asserts.configureCompareTool().registerIdResolver(ObjectWithPrimitives.class, new HashCodeIdentityResolver());
             asserts.assert_ReferenceDiff(nonTerminalObject1, nonTerminalObject2);
             // Wenn nun nonTerminalObject1 geändert wird, muss nach wie vor der ReferenceDiff kommen
             // dies gilt solange analysePropertiesOfDifferentNonTerminalObjects == false
@@ -237,7 +237,7 @@ public abstract class Test_CompareTool extends TestCase {
         { // ein ähnlicher Test, nur dass die ID über einen IDResolver festgestellt wird
             Object nonTerminalObject1 = new ObjectWithPrimitivesWithId(1); // non terminal durch PackageNonTerminalStrategy("net.stuch.*")
             Object nonTerminalObject2 = new ObjectWithPrimitivesWithId(1); // non terminal durch PackageNonTerminalStrategy("net.stuch.*")
-            asserts.configureCompareTool().register(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
+            asserts.configureCompareTool().registerIdResolver(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
             int numToplevelChildren = 5;
             if (asserts instanceof DiffModeAsserts) {
                 numToplevelChildren = 0; // im DiffMode (beim Aufruf der diff-Operation) soll es nur für Unterschiede children geben
@@ -259,13 +259,13 @@ public abstract class Test_CompareTool extends TestCase {
         ObjectWithPrimitivesWithId nonTerminalObject2 = new ObjectWithPrimitivesWithId(1);
         set1OfNonTerminalObjects.add(nonTerminalObject1);
         set2OfNonTerminalObjects.add(nonTerminalObject2);
-        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
+        compareTool.configure().registerIdResolver(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
         {
             CompositeComparison<?> comparison = compareTool.compare(set1OfNonTerminalObjects, " ", set2OfNonTerminalObjects, " ");
             assert_NullDiffNoPropertyDiff(comparison, set1OfNonTerminalObjects, set2OfNonTerminalObjects);
             assertEquals(1, comparison.childCount());
         }
-        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new IdentityResolver<ObjectWithPrimitivesWithId>(){
+        compareTool.configure().registerIdResolver(ObjectWithPrimitivesWithId.class, new IdentityResolver<ObjectWithPrimitivesWithId>(){
             public Long getID(ObjectWithPrimitivesWithId t) {
                 return 0l;
             }
@@ -293,7 +293,7 @@ public abstract class Test_CompareTool extends TestCase {
             }
 
         }
-        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
+        compareTool.configure().registerIdResolver(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
         {
             CompositeComparison comparison = compareTool.compare(set1OfNonTerminalObjects, "set1", set2OfNonTerminalObjects, "set2");
             assertNotNull(comparison);
@@ -320,13 +320,13 @@ public abstract class Test_CompareTool extends TestCase {
         ObjectWithPrimitivesWithId nonTerminalObject2 = new ObjectWithPrimitivesWithId(1);
         list1OfNonTerminalObjects.add(nonTerminalObject1);
         list2OfNonTerminalObjects.add(nonTerminalObject2);
-        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
+        compareTool.configure().registerIdResolver(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
         {
             CompositeComparison<?> comparison = compareTool.compare(list1OfNonTerminalObjects, " ", list2OfNonTerminalObjects, " ");
             assert_NullDiffNoPropertyDiff(comparison, list1OfNonTerminalObjects, list2OfNonTerminalObjects);
             assertEquals(1, comparison.childCount());
         }
-        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new IdentityResolver<ObjectWithPrimitivesWithId>(){
+        compareTool.configure().registerIdResolver(ObjectWithPrimitivesWithId.class, new IdentityResolver<ObjectWithPrimitivesWithId>(){
             public Long getID(ObjectWithPrimitivesWithId t) {
                 return 0l;
             }
@@ -354,7 +354,7 @@ public abstract class Test_CompareTool extends TestCase {
             }
 
         }
-        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
+        compareTool.configure().registerIdResolver(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
         {
             CompositeComparison comparison = compareTool.compare(list1OfNonTerminalObjects, "set1", list2OfNonTerminalObjects, "set2");
             assertNotNull(comparison);
@@ -579,7 +579,7 @@ public abstract class Test_CompareTool extends TestCase {
 
         assert_objectLevelNullDiff(compareTool, o1, o2);
 
-        compareTool.configure().register(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
+        compareTool.configure().registerIdResolver(ObjectWithPrimitivesWithId.class, new ObjectWithPrimitivesWithId.IDResolver());
 
         assert_NoDiff(compareTool, o1, o2);
 
@@ -635,7 +635,7 @@ public abstract class Test_CompareTool extends TestCase {
 
         assert_objectLevelNullDiff(compareTool, o1, o2); // wegen fehlendem IDResolver kann nicht festgestellt werden, ob ein Diff vorliegt
 
-        compareTool.configure().register(ObjectWithNonTerminalReferences.class, new ObjectWithNonTerminalReferences.IDResolver());
+        compareTool.configure().registerIdResolver(ObjectWithNonTerminalReferences.class, new ObjectWithNonTerminalReferences.IDResolver());
         o1.id = new Long(1);
         o2.id = new Long(1);
 

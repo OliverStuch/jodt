@@ -23,11 +23,10 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
 
     public DefaultPropertyToolConfiguration() {
         registerNonTerminalType(Reference.class);
-        register(Reference.class, new Reference.ReferenceIdResolver(this));
+        registerIdResolver(Reference.class, new Reference.ReferenceIdResolver(this));
     }
 
     // -------------------- Identities ------------------------------------ //
-
     @Override
     public Comparable getID(Object object) {
         IdentityResolver identityResolver = idResolverRegistry.getImplementation(object.getClass());
@@ -44,7 +43,7 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     }
 
     @Override
-    public void register(Class<?> clazz, IdentityResolver<?> identityResolver) {
+    public void registerIdResolver(Class<?> clazz, IdentityResolver<?> identityResolver) {
         idResolverRegistry.setImplementation(clazz, identityResolver);
         registerNonTerminalType(clazz);
     }
@@ -58,14 +57,16 @@ public class DefaultPropertyToolConfiguration implements PropertyToolConfigurati
     public Comparable resolveId(Property property) {
         Object idHolder = property.value();
 
-        if (property instanceof ReflectivePropertySet || property instanceof ReflectiveProperty) {
-            if (property.name() != null) {
-                idHolder = property.name();
-            }
-        } else if (DelegatingCompositeProperty.class.isAssignableFrom(property.getClass())) {
-            DelegatingCompositeProperty delegatingCompositeProperty = (DelegatingCompositeProperty) property;
-            if (delegatingCompositeProperty.parent() instanceof ReflectivePropertySet<?>) {
-                idHolder = property.name();
+        if (idHolder == null || !Reference.class.isAssignableFrom(idHolder.getClass())) {
+            if (property instanceof ReflectivePropertySet || property instanceof ReflectiveProperty) {
+                if (property.name() != null) {
+                    idHolder = property.name();
+                }
+            } else if (DelegatingCompositeProperty.class.isAssignableFrom(property.getClass())) {
+                DelegatingCompositeProperty delegatingCompositeProperty = (DelegatingCompositeProperty) property;
+                if (delegatingCompositeProperty.parent() instanceof ReflectivePropertySet<?>) {
+                    idHolder = property.name();
+                }
             }
         }
 

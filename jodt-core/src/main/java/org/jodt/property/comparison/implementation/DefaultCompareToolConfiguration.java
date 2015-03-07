@@ -11,25 +11,22 @@ import org.jodt.property.comparison.CompareToolConfiguration;
 import org.jodt.property.comparison.IgnorePropertyStrategy;
 import org.jodt.property.comparison.IgnoreStrategy;
 import org.jodt.property.implementation.DefaultPropertyToolConfiguration;
+import org.jodt.property.implementation.Reference;
+import org.jodt.property.implementation.Reference.ReferenceEqualator;
 import org.jodt.util.Registry;
 import org.jodt.util.ToStringRenderer;
 
-/**
- * Defaults:<br>
- * keine globalNonTerminalStrategy <br>
- * diffMode == false <br>
- *
- */
 public class DefaultCompareToolConfiguration implements CompareToolConfiguration {
 
-    private PropertyToolConfiguration delegate;
+    private PropertyToolConfiguration propertyToolConfiguration;
 
     public DefaultCompareToolConfiguration() {
-        delegate = new DefaultPropertyToolConfiguration();
+        propertyToolConfiguration = new DefaultPropertyToolConfiguration();
     }
 
     public DefaultCompareToolConfiguration(PropertyToolConfiguration propertyToolConfiguration) {
-        delegate = propertyToolConfiguration;
+        this.propertyToolConfiguration = propertyToolConfiguration;
+        registerTerminalTypeEqualator(Reference.class, new ReferenceEqualator());
     }
 
     public boolean analysePropertiesOfDifferentNonTerminalObjects(Object object) {
@@ -138,152 +135,152 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
      * PropertyToolConfiguration
      */
     public Comparable getID(Object object) {
-        return delegate.getID(object);
+        return propertyToolConfiguration.getID(object);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public boolean hasIdentityResolver(Class clazz) {
-        return delegate.hasIdentityResolver(clazz);
+        return propertyToolConfiguration.hasIdentityResolver(clazz);
     }
 
     /**
      * PropertyToolConfiguration
      */
-    public void register(Class<?> clazz, IdentityResolver<?> identityResolver) {
-        delegate.register(clazz, identityResolver);
+    public void registerIdResolver(Class<?> clazz, IdentityResolver<?> identityResolver) {
+        propertyToolConfiguration.registerIdResolver(clazz, identityResolver);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public Registry<? extends IdentityResolver> getIdentityResolverRegistry() {
-        return delegate.getIdentityResolverRegistry();
+        return propertyToolConfiguration.getIdentityResolverRegistry();
     }
 
     /**
      * PropertyToolConfiguration
      */
     public Comparable resolveId(Property property) {
-        return delegate.resolveId(property);
+        return propertyToolConfiguration.resolveId(property);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public boolean isPrimitive(Object object, Class type) {
-        return delegate.isPrimitive(object, type);
+        return propertyToolConfiguration.isPrimitive(object, type);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public boolean isTerminal(Object compareObject) {
-        return delegate.isTerminal(compareObject);
+        return propertyToolConfiguration.isTerminal(compareObject);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public void globalNonTerminalStrategy(NonTerminalStrategy nonTerminalStrategy) {
-        delegate.globalNonTerminalStrategy(nonTerminalStrategy);
+        propertyToolConfiguration.globalNonTerminalStrategy(nonTerminalStrategy);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public void registerNonTerminalType(Class referenceType) {
-        delegate.registerNonTerminalType(referenceType);
+        propertyToolConfiguration.registerNonTerminalType(referenceType);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public void registerIgnoreType(Class toBeIgnored) {
-        delegate.registerIgnoreType(toBeIgnored);
+        propertyToolConfiguration.registerIgnoreType(toBeIgnored);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public boolean isIgnored(Class type) {
-        return delegate.isIgnored(type);
+        return propertyToolConfiguration.isIgnored(type);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public boolean isIgnored(String attributeName) {
-        return delegate.isIgnored(attributeName);
+        return propertyToolConfiguration.isIgnored(attributeName);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public void registerIgnoreAttributeName(String attribbuteName) {
-        delegate.registerIgnoreAttributeName(attribbuteName);
+        propertyToolConfiguration.registerIgnoreAttributeName(attribbuteName);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public boolean isNonTerminal(Object object) {
-        return delegate.isNonTerminal(object);
+        return propertyToolConfiguration.isNonTerminal(object);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public void registerAttributeNameMapping(String attributeName, String displayName) {
-        delegate.registerAttributeNameMapping(attributeName, displayName);
+        propertyToolConfiguration.registerAttributeNameMapping(attributeName, displayName);
     }
 
     /**
      * PropertyToolConfiguration
      */
     public String renderAttributeName(String attributeName) {
-        return delegate.renderAttributeName(attributeName);
+        return propertyToolConfiguration.renderAttributeName(attributeName);
     }
 
     public void globalIdentityResolverFactory(IdentityResolverFactory identityResolverFactory) {
-        delegate.globalIdentityResolverFactory(identityResolverFactory);
+        propertyToolConfiguration.globalIdentityResolverFactory(identityResolverFactory);
     }
 
     public void registerTerminalType(Class terminalClass) {
-        delegate.registerTerminalType(terminalClass);
+        propertyToolConfiguration.registerTerminalType(terminalClass);
     }
 
     public void registerGlobalAttributeNameRenderer(ToStringRenderer toStringRenderer) {
-        delegate.registerGlobalAttributeNameRenderer(toStringRenderer);
+        propertyToolConfiguration.registerGlobalAttributeNameRenderer(toStringRenderer);
     }
 
     public void registerGlobalPropertyActor(String attributeName, PropertyActor actor) {
-        delegate.registerGlobalPropertyActor(attributeName, actor);
+        propertyToolConfiguration.registerGlobalPropertyActor(attributeName, actor);
     }
 
     public void registerGlobalPropertyActor(Class attributeClass, PropertyActor actor) {
-        delegate.registerGlobalPropertyActor(attributeClass, actor);
+        propertyToolConfiguration.registerGlobalPropertyActor(attributeClass, actor);
     }
 
     public PropertyActor getPropertyActor(String attributeName) {
-        return delegate.getPropertyActor(attributeName);
+        return propertyToolConfiguration.getPropertyActor(attributeName);
     }
 
     public PropertyActor getPropertyActor(Class attributeClass) {
-        return delegate.getPropertyActor(attributeClass);
+        return propertyToolConfiguration.getPropertyActor(attributeClass);
     }
 
     public Comparable resolveId(Object object) {
-        return delegate.resolveId(object);
+        return propertyToolConfiguration.resolveId(object);
     }
 
-    public Equalator getNonTerminalTypeEqualator(Class type) {
-        return nonTerminalTypeEqualator.getImplementation(type);
+    public Equalator getTerminalTypeEqualator(Class type) {
+        return terminalTypeEqualator.getImplementation(type);
     }
 
-    public void registerNonTerminalTypeEqualator(Class type, Equalator equalator) {
-        nonTerminalTypeEqualator.register(type, equalator);
+    public void registerTerminalTypeEqualator(Class type, Equalator equalator) {
+        terminalTypeEqualator.register(type, equalator);
     }
 
     private static class IsIgnoreType {
@@ -292,6 +289,6 @@ public class DefaultCompareToolConfiguration implements CompareToolConfiguration
     private static IsIgnoreType isIgnoreType = new IsIgnoreType();
     private Registry<IsIgnoreType> ignoreObjectButAnalyseItsNonTerminalProperties = new Registry<IsIgnoreType>();
     private IgnoreStrategy globalIgnoreStrategy;
-    private Registry<Equalator> nonTerminalTypeEqualator = new Registry<Equalator>();
+    private Registry<Equalator> terminalTypeEqualator = new Registry<Equalator>();
     // -------------------------------------------------------- //
 }

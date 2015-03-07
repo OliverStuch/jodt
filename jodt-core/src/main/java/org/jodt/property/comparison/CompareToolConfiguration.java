@@ -64,7 +64,7 @@ public interface CompareToolConfiguration extends PropertyToolConfiguration {
 
     // -------------------- End: ignorePropertyStrategy ------------------------------------ //
 
-    public Equalator getNonTerminalTypeEqualator(Class type);
-    public void registerNonTerminalTypeEqualator(Class type, Equalator equalator);
+    public Equalator getTerminalTypeEqualator(Class type);
+    public void registerTerminalTypeEqualator(Class type, Equalator equalator);
 
 }

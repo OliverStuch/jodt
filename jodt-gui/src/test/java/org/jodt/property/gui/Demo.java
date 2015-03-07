@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,9 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.Logger;
 import org.jodt.property.PropertyTool;
-import org.jodt.property.comparison.IgnorePropertyDiffs;
 import org.jodt.property.implementation.DefaultPropertyTool;
 import org.jodt.property.implementation.PackageNonTerminalStrategy;
 import org.jodt.util.ToStringRenderer;
@@ -28,54 +25,37 @@ import org.jodt.util.ToStringRenderer;
  */
 public class Demo {
 
-    public static List<Amtsgericht> createLieferung() {
+    public static List<Person> createLieferung() {
         System.setProperty("sun.swing.enableImprovedDragGesture", "true");
 
-        Adresse koe = new Adresse("Königsallee", "1a");
-        Adresse hell = new Adresse("Hellersbegstr", "10");
-        Adresse breit = new Adresse("Breitestr", "109");
-        Amtsgericht amtsgerichtD = new Amtsgericht(new Gerichtsnummer(1), "Amtsgericht Düsseldorf");
-        Amtsgericht amtsgerichtK = new Amtsgericht(new Gerichtsnummer(3), "Amtsgericht Köln");
-        amtsgerichtD.übergeordnetesGericht = amtsgerichtK;
-        amtsgerichtD.string2string.put("firstKey", "firstValue");
-        amtsgerichtD.string2string.put("secondKey", "secondValue");
+        Adress koe = new Adress("Königsallee", "1a");
+        Adress hell = new Adress("Hellersbegstr", "10");
+        Adress breit = new Adress("Breitestr", "109");
+        Woman mary = new Woman(new PersonIdentificationNumber(1), "Mary");
+        mary.string2string.put("firstKey", "firstValue");
+        mary.string2string.put("secondKey", "secondValue");
+        mary.listOfAdresses.add(hell);
+        mary.listOfAdresses.add(koe);
+        Man fred = new Man(new PersonIdentificationNumber(2), "Fred");
+        fred.listOfAdresses.add(breit);
+        Woman mariesMother = new Woman(new PersonIdentificationNumber(3), "Maries Mother");
+        mariesMother.listOfAdresses.add(koe);
+        Man mariesFather = new Man(new PersonIdentificationNumber(4), "Maries Father");
+        mariesFather.listOfAdresses.add(koe);
+        mariesMother.husband=mariesFather;
+        mariesFather.wife=mariesMother;
+        mary.father = mariesFather;
+        mary.mother = mariesMother;
+        mariesMother.petName.put("littleChild", mary);
 
-        Amtsgericht amtsgerichtN = new Amtsgericht(new Gerichtsnummer(10), "Amtsgericht Neuss");
-        Mahngericht mahngerichtD = new Mahngericht(new Gerichtsnummer(2), "Mahngericht Düsseldorf");
-        Mahngericht mahngerichtN = new Mahngericht(new Gerichtsnummer(12), "Mahngericht Neuss");
-        amtsgerichtD.string2mahngericht.put("meinMahngericht", mahngerichtN);
-        amtsgerichtD.string2mahngericht.put("deinMahngericht", mahngerichtD);
-        amtsgerichtD.mahngericht2string.put(mahngerichtN, "deinMahngericht");
-        amtsgerichtD.mahngericht2mahngericht.put(mahngerichtN, mahngerichtD);
-
-        amtsgerichtN.übergeordnetesGericht = amtsgerichtD;
-
-        mahngerichtD.adressen.add(koe);
-        mahngerichtN.adressen.add(hell);
-
-        amtsgerichtD.adressen.add(koe);
-        amtsgerichtD.mahngericht = mahngerichtD;
-
-        amtsgerichtN.adressen.add(hell);
-        amtsgerichtN.mahngericht = mahngerichtN;
-
-        amtsgerichtK.adressen.add(breit);
-        // Adressänderung amtsgericht Düsseldorf
-
-        Amtsgericht amtsgerichtDNeu = new Amtsgericht(new Gerichtsnummer(1), "Amtsgericht Düsseldorf");
-        Adresse koeNeu = new Adresse("Königsweg", "2a");
-        amtsgerichtDNeu.adressen.add(koeNeu);
-        amtsgerichtDNeu.mahngericht = mahngerichtN;
-
-        Amtsgericht amtsgerichtNNeu = new Amtsgericht(new Gerichtsnummer(10), "Amtsgericht Neuss");
-        amtsgerichtNNeu.adressen.add(hell);
-        amtsgerichtNNeu.mahngericht = mahngerichtD;
-        List<Amtsgericht> lieferung = new ArrayList();
-        lieferung.add(amtsgerichtD);
-        lieferung.add(amtsgerichtK);
-        lieferung.add(amtsgerichtN);
-
-        return lieferung;
+        Man john = new Man(new PersonIdentificationNumber(6), "John");
+        john.age=32;
+        mary.listOfAdresses.add(koe);
+        List<Person> personenListe = new ArrayList();
+        personenListe.add(mary);
+        personenListe.add(fred);
+        personenListe.add(john);
+        return personenListe;
     }
 
     public static void main(String[] args) {
@@ -88,9 +68,9 @@ public class Demo {
         // lieferungTable.setEditable(false);
         lieferungTable.setEditable(true);
 //        lieferungTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lieferungTable.setToStringRenderer(Adresse.class, new ToStringRenderer<Adresse>() {
-            public String render2String(Adresse t) {
-                return t.strasse + " " + t.hausnummer;
+        lieferungTable.setToStringRenderer(Adress.class, new ToStringRenderer<Adress>() {
+            public String render2String(Adress t) {
+                return t.streetname + " " + t.hausnummer;
             }
         });
 
@@ -108,96 +88,82 @@ public class Demo {
 
     }
 
-    public static class Gericht implements Serializable {
+    public static class Person implements Serializable {
 
-        public Gericht() {
+        public Person() {
         }
 
-        public Gericht(Gerichtsnummer amtsgerichtNummer, String name) {
-            nummer = amtsgerichtNummer;
+        public Person(PersonIdentificationNumber idnumber, String name) {
+            this.idnumber = idnumber;
             this.name = name;
-            setOfStrings.add("some info");
-            setOfStrings.add("another info");
-            setOfAdressen.add(new Adresse("Wo bin", "ich"));
         }
 
         public String toString() {
             String objectToString = super.toString();
             int indexOfA = objectToString.indexOf("@");
-            return name + objectToString.substring(indexOfA, objectToString.length()) + " #adressen: " + (adressen != null ? adressen.size() + "" : "---");
+            return name + objectToString.substring(indexOfA, objectToString.length());
         }
-
-        public Gerichtsnummer nummer;
+        public int age;
+        public PersonIdentificationNumber idnumber;
         public String name;
-        List<Adresse> adressen = new ArrayList<Adresse>();
-        public Set<String> setOfStrings = new HashSet();
-        Set<Adresse> setOfAdressen = new HashSet();
-        @IgnorePropertyDiffs
-        public Gericht übergeordnetesGericht = null;
+        public List<Adress> listOfAdresses = new ArrayList();
+        public Set<String> setOfNicknames = new HashSet();
+        public Set<Adress> setOfAdresses = new HashSet();
+        public Map<String, Person> petName = new HashMap();
+        public Man father = null;
+        public Woman mother = null;
+        public Map<String, String> string2string = new HashMap();
     }
 
-    public static class Adresse implements Serializable {
+    public static class Adress implements Serializable {
 
-        public Adresse() {
+        public Adress() {
         }
 
-        public Adresse(String strasse, String nummer) {
-            this.strasse = strasse;
-            this.hausnummer = nummer;
+        public Adress(String streetname, String number) {
+            this.streetname = streetname;
+            this.hausnummer = number;
         }
 
         public String toString() {
-            return strasse + " " + hausnummer;
+            return streetname + " " + hausnummer;
         }
 
-        public String strasse;
+        public String streetname;
         public String hausnummer;
 
     }
 
-    private static class Version {
+    public static class Woman extends Person {
 
-        private Date date = new Date();
-    }
-
-    public static class Amtsgericht extends Gericht {
-
-        public Amtsgericht() {
+        public Woman() {
 
         }
 
-        public Amtsgericht(Gerichtsnummer amtsgerichtNummer, String name) {
+        public Woman(PersonIdentificationNumber amtsgerichtNummer, String name) {
             super(amtsgerichtNummer, name);
         }
 
-        Mahngericht mahngericht;
-        public Map<String, String> string2string = new HashMap();
-        public Map<String, Mahngericht> string2mahngericht = new HashMap();
-        public Map<Mahngericht, String> mahngericht2string = new HashMap();
-        public Map<Mahngericht, Mahngericht> mahngericht2mahngericht = new HashMap();
-        float myFloat = 1.2f;
-    }
-
-    public static class Mahngericht extends Gericht {
-
-        public Mahngericht() {
-        }
-
-        public Mahngericht(Gerichtsnummer amtsgerichtNummer, String name) {
-            super(amtsgerichtNummer, name);
-            // TODO Auto-generated constructor stub
-        }
+        public Man husband;
 
     }
 
-    public static class Gerichtsnummer implements Serializable {
+    public static class Man extends Person {
+
+        public Man(PersonIdentificationNumber personID, String name) {
+            super(personID, name);
+        }
+        public Woman wife;
+    }
+
+    public static class PersonIdentificationNumber implements Serializable {
 
         public Long nummer;
 
-        public Gerichtsnummer() {
+        public PersonIdentificationNumber() {
         }
 
-        public Gerichtsnummer(int i) {
+        public PersonIdentificationNumber(int i) {
             nummer = new Long(i);
         }
 
@@ -205,6 +171,4 @@ public class Demo {
             return nummer + "";
         }
     }
-
-    private static final Logger logger = Logger.getLogger(Demo.class);
 }

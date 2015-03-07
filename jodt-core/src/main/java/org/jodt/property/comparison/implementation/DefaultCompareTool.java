@@ -151,10 +151,6 @@ public class DefaultCompareTool implements CompareTool {
                                                 analysis.diff(new SubDiff());
                                             }
                                         }
-                                        // DiffType propertyDiff = determineToplevelDiff(comparePropertyValue, referencePropertyValue);
-                                        // if (propertyDiff != null && !(propertyDiff instanceof NoDiff)) {
-                                        // propertyAnalysis.diffType(propertyDiff);
-                                        // }
                                     }
                                 }
                             }
@@ -459,7 +455,7 @@ public class DefaultCompareTool implements CompareTool {
     }
 
     private boolean haveValueDiff(Object compareObject, Object referenceObject){
-        Equalator equalator = compareToolConfiguration.getNonTerminalTypeEqualator(compareObject.getClass());
+        Equalator equalator = compareToolConfiguration.getTerminalTypeEqualator(compareObject.getClass());
         if (equalator != null){
             return !equalator.areEqual(compareObject, referenceObject);
         } else {

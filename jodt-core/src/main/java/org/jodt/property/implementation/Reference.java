@@ -1,5 +1,6 @@
 package org.jodt.property.implementation;
 
+import org.jodt.property.Equalator;
 import org.jodt.property.IdentityResolver;
 import org.jodt.property.PropertyToolConfiguration;
 
@@ -7,12 +8,12 @@ import org.jodt.property.PropertyToolConfiguration;
  *
  * @author os
  */
-class Reference {
+public class Reference {
 
     Object key;
     Object value;
 
-    Reference(Object key, Object value) {
+    public Reference(Object key, Object value) {
         this.key = key;
         this.value = value;
     }
@@ -33,6 +34,12 @@ class Reference {
         public Comparable getID(Reference t) {
             return propertyToolConfiguration.resolveId(t.key);
         }
+    }
+    public static class ReferenceEqualator implements Equalator<Reference>{
 
+        public boolean areEqual(Reference t1, Reference t2) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+        
     }
 }
