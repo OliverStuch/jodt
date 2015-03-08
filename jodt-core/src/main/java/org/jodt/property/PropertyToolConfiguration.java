@@ -19,6 +19,11 @@ public interface PropertyToolConfiguration {
 
     Registry<? extends IdentityResolver> getIdentityResolverRegistry();
 
+    /**
+     * 
+     * @param property
+     * @return guaranteed to be not null
+     */
     Comparable resolveId(Property property);
 
     // -------------------- End: Identities ------------------------------------ //

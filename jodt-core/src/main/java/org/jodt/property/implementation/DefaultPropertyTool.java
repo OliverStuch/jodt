@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
+import org.apache.log4j.Logger;
 //import java.util.TreeSet;
 
 import org.jodt.property.CompositeProperty;
@@ -84,7 +86,7 @@ public class DefaultPropertyTool implements PropertyTool {
             return result;
         } else if (Set.class.isAssignableFrom(type)) {
             Set objectAsSet = (Set) object;
-            Set<CompositeProperty> propertySet = new HashSet();//new TreeSet(new PropertyNameComparator());
+            Set<CompositeProperty> propertySet = new TreeSet(new PropertyValueComparator(this.configuration));
             CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), propertySet, parent, this);
             recursionStrategy.addElements(propertySet, objectAsSet, result);
             return result;
@@ -106,7 +108,7 @@ public class DefaultPropertyTool implements PropertyTool {
             return result;
         } else { // kein special => reflection
             Set<Property> objectAsReflectivePropertySet = createReflectivePropertySet(object); // object as reflectivePropertySet
-            Set<CompositeProperty> propertySet = new HashSet();
+            Set<CompositeProperty> propertySet = new TreeSet(new PropertyNameComparator());
             ReflectivePropertySet result = new ReflectivePropertySet(propertyProvider.provide(), propertySet, parent, this);
             // Kann kein normales PropertySet sein, weil man keine Attribute aus einer
             // Klasse entfernen oder adden kann
@@ -149,6 +151,7 @@ public class DefaultPropertyTool implements PropertyTool {
                 CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(property.value(), property.type(), property.name(), new ObjectPropertyProvider(property), result, shallowStrategy);
                 if (newCompositeProperty != null) {
                     propertySet.add(newCompositeProperty);
+//                    logger.debug("add " + newCompositeProperty.name() + ":" + newCompositeProperty.value() + " size:" + propertySet.size());
                 }
             }
         }
@@ -160,6 +163,7 @@ public class DefaultPropertyTool implements PropertyTool {
                 CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(elementOfList, type(elementOfList), name, new ObjectPropertyProvider(elementOfList, name, displayName(name)), result, shallowStrategy);
                 if (newCompositeProperty != null) {
                     propertyList.add(newCompositeProperty);
+//                    logger.debug("add " + newCompositeProperty.name() + ":" + newCompositeProperty.value() + " size:" + propertyList.size());
                 }
             }
         }
@@ -170,6 +174,7 @@ public class DefaultPropertyTool implements PropertyTool {
                 CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(elementOfSet, type(elementOfSet), name, new ObjectPropertyProvider(elementOfSet, name, displayName(name)), result, shallowStrategy);
                 if (newCompositeProperty != null) {
                     propertySet.add(newCompositeProperty);
+//                    logger.debug("add " + newCompositeProperty.name() + ":" + newCompositeProperty.value() + " size:" + propertySet.size());
                 }
             }
         }
@@ -181,12 +186,12 @@ public class DefaultPropertyTool implements PropertyTool {
                 CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(reference, type(reference), name, new ObjectPropertyProvider(reference, name, displayName(name)), result, shallowStrategy);
                 if (newCompositeProperty != null) {
                     propertySet.add(newCompositeProperty);
+//                    logger.debug("add " + newCompositeProperty.name() + ":" + newCompositeProperty.value() + " size:" + propertySet.size());
                 }
             }
         }
         private RecursionStrategy shallowStrategy = new ShallowStrategy();
     }
-
 
     class FullRecursionStrategy implements RecursionStrategy {
 
@@ -196,6 +201,7 @@ public class DefaultPropertyTool implements PropertyTool {
                 CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(elementOfSet, type(elementOfSet), name, new ObjectPropertyProvider(elementOfSet, name, displayName(name)), result, this);
                 if (newCompositeProperty != null) {
                     propertySet.add(newCompositeProperty);
+//                    logger.debug("add " + newCompositeProperty.name() + ":" + newCompositeProperty.value() + " size:" + propertySet.size());
                 }
             }
         }
@@ -207,6 +213,7 @@ public class DefaultPropertyTool implements PropertyTool {
                 CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(reference, type(reference), name, new ObjectPropertyProvider(reference, name, displayName(name)), result, this);
                 if (newCompositeProperty != null) {
                     propertySet.add(newCompositeProperty);
+//                    logger.debug("add " + newCompositeProperty.name() + ":" + newCompositeProperty.value() + " size:" + propertySet.size());
                 }
             }
         }
@@ -218,6 +225,7 @@ public class DefaultPropertyTool implements PropertyTool {
                 CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(elementOfList, type(elementOfList), name, new ObjectPropertyProvider(elementOfList, name, displayName(name)), result, this);
                 if (newCompositeProperty != null) {
                     propertyList.add(newCompositeProperty);
+//                    logger.debug("add " + newCompositeProperty.name() + ":" + newCompositeProperty.value() + " size:" + propertyList.size());
                 }
             }
         }
@@ -227,6 +235,7 @@ public class DefaultPropertyTool implements PropertyTool {
                 CompositeProperty newCompositeProperty = recursiveCreateCompositeProperty(property.value(), property.type(), property.name(), new ObjectPropertyProvider(property), result, this);
                 if (newCompositeProperty != null) {
                     propertySet.add(newCompositeProperty);
+//                    logger.debug("add " + newCompositeProperty.name() + ":" + newCompositeProperty.value() +" size:" + propertySet.size());
                 }
             }
         }
@@ -278,7 +287,7 @@ public class DefaultPropertyTool implements PropertyTool {
      * @param object must be != null
      */
     private Set<Property> createReflectivePropertySet(Object object) {
-        Set<Property> properties = new HashSet();//new TreeSet<Property>(new PropertyNameComparator());
+        Set<Property> properties = new TreeSet<Property>(new PropertyNameComparator());
         Class<?> clazz;
         List<Field> declaredFields;
         // if (object == null) {
@@ -314,8 +323,7 @@ public class DefaultPropertyTool implements PropertyTool {
         return configuration;
     }
 
-//    private RecursionStrategy strategy;
     private boolean ignoreStaticFields;
     private PropertyToolConfiguration configuration;
-
+    private static final Logger logger = Logger.getLogger(DefaultPropertyTool.class);
 }
