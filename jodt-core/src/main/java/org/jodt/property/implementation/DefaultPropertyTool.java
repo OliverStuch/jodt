@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
+//import java.util.TreeSet;
 
 import org.jodt.property.CompositeProperty;
 import org.jodt.property.Property;
@@ -84,7 +84,7 @@ public class DefaultPropertyTool implements PropertyTool {
             return result;
         } else if (Set.class.isAssignableFrom(type)) {
             Set objectAsSet = (Set) object;
-            Set<CompositeProperty> propertySet = new TreeSet(new PropertyNameComparator());
+            Set<CompositeProperty> propertySet = new HashSet();//new TreeSet(new PropertyNameComparator());
             CompositeProperty result = new DefaultCompositePropertySet(propertyProvider.provide(), propertySet, parent, this);
             recursionStrategy.addElements(propertySet, objectAsSet, result);
             return result;
@@ -278,7 +278,7 @@ public class DefaultPropertyTool implements PropertyTool {
      * @param object must be != null
      */
     private Set<Property> createReflectivePropertySet(Object object) {
-        Set<Property> properties = new TreeSet<Property>(new PropertyNameComparator());
+        Set<Property> properties = new HashSet();//new TreeSet<Property>(new PropertyNameComparator());
         Class<?> clazz;
         List<Field> declaredFields;
         // if (object == null) {

@@ -44,8 +44,8 @@ public class Demo {
         mariesFather.listOfAdresses.add(koe);
         mariesMother.husband=mariesFather;
         mariesFather.wife=mariesMother;
-        mary.father = mariesFather;
-        mary.mother = mariesMother;
+//        mary.father = mariesFather;
+//        mary.mother = mariesMother;
         mariesMother.petName.put("littleChild", mary);
 
         Man john = new Man(new PersonIdentificationNumber(6), "John");

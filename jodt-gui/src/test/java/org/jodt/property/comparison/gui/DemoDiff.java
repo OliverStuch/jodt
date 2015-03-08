@@ -29,8 +29,8 @@ public class DemoDiff extends Demo{
 
         // GUI
         CompareTool ct = new DefaultCompareTool();
-        List<Woman> lieferung1 = createLieferung();
-        List<Woman> lieferung2 = createLieferung();
+        List<Person> lieferung1 = createLieferung();
+        List<Person> lieferung2 = createLieferung();
         DemoComparison.modify(lieferung1, lieferung2);
 
         ct.configure().globalNonTerminalStrategy(new PackageNonTerminalStrategy("org.jodt.*"));
